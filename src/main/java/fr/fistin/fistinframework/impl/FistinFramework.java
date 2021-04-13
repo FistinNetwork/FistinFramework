@@ -1,0 +1,134 @@
+package fr.fistin.fistinframework.impl;
+
+import fr.fistin.api.plugin.providers.IPluginProvider;
+import fr.fistin.api.plugin.providers.PluginProviders;
+import fr.fistin.api.utils.PluginLocation;
+import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.eventbus.IFistinEvent;
+import fr.fistin.fistinframework.eventbus.IFistinEventBus;
+import fr.fistin.fistinframework.impl.smartinvs.InventoryContentsImpl;
+import fr.fistin.fistinframework.item.IFistinItems;
+import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
+import fr.fistin.fistinframework.smartinvs.InventoryManager;
+import fr.fistin.fistinframework.utils.FireworkFactory;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Field;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+
+@ApiStatus.Internal
+final public class FistinFramework extends JavaPlugin implements IFistinFramework
+{
+    private FireworkFactory fireworkFactory;
+    private IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus;
+    private InventoryManager smartInvsManager;
+    private IFistinItems items;
+
+    @Override
+    public void onEnable()
+    {
+        this.getLogger().info("Starting Fistin Framework...");
+
+        this.preInit();
+        this.init();
+        this.postInit();
+    }
+
+    private void preInit()
+    {
+        this.saveDefaultConfig();
+        this.reloadConfig();
+
+        PluginProviders.setProvider(IFistinFramework.class, this);
+    }
+
+    private void init()
+    {
+        this.eventBus = new DefaultEventBus();
+        this.fireworkFactory = new FireworkFactory();
+        this.items = new FistinItemsImpl();
+        this.smartInvsManager = new InventoryManager(this, InventoryContentsImpl::new);
+        this.smartInvsManager.init();
+    }
+
+    private void postInit()
+    {
+        this.getServer().getPluginManager().registerEvents(new ItemListener(), this);
+        this.getCommand("fistindebug").setExecutor(new DebugCommand(this));
+        this.getCommand("fgive").setExecutor((sender, command, label, args) -> {
+            if(args.length == 1)
+            {
+                if(sender instanceof Player)
+                {
+                    final PluginLocation loc = PluginLocation.getLocation(args[0]);
+                    if(loc != null)
+                        ((Player)sender).getInventory().addItem(this.items.getItem(loc).enclosingItem());
+                    else sender.sendMessage("\u00A7cItem name not valid!\u00A7r");
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
+    @Override
+    public void onDisable()
+    {
+        this.fireworkFactory.clear();
+        this.eventBus.clear();
+        this.items.clear();
+
+        try
+        {
+            final Field cache = Cache.class.getDeclaredField("cache");
+            cache.setAccessible(true);
+            cache.set(null, null);
+        }
+        catch (Exception e)
+        {
+            this.getLogger().log(Level.SEVERE, e.getMessage(), e);
+        }
+
+        this.getLogger().info("Stopped Fistin Framework, have a nice day !");
+    }
+
+    @Override
+    public @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus()
+    {
+        return this.eventBus;
+    }
+
+    @Override
+    public @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> newEventBus()
+    {
+        return new DefaultEventBus();
+    }
+
+    @Override
+    public @NotNull FireworkFactory fireworkFactory()
+    {
+        return this.fireworkFactory;
+    }
+
+    @Override
+    public @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName)
+    {
+        return new ScoreboardSign(player, objectiveName);
+    }
+
+    @Override
+    public @NotNull InventoryManager smartInvsManager()
+    {
+        return this.smartInvsManager;
+    }
+
+    @Override
+    public @NotNull IFistinItems items()
+    {
+        return this.items;
+    }
+}

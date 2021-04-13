@@ -1,0 +1,102 @@
+apply plugin: 'idea'
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+group 'fr.fistin'
+version '1.0.0'
+archivesBaseName = "FistinFramework"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+compileJava {
+    targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    maven {
+        url "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
+    }
+    maven {
+        url "https://hub.spigotmc.org/nexus/content/repositories/public"
+    }
+    mavenCentral()
+    jcenter()
+
+    maven {
+        credentials {
+            if(System.getProperty("user.home").contains("flow")) {
+                username "${USERNAME}"
+                password "${TOKEN}"
+            }
+            else {
+                username System.getenv('USERNAME')
+                password System.getenv('TOKEN')
+            }
+        }
+        name = "FistinAPI_maven"
+        url = "https://maven.pkg.github.com/FistinNetwork/FistinAPI"
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar) {
+    classifier 'javadoc'
+    from javadoc
+}
+
+task apiJar(type: Jar) {
+    classifier 'api'
+    from sourceSets.main.output
+    include 'fr/fistin/fistinframework/**'
+    exclude 'fr/fistin/fistinframework/impl/**'
+}
+
+artifacts {
+    archives sourcesJar, javadocJar, apiJar
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact tasks.sourcesJar
+            artifact tasks.javadocJar
+            artifact tasks.apiJar
+
+            pom {
+                groupId = project.group
+                artifactId = 'fistinframework'
+                version = project.version
+                name = 'FistinFramework'
+                description = 'Framework permettant de standardiser & d\'aider la création des mini-jeux FistinNetwork.'
+                url = 'https://github.com/FistinNetwork/FistinFramework'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            credentials {
+                username System.getenv('USERNAME')
+                password System.getenv('TOKEN')
+            }
+            name = "FistinAPI_maven"
+            url = "https://maven.pkg.github.com/FistinNetwork/FistinFramework"
+        }
+    }
+}
+
+dependencies {
+    api 'fr.fistin:fistinapi:1.5.0'
+    api 'net.luckperms:api:5.2'
+    compileOnly fileTree(dir: 'libs', include: '*.jar')
+}

@@ -1,0 +1,26 @@
+name: FistinFramework
+version: 1.0.0
+main: fr.fistin.fistinframework.impl.FistinFramework
+prefix: FistinFramework
+website: https://fistin.fr
+description: Framework de jeu pour FistinNetwork, (c) FistinNetwork - All rights reserved.
+depend: [LuckPerms]
+load: POSTWORLD
+author: Flow Arg (FlowArg)
+authors:
+  - Flow Arg (Maintainer)
+  - Filouz (Contributor)
+  - Faustin (Contributor)
+commands:
+  fistindebug:
+    description: FistinDebug command
+    permission: fistin.staff
+    usage: /fistindebug items|fireworks|events [implBusName]|providers
+  fgive:
+    description: Give command for Fistin items
+    permission: fistin.staff
+    usage: /fgive [item]
+    aliases:
+      - fistingive
+      - fisting
+      - givefistin
