@@ -173,17 +173,17 @@ public final class RunnableUtils
                 final double milliResult = (double) numberOf * TICK_MULTIPLIER / MILLI_DIVIDER;
                 if(milliResult >= 1)
                     return Math.round(milliResult);
-                else throw new FistinException("result must be positive ! Actual: " + milliResult + ", given param: " + numberOf + " " + unit.name());
+                else throw new FistinFrameworkException("result must be positive ! Actual: " + milliResult + ", given param: " + numberOf + " " + unit.name());
             case MICROSECONDS:
                 final double microResult = (double) numberOf * TICK_MULTIPLIER / MICRO_DIVIDER;
                 if(microResult >= 1)
                     return Math.round(microResult);
-                else throw new FistinException("result must be positive ! Actual: " + microResult + ", given param: " + numberOf + " " + unit.name());
+                else throw new FistinFrameworkException("result must be positive ! Actual: " + microResult + ", given param: " + numberOf + " " + unit.name());
             case NANOSECONDS:
                 final double nanoResult = (double) numberOf * TICK_MULTIPLIER / NANO_DIVIDER;
                 if(nanoResult >= 1)
                     return Math.round(nanoResult);
-                else throw new FistinException("result must be positive ! Actual: " + nanoResult + ", given param: " + numberOf + " " + unit.name());
+                else throw new FistinFrameworkException("result must be positive ! Actual: " + nanoResult + ", given param: " + numberOf + " " + unit.name());
         }
         return result;
     }

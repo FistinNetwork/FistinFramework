@@ -4,7 +4,7 @@ import fr.fistin.fistinframework.eventbus.FistinEventHandler;
 import fr.fistin.fistinframework.eventbus.FistinEventListener;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
-import fr.fistin.fistinframework.utils.FistinException;
+import fr.fistin.fistinframework.utils.FistinFrameworkException;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,7 +64,7 @@ public class DefaultEventBus implements IFistinEventBus<Supplier<? extends IFist
                                 method.invoke(listener, event);
                             } catch (IllegalAccessException | InvocationTargetException e)
                             {
-                                throw new FistinException(e);
+                                throw new FistinFrameworkException(e);
                             }
                         });
             });

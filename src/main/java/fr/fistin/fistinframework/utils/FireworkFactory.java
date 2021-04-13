@@ -1,8 +1,8 @@
 package fr.fistin.fistinframework.utils;
 
-import fr.fistin.api.plugin.providers.IFistinAPIProvider;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
+import fr.fistin.fistinframework.IFistinFramework;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -22,7 +22,7 @@ public class FireworkFactory
 	{
 		if(!this.effects.containsKey(location))
 		{
-			PluginProviders.getProvider(IFistinAPIProvider.class).getLogger().info("Registered new firework with id (" + location.getFinalPath() + ")");
+			PluginProviders.getProvider(IFistinFramework.class).getLogger().info("Registered new firework with id (" + location.getFinalPath() + ")");
 			this.effects.put(location, effect.apply(FireworkEffect.builder()));
 		}
 	}

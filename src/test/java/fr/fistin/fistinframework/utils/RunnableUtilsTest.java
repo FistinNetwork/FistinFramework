@@ -28,19 +28,19 @@ public class RunnableUtilsTest
         assertEquals(2L, convertToTick(from, TimeUnit.NANOSECONDS));
     }
 
-    @Test(expected = FistinException.class)
+    @Test(expected = FistinFrameworkException.class)
     public void testConvertToTickMilliError()
     {
         convertToTick(20L, TimeUnit.MILLISECONDS);
     }
 
-    @Test(expected = FistinException.class)
+    @Test(expected = FistinFrameworkException.class)
     public void testConvertToTickMicroError()
     {
         convertToTick(20L, TimeUnit.MICROSECONDS);
     }
 
-    @Test(expected = FistinException.class)
+    @Test(expected = FistinFrameworkException.class)
     public void testConvertToTickNanoError()
     {
         convertToTick(20L, TimeUnit.NANOSECONDS);

@@ -1,11 +1,10 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.item.FistinItem;
-import fr.fistin.api.item.FistinItem.ClickType;
-import fr.fistin.api.item.IFistinItems;
-import fr.fistin.api.plugin.providers.IFistinAPIProvider;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
+import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.item.FistinItem;
+import fr.fistin.fistinframework.item.IFistinItems;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -25,7 +24,7 @@ final class ItemListener implements Listener
         if(item != null && item.getType() != Material.AIR)
         {
             final String name = item.getItemMeta().getDisplayName();
-            final IFistinItems items = PluginProviders.getProvider(IFistinAPIProvider.class).items();
+            final IFistinItems items = PluginProviders.getProvider(IFistinFramework.class).items();
 
             if(name != null && items.getRegisteredItemsName().contains(name))
             {
@@ -38,7 +37,7 @@ final class ItemListener implements Listener
                         final Action action = event.getAction();
                         if(action != Action.PHYSICAL)
                         {
-                            final ClickType clickType = action == Action.RIGHT_CLICK_AIR || action == Action.LEFT_CLICK_AIR ? ClickType.AIR : ClickType.BLOCK;
+                            final FistinItem.ClickType clickType = action == Action.RIGHT_CLICK_AIR || action == Action.LEFT_CLICK_AIR ? FistinItem.ClickType.AIR : FistinItem.ClickType.BLOCK;
                             final Player player = event.getPlayer();
                             final Block block = event.getClickedBlock();
 
