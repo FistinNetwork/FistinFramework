@@ -4,7 +4,14 @@ public interface IScoreboard
 {
     IScoreboardSign getScoreboardSign();
     void setScoreboardSign(IScoreboardSign scoreboardSign);
-    void createScoreboard();
     void updateScoreboard();
-    void destroy();
+
+    default void createScoreboard()
+    {
+        this.getScoreboardSign().create();
+    }
+    default void destroy()
+    {
+        this.getScoreboardSign().destroy();
+    }
 }

@@ -1,6 +1,5 @@
 package fr.fistin.fistinframework.smartinvs;
 
-import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.smartinvs.content.InventoryContents;
 import fr.fistin.fistinframework.smartinvs.content.InventoryContentsWrapper;
@@ -219,7 +218,7 @@ public class SmartInventory
             if(this.provider == null)
                 throw new IllegalStateException("The provider of the SmartInventory.Builder must be set.");
 
-            final InventoryManager manager = this.manager != null ? this.manager : PluginProviders.getProvider(IFistinFramework.class).smartInvsManager();
+            final InventoryManager manager = this.manager != null ? this.manager : IFistinFramework.framework().smartInvsManager();
             final SmartInventory inv = new SmartInventory(manager);
             inv.id = this.id;
             inv.title = this.title;

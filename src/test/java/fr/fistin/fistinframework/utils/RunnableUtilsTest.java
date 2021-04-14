@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static fr.fistin.fistinframework.utils.RunnableUtils.convertToTick;
+import static fr.fistin.fistinframework.runnable.RunnableUtils.convertToTick;
 import static org.junit.Assert.assertEquals;
 
 public class RunnableUtilsTest

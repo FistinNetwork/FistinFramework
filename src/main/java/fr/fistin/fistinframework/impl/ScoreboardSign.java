@@ -1,6 +1,5 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import net.minecraft.server.v1_8_R3.*;
@@ -20,6 +19,8 @@ import java.util.logging.Level;
 @ApiStatus.Internal
 class ScoreboardSign implements IScoreboardSign
 {
+    private static final IFistinFramework FRAMEWORK = IFistinFramework.framework();
+
     private boolean created = false;
     private final IVirtualTeam[] lines = new IVirtualTeam[15];
     private final Player player;
@@ -342,7 +343,7 @@ class ScoreboardSign implements IScoreboardSign
             }
             catch (NoSuchFieldException | IllegalAccessException e)
             {
-                PluginProviders.getProvider(IFistinFramework.class).getLogger().log(Level.SEVERE, e.getMessage(), e);
+                FRAMEWORK.getLogger().log(Level.SEVERE, e.getMessage(), e);
             }
 
             return () -> packet;
@@ -395,7 +396,7 @@ class ScoreboardSign implements IScoreboardSign
         }
         catch (NoSuchFieldException | IllegalAccessException e)
         {
-            PluginProviders.getProvider(IFistinFramework.class).getLogger().log(Level.SEVERE, e.getMessage(), e);
+            FRAMEWORK.getLogger().log(Level.SEVERE, e.getMessage(), e);
         }
     }
 

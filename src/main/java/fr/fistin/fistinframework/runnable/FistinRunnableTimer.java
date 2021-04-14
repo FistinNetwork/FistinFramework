@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.utils;
+package fr.fistin.fistinframework.runnable;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

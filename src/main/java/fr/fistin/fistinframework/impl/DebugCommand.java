@@ -8,13 +8,13 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
-final class DebugCommand implements CommandExecutor
+final class DebugCommand implements CommandExecutor, TabCompleter
 {
     private final IFistinFramework framework;
 
@@ -97,5 +97,22 @@ final class DebugCommand implements CommandExecutor
         sender.sendMessage("-- Events --");
         if(bus.equalsIgnoreCase(this.framework.eventBus().implName()))
             DefaultEventBus.getEventExecutions().forEach(eventExecution -> sender.sendMessage("* " + eventExecution.getName() + " -> "  + new SimpleDateFormat("hh:mm:ss").format(new Date(eventExecution.getTimestamp()))));
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
+    {
+        List<String> result = null;
+        if(command.getName().equalsIgnoreCase("fistindebug"))
+        {
+            if (args.length == 0)
+                result = Arrays.asList("providers", "events", "items", "fireworks");
+            else if(args.length == 1)
+            {
+                if(args[0].equalsIgnoreCase("events"))
+                    result = Collections.singletonList("default");
+            }
+        }
+        return result;
     }
 }

@@ -89,14 +89,28 @@ publishing {
                 username System.getenv('USERNAME')
                 password System.getenv('TOKEN')
             }
-            name = "FistinAPI_maven"
+            name = "FistinFramework_maven"
             url = "https://maven.pkg.github.com/FistinNetwork/FistinFramework"
         }
     }
 }
 
+configurations {
+    shade
+}
+
+jar {
+    from {
+        configurations.shade.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
 dependencies {
-    api 'fr.fistin:fistinapi:1.5.0'
+    api 'fr.fistin:fistinapi:1.5.0:api'
     api 'net.luckperms:api:5.2'
     compileOnly fileTree(dir: 'libs', include: '*.jar')
+    implementation 'org.reflections:reflections:0.9.12'
+    shade 'org.reflections:reflections:0.9.12'
 }

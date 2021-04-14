@@ -3,13 +3,19 @@ package fr.fistin.fistinframework.impl;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.addon.AddonProcessor;
+import fr.fistin.fistinframework.event.InnerListenerEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
+import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.impl.smartinvs.InventoryContentsImpl;
 import fr.fistin.fistinframework.item.IFistinItems;
+import fr.fistin.fistinframework.listener.ListenerManager;
+import fr.fistin.fistinframework.message.Messages;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
 import fr.fistin.fistinframework.utils.FireworkFactory;
+import fr.fistin.fistinframework.utils.PlayerHelper;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
@@ -22,10 +28,15 @@ import java.util.logging.Level;
 @ApiStatus.Internal
 final public class FistinFramework extends JavaPlugin implements IFistinFramework
 {
+    private Messages messages;
     private FireworkFactory fireworkFactory;
     private IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus;
     private InventoryManager smartInvsManager;
     private IFistinItems items;
+    private AddonProcessor addonProcessor;
+    private ListenerManager listenerManager;
+    private PlayerHelper playerHelper;
+    private LuckPermsToFistin luckPermsToFistin;
 
     @Override
     public void onEnable()
@@ -47,10 +58,18 @@ final public class FistinFramework extends JavaPlugin implements IFistinFramewor
 
     private void init()
     {
+        this.messages = new MessagesImpl();
         this.eventBus = new DefaultEventBus();
         this.fireworkFactory = new FireworkFactory();
         this.items = new FistinItemsImpl();
+        this.addonProcessor = new AddonProcessorImpl();
         this.smartInvsManager = new InventoryManager(this, InventoryContentsImpl::new);
+        this.listenerManager = new ListenerManagerImpl();
+        this.playerHelper = new PlayerHelper();
+        this.luckPermsToFistin = new LuckPermsToFistin();
+
+        this.eventBus().registerEvent(InnerListenerEvent.class);
+
         this.smartInvsManager.init();
     }
 
@@ -96,6 +115,12 @@ final public class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
+    public @NotNull Messages messages()
+    {
+        return this.messages;
+    }
+
+    @Override
     public @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus()
     {
         return this.eventBus;
@@ -129,5 +154,29 @@ final public class FistinFramework extends JavaPlugin implements IFistinFramewor
     public @NotNull IFistinItems items()
     {
         return this.items;
+    }
+
+    @Override
+    public @NotNull AddonProcessor addonProcessor()
+    {
+        return this.addonProcessor;
+    }
+
+    @Override
+    public @NotNull ListenerManager listenerManager()
+    {
+        return this.listenerManager;
+    }
+
+    @Override
+    public @NotNull PlayerHelper playerHelper()
+    {
+        return this.playerHelper;
+    }
+
+    @Override
+    public @NotNull LuckPermsToFistin luckPermsToFistin()
+    {
+        return this.luckPermsToFistin;
     }
 }

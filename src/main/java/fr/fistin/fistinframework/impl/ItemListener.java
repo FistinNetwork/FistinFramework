@@ -1,6 +1,5 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.item.FistinItem;
@@ -24,7 +23,7 @@ final class ItemListener implements Listener
         if(item != null && item.getType() != Material.AIR)
         {
             final String name = item.getItemMeta().getDisplayName();
-            final IFistinItems items = PluginProviders.getProvider(IFistinFramework.class).items();
+            final IFistinItems items = IFistinFramework.framework().items();
 
             if(name != null && items.getRegisteredItemsName().contains(name))
             {

@@ -1,6 +1,5 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.item.FistinItem;
@@ -23,7 +22,7 @@ final class FistinItemsImpl implements IFistinItems
         final PluginLocation location = item.location();
         if(!this.items.containsKey(location))
         {
-            PluginProviders.getProvider(IFistinFramework.class).getLogger().info("Registered new item with id (" + location.getFinalPath() + ')');
+            IFistinFramework.framework().getLogger().info("Registered new item with id (" + location.getFinalPath() + ')');
             this.items.put(location, item);
         }
     }

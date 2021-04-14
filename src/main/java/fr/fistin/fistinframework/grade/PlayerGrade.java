@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.utils;
+package fr.fistin.fistinframework.grade;
 
 import fr.fistin.api.utils.IIdentifiable;
 import org.jetbrains.annotations.NotNull;

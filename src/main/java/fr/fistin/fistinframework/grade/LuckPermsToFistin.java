@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.utils;
+package fr.fistin.fistinframework.grade;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
@@ -8,26 +8,26 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class LuckPermsToFistinAPI
+public class LuckPermsToFistin
 {
-    public static final LuckPerms LUCK_PERMS = LuckPermsProvider.get();
+    private static final LuckPerms LUCK_PERMS = LuckPermsProvider.get();
 
-    public static PlayerGrade getGradeForPlayer(Player player)
+    public PlayerGrade getGradeForPlayer(Player player)
     {
-        return getGradeForPlayer(player.getName());
+        return this.getGradeForPlayer(player.getName());
     }
 
-    public static PlayerGrade getGradeForPlayer(UUID uuid)
+    public PlayerGrade getGradeForPlayer(UUID uuid)
     {
-        return getGradeForPlayer(LUCK_PERMS.getUserManager().getUser(uuid));
+        return this.getGradeForPlayer(LUCK_PERMS.getUserManager().getUser(uuid));
     }
 
-    public static PlayerGrade getGradeForPlayer(String playerName)
+    public PlayerGrade getGradeForPlayer(String playerName)
     {
-        return getGradeForPlayer(LUCK_PERMS.getUserManager().getUser(playerName));
+        return this.getGradeForPlayer(LUCK_PERMS.getUserManager().getUser(playerName));
     }
 
-    public static PlayerGrade getGradeForPlayer(User user)
+    public PlayerGrade getGradeForPlayer(User user)
     {
         if(user != null)
         {

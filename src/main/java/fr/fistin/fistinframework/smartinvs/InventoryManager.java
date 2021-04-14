@@ -1,5 +1,6 @@
 package fr.fistin.fistinframework.smartinvs;
 
+import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.smartinvs.content.InventoryContents;
 import fr.fistin.fistinframework.smartinvs.content.InventoryContentsWrapper;
 import fr.fistin.fistinframework.smartinvs.opener.ChestInventoryOpener;
@@ -14,14 +15,13 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
 public class InventoryManager
 {
-    private final JavaPlugin plugin;
+    private final IBukkitPluginProvider plugin;
     private final PluginManager pluginManager;
     private final InventoryContentsWrapper contentsWrapper;
     private final Map<UUID, SmartInventory> inventories;
@@ -29,7 +29,7 @@ public class InventoryManager
     private final List<InventoryOpener> defaultOpeners;
     private final List<InventoryOpener> openers;
 
-    public InventoryManager(JavaPlugin plugin, InventoryContentsWrapper contentsWrapper)
+    public InventoryManager(IBukkitPluginProvider plugin, InventoryContentsWrapper contentsWrapper)
     {
         this.plugin = plugin;
         this.pluginManager = Bukkit.getPluginManager();

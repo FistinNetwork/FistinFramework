@@ -3,12 +3,17 @@ package fr.fistin.fistinframework;
 import fr.fistin.api.plugin.PluginType;
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.api.plugin.providers.PluginProviders;
+import fr.fistin.fistinframework.addon.AddonProcessor;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
+import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.item.IFistinItems;
+import fr.fistin.fistinframework.listener.ListenerManager;
+import fr.fistin.fistinframework.message.Messages;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
 import fr.fistin.fistinframework.utils.FireworkFactory;
+import fr.fistin.fistinframework.utils.PlayerHelper;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -34,14 +39,18 @@ public interface IFistinFramework extends IBukkitPluginProvider
     }
 
     String NAMESPACE = "fistinframework";
-    String BUNGEE_CORD_CHANNEL = "BungeeCord";
 
+    @NotNull Messages messages();
     @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus();
     @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> newEventBus();
     @NotNull FireworkFactory fireworkFactory();
     @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName);
     @NotNull InventoryManager smartInvsManager();
     @NotNull IFistinItems items();
+    @NotNull AddonProcessor addonProcessor();
+    @NotNull ListenerManager listenerManager();
+    @NotNull PlayerHelper playerHelper();
+    @NotNull LuckPermsToFistin luckPermsToFistin();
 
     @Override
     default @NotNull PluginType pluginType()
