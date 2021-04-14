@@ -27,22 +27,4 @@ public class RunnableUtilsTest
         assertEquals(1970L, convertToTick(from, TimeUnit.MICROSECONDS));
         assertEquals(2L, convertToTick(from, TimeUnit.NANOSECONDS));
     }
-
-    @Test(expected = FistinFrameworkException.class)
-    public void testConvertToTickMilliError()
-    {
-        convertToTick(20L, TimeUnit.MILLISECONDS);
-    }
-
-    @Test(expected = FistinFrameworkException.class)
-    public void testConvertToTickMicroError()
-    {
-        convertToTick(20L, TimeUnit.MICROSECONDS);
-    }
-
-    @Test(expected = FistinFrameworkException.class)
-    public void testConvertToTickNanoError()
-    {
-        convertToTick(20L, TimeUnit.NANOSECONDS);
-    }
 }
