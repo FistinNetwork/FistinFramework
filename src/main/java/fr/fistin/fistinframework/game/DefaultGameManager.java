@@ -5,9 +5,9 @@ import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.event.GameManagerInitEvent;
-import fr.fistin.fistinframework.utils.FistinFrameworkException;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.grade.PlayerGrade;
+import fr.fistin.fistinframework.utils.FistinFrameworkException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
