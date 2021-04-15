@@ -4,12 +4,13 @@ import fr.fistin.api.plugin.PluginType;
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.fistinframework.addon.AddonProcessor;
+import fr.fistin.fistinframework.configuration.LanguageManager;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.item.IFistinItems;
 import fr.fistin.fistinframework.listener.ListenerManager;
-import fr.fistin.fistinframework.message.Messages;
+import fr.fistin.fistinframework.configuration.Messages;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
 import fr.fistin.fistinframework.utils.FireworkFactory;
@@ -40,17 +41,18 @@ public interface IFistinFramework extends IBukkitPluginProvider
 
     String NAMESPACE = "fistinframework";
 
-    @NotNull Messages messages();
+    @NotNull AddonProcessor addonProcessor();
     @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus();
     @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> newEventBus();
     @NotNull FireworkFactory fireworkFactory();
+    @NotNull IFistinItems items();
+    @NotNull LanguageManager languageManager();
+    @NotNull ListenerManager listenerManager();
+    @NotNull LuckPermsToFistin luckPermsToFistin();
+    @NotNull Messages messages();
+    @NotNull PlayerHelper playerHelper();
     @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName);
     @NotNull InventoryManager smartInvsManager();
-    @NotNull IFistinItems items();
-    @NotNull AddonProcessor addonProcessor();
-    @NotNull ListenerManager listenerManager();
-    @NotNull PlayerHelper playerHelper();
-    @NotNull LuckPermsToFistin luckPermsToFistin();
 
     @Override
     default @NotNull PluginType pluginType()

@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 public class PlayerHelper
 {
-    public void clear(Player player)
+    public void clearPlayer(Player player)
     {
         player.getInventory().setHelmet(null);
         player.getInventory().setChestplate(null);
@@ -15,7 +15,7 @@ public class PlayerHelper
         player.updateInventory();
     }
 
-    public void restore(Player player)
+    public void restorePlayerHealth(Player player)
     {
         player.setHealth(20);
         player.setFoodLevel(20);

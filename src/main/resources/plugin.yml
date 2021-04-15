@@ -4,7 +4,7 @@ main: fr.fistin.fistinframework.impl.FistinFramework
 prefix: FistinFramework
 website: https://fistin.fr
 description: Framework de jeu pour FistinNetwork, (c) FistinNetwork - All rights reserved.
-depend: [LuckPerms]
+depend: [FistinAPI, LuckPerms]
 load: POSTWORLD
 author: Flow Arg (FlowArg)
 authors:

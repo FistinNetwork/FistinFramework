@@ -15,10 +15,15 @@ public class ListenerManagerImpl implements ListenerManager
     @Override
     public void enableWorldProtectionListener(IBukkitPluginProvider plugin)
     {
-        if(!this.registered.contains(PreparedWorldProtectionListener.class))
-        {
+        if(this.enable(PreparedWorldProtectionListener.class))
             plugin.getServer().getPluginManager().registerEvents(new PreparedWorldProtectionListener(), plugin);
-            this.registered.add(PreparedWorldProtectionListener.class);
-        }
+    }
+
+    private boolean enable(Class<? extends Listener> listener)
+    {
+        if(this.registered.contains(listener))
+            return false;
+        else this.registered.add(listener);
+        return true;
     }
 }

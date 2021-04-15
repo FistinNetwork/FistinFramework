@@ -4,6 +4,8 @@ import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.addon.AddonProcessor;
+import fr.fistin.fistinframework.configuration.LanguageManager;
+import fr.fistin.fistinframework.event.GameManagerInitEvent;
 import fr.fistin.fistinframework.event.InnerListenerEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
@@ -11,7 +13,7 @@ import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.impl.smartinvs.InventoryContentsImpl;
 import fr.fistin.fistinframework.item.IFistinItems;
 import fr.fistin.fistinframework.listener.ListenerManager;
-import fr.fistin.fistinframework.message.Messages;
+import fr.fistin.fistinframework.configuration.Messages;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
 import fr.fistin.fistinframework.utils.FireworkFactory;
@@ -26,49 +28,44 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 
 @ApiStatus.Internal
-final public class FistinFramework extends JavaPlugin implements IFistinFramework
+public final class FistinFramework extends JavaPlugin implements IFistinFramework
 {
-    private Messages messages;
-    private FireworkFactory fireworkFactory;
-    private IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus;
-    private InventoryManager smartInvsManager;
-    private IFistinItems items;
     private AddonProcessor addonProcessor;
+    private IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus;
+    private FireworkFactory fireworkFactory;
+    private IFistinItems items;
+    private LanguageManager languageManager;
     private ListenerManager listenerManager;
-    private PlayerHelper playerHelper;
     private LuckPermsToFistin luckPermsToFistin;
+    private Messages messages;
+    private PlayerHelper playerHelper;
+    private InventoryManager smartInvsManager;
 
     @Override
     public void onEnable()
     {
         this.getLogger().info("Starting Fistin Framework...");
 
-        this.preInit();
+        PluginProviders.setProvider(IFistinFramework.class, this);
         this.init();
         this.postInit();
     }
 
-    private void preInit()
-    {
-        this.saveDefaultConfig();
-        this.reloadConfig();
-
-        PluginProviders.setProvider(IFistinFramework.class, this);
-    }
-
     private void init()
     {
-        this.messages = new MessagesImpl();
+        this.addonProcessor = new AddonProcessorImpl();
         this.eventBus = new DefaultEventBus();
         this.fireworkFactory = new FireworkFactory();
         this.items = new FistinItemsImpl();
-        this.addonProcessor = new AddonProcessorImpl();
-        this.smartInvsManager = new InventoryManager(this, InventoryContentsImpl::new);
+        this.languageManager = new LanguageManagerImpl();
         this.listenerManager = new ListenerManagerImpl();
+        this.luckPermsToFistin = new LuckPermsToFistinImpl();
+        this.messages = new MessagesImpl();
         this.playerHelper = new PlayerHelper();
-        this.luckPermsToFistin = new LuckPermsToFistin();
+        this.smartInvsManager = new InventoryManager(this, InventoryContentsImpl::new);
 
-        this.eventBus().registerEvent(InnerListenerEvent.class);
+        this.eventBus.registerEvent(GameManagerInitEvent.class);
+        this.eventBus.registerEvent(InnerListenerEvent.class);
 
         this.smartInvsManager.init();
     }
@@ -115,9 +112,9 @@ final public class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
-    public @NotNull Messages messages()
+    public @NotNull AddonProcessor addonProcessor()
     {
-        return this.messages;
+        return this.addonProcessor;
     }
 
     @Override
@@ -139,27 +136,15 @@ final public class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
-    public @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName)
-    {
-        return new ScoreboardSign(player, objectiveName);
-    }
-
-    @Override
-    public @NotNull InventoryManager smartInvsManager()
-    {
-        return this.smartInvsManager;
-    }
-
-    @Override
     public @NotNull IFistinItems items()
     {
         return this.items;
     }
 
     @Override
-    public @NotNull AddonProcessor addonProcessor()
+    public @NotNull LanguageManager languageManager()
     {
-        return this.addonProcessor;
+        return this.languageManager;
     }
 
     @Override
@@ -169,14 +154,32 @@ final public class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
+    public @NotNull LuckPermsToFistin luckPermsToFistin()
+    {
+        return this.luckPermsToFistin;
+    }
+
+    @Override
+    public @NotNull Messages messages()
+    {
+        return this.messages;
+    }
+
+    @Override
     public @NotNull PlayerHelper playerHelper()
     {
         return this.playerHelper;
     }
 
     @Override
-    public @NotNull LuckPermsToFistin luckPermsToFistin()
+    public @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName)
     {
-        return this.luckPermsToFistin;
+        return new ScoreboardSign(player, objectiveName);
+    }
+
+    @Override
+    public @NotNull InventoryManager smartInvsManager()
+    {
+        return this.smartInvsManager;
     }
 }
