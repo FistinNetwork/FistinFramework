@@ -51,7 +51,7 @@ public interface IFistinFramework extends IBukkitPluginProvider
     @NotNull LuckPermsToFistin luckPermsToFistin();
     @NotNull Messages messages();
     @NotNull PlayerHelper playerHelper();
-    @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName);
+    @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName, IBukkitPluginProvider caller);
     @NotNull InventoryManager smartInvsManager();
 
     @Override

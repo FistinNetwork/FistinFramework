@@ -117,6 +117,42 @@ public final class RunnableUtils
 
     /**
      * Run a repeated {@link FistinRunnableTimer} as a {@link BukkitRunnable}.
+     * @param runnable the repeated action to wrap.
+     * @param async If it will run asynchronously.
+     * @param plugin the plugin who starts the task.
+     * @param delay the delay before the task starts.
+     * @param delayUnit the unit of the delay.
+     * @param timer the time before a new iteration of the task.
+     * @param timerUnit the unit of the time.
+     * @return the bukkit runnable.
+     */
+    public static BukkitRunnable runRepeatedBukkitRunnable(Runnable runnable, boolean async, IBukkitPluginProvider plugin, long delay, TimeUnit delayUnit, long timer, TimeUnit timerUnit)
+    {
+        return runRepeatedBukkitRunnable(newBukkitRunnable(runnable), async, plugin, delay, delayUnit, timer, timerUnit);
+    }
+
+    /**
+     * Run a repeated {@link BukkitRunnable}.
+     * @param bukkitRunnable the repeated action to wrap.
+     * @param async If it will run asynchronously.
+     * @param plugin the plugin who starts the task.
+     * @param delay the delay before the task starts.
+     * @param delayUnit the unit of the delay.
+     * @param timer the time before a new iteration of the task.
+     * @param timerUnit the unit of the time.
+     * @return the bukkit runnable.
+     */
+    public static BukkitRunnable runRepeatedBukkitRunnable(BukkitRunnable bukkitRunnable, boolean async, IBukkitPluginProvider plugin, long delay, TimeUnit delayUnit, long timer, TimeUnit timerUnit)
+    {
+        if(async)
+            bukkitRunnable.runTaskTimerAsynchronously(plugin, convertToTick(delay, delayUnit), convertToTick(timer, timerUnit));
+        else bukkitRunnable.runTaskTimer(plugin, convertToTick(delay, delayUnit), convertToTick(timer, timerUnit));
+
+        return bukkitRunnable;
+    }
+
+    /**
+     * Run a repeated {@link FistinRunnableTimer} as a {@link BukkitRunnable} while the timer is up.
      * @param fistinRunnableTimer the repeated action to wrap.
      * @param async If it will run asynchronously.
      * @param plugin the plugin who starts the task.
@@ -132,7 +168,7 @@ public final class RunnableUtils
     }
 
     /**
-     * Run a repeated {@link BukkitRunnable}.
+     * Run a repeated {@link BukkitRunnable} while the timer is up.
      * @param bukkitRunnable the repeated action to wrap.
      * @param async If it will run asynchronously.
      * @param plugin the plugin who starts the task.

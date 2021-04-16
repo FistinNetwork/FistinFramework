@@ -1,5 +1,6 @@
 package fr.fistin.fistinframework.impl;
 
+import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
@@ -172,9 +173,9 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
-    public @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName)
+    public @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName, IBukkitPluginProvider caller)
     {
-        return new ScoreboardSign(player, objectiveName);
+        return new ScoreboardSign(player, objectiveName, caller);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package fr.fistin.fistinframework.scoreboard;
 
+import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
+
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -15,6 +17,7 @@ public interface IScoreboardSign
     void removeLine(int line);
     String getLine(int line);
     IVirtualTeam getTeam(int line);
+    IBukkitPluginProvider getCaller();
 
     interface IVirtualTeam
     {

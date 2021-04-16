@@ -1,12 +1,12 @@
 package fr.fistin.fistinframework.runnable;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 @FunctionalInterface
 public interface FistinRunnableTimer
 {
-    default void onTimerPass(int timer) {}
+    default void onTimerPass(long timer) {}
     default void onTimerEnd() {}
 
-    AtomicInteger timer();
+    AtomicLong timer();
 }

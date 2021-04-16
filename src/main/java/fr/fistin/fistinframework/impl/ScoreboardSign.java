@@ -1,6 +1,8 @@
 package fr.fistin.fistinframework.impl;
 
+import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.runnable.FistinRunnableTimer;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -10,8 +12,12 @@ import org.jetbrains.annotations.ApiStatus;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.logging.Level;
+
+import static fr.fistin.fistinframework.runnable.RunnableUtils.*;
 
 /**
  * Don't use directly this class, use {@link IScoreboardSign} instead !
@@ -24,12 +30,14 @@ class ScoreboardSign implements IScoreboardSign
     private boolean created = false;
     private final IVirtualTeam[] lines = new IVirtualTeam[15];
     private final Player player;
+    private final IBukkitPluginProvider caller;
     private String objectiveName;
 
-    ScoreboardSign(Player player, String objectiveName)
+    ScoreboardSign(Player player, String objectiveName, IBukkitPluginProvider caller)
     {
         this.player = player;
-        this.objectiveName = objectiveName;
+        this.caller = caller;
+        this.objectiveName = "\u00A7b" + objectiveName;
     }
 
     @Override
@@ -46,6 +54,55 @@ class ScoreboardSign implements IScoreboardSign
             this.sendLine(i++);
 
         this.created = true;
+
+        runRepeatedBukkitRunnable(newBukkitRunnable(new Runnable() {
+            @Override
+            public void run()
+            {
+                runTimerBukkitRunnable(newBukkitRunnableTimer(new FistinRunnableTimer()
+                {
+                    private final AtomicLong timer = new AtomicLong(ScoreboardSign.this.objectiveName.length() - 2);
+
+                    @Override
+                    public void onTimerPass(long timer)
+                    {
+                        final ScoreboardSign scoreboard = ScoreboardSign.this;
+                        final int index = scoreboard.objectiveName.indexOf('\u00A7');
+                        if (index == 0)
+                        {
+                            final String first = scoreboard.objectiveName.replace("\u00A7b", "");
+                            final String replacement = "\u00A73" + first;
+                            scoreboard.setObjectiveName(replacement);
+                        }
+                        else
+                        {
+                            final String first = scoreboard.objectiveName.replace("\u00A73", "");
+                            final StringBuilder concatenate = new StringBuilder();
+                            for (int i = 0; i < scoreboard.objectiveName.length() - 2; i++)
+                            {
+                                if (i == 0) concatenate.append("\u00A7b");
+                                if (i == index + 1) concatenate.append("\u00A73");
+                                if (i == index + 2 && i != scoreboard.objectiveName.length() - 2) concatenate.append("\u00A7b");
+                                concatenate.append(first.charAt(i));
+                            }
+                            scoreboard.setObjectiveName(concatenate.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onTimerEnd()
+                    {
+                        ScoreboardSign.this.setObjectiveName("\u00A7b" + ScoreboardSign.this.objectiveName.replace("\u00A73", ""));
+                    }
+
+                    @Override
+                    public AtomicLong timer()
+                    {
+                        return this.timer;
+                    }
+                }), false, ScoreboardSign.this.caller, 0L, TimeUnit.SECONDS, 1L, TimeUnit.SECONDS);
+            }
+        }), false, this.caller, 0L, TimeUnit.SECONDS, 10L, TimeUnit.SECONDS);
     }
 
     @Override
@@ -116,6 +173,12 @@ class ScoreboardSign implements IScoreboardSign
         if (line < 0)
             return null;
         return this.getOrCreateTeam(line);
+    }
+
+    @Override
+    public IBukkitPluginProvider getCaller()
+    {
+        return this.caller;
     }
 
     private PlayerConnection getPlayerConnection()
