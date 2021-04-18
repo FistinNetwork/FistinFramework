@@ -7,4 +7,7 @@ public interface Game
     int maxPlayers();
     int minPlayers();
     int players();
+    int timerBeforeGameStart();
+
+    <G extends Game> G cast();
 }
