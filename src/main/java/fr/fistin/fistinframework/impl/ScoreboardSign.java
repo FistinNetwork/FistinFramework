@@ -4,6 +4,7 @@ import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.runnable.FistinRunnableTimer;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
+import fr.fistin.fistinframework.utils.FistinFrameworkException;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -20,12 +21,13 @@ import java.util.logging.Level;
 import static fr.fistin.fistinframework.runnable.RunnableUtils.*;
 
 /**
- * Don't use directly this class, use {@link IScoreboardSign} instead !
+ * Don't use directly this class, use {@link IScoreboardSign} instead!
  */
 @ApiStatus.Internal
 class ScoreboardSign implements IScoreboardSign
 {
     private static final IFistinFramework FRAMEWORK = IFistinFramework.framework();
+    private static final char CHAR = '\u00A7';
 
     private boolean created = false;
     private final IVirtualTeam[] lines = new IVirtualTeam[15];
@@ -37,7 +39,12 @@ class ScoreboardSign implements IScoreboardSign
     {
         this.player = player;
         this.caller = caller;
-        this.objectiveName = "\u00A7b" + objectiveName;
+        this.objectiveName = CHAR + "b" + objectiveName;
+
+        if(this.objectiveName.length() + 4 > 32)
+            throw new FistinFrameworkException("Scoreboard name is too long !");
+        else if(this.objectiveName.length() - 2 <= 0)
+            throw new FistinFrameworkException("Scoreboard name is too short !");
     }
 
     @Override
@@ -66,33 +73,75 @@ class ScoreboardSign implements IScoreboardSign
                     @Override
                     public void onTimerPass(long timer)
                     {
+                        if(timer == 0)
+                            return;
+
                         final ScoreboardSign scoreboard = ScoreboardSign.this;
-                        final int index = scoreboard.objectiveName.indexOf('\u00A7');
-                        if (index == 0)
+                        final int threeIndex = scoreboard.objectiveName.indexOf(CHAR + "3");
+                        final int bIndex = scoreboard.objectiveName.lastIndexOf(CHAR + "b");
+
+                        if(threeIndex == -1)
                         {
-                            final String first = scoreboard.objectiveName.replace("\u00A7b", "");
-                            final String replacement = "\u00A73" + first;
+                            final String empty = this.calcEmpty();
+                            final char[] chars = empty.toCharArray();
+                            final char[] clean = new char[chars.length - 1];
+                            System.arraycopy(chars, 1, clean, 0, chars.length - 1);
+                            final String replacement = CHAR + "3" + empty.charAt(0) + CHAR + "b" + new String(clean);
                             scoreboard.setObjectiveName(replacement);
                         }
                         else
                         {
-                            final String first = scoreboard.objectiveName.replace("\u00A73", "");
-                            final StringBuilder concatenate = new StringBuilder();
-                            for (int i = 0; i < scoreboard.objectiveName.length() - 2; i++)
+                            final String empty = this.calcEmpty();
+                            final char[] emptyArray = empty.toCharArray();
+                            final char[] result = new char[empty.length() + 6];
+
+                            result[0] = CHAR;
+                            result[1] = 'b';
+
+                            if(threeIndex == 0)
                             {
-                                if (i == 0) concatenate.append("\u00A7b");
-                                if (i == index + 1) concatenate.append("\u00A73");
-                                if (i == index + 2 && i != scoreboard.objectiveName.length() - 2) concatenate.append("\u00A7b");
-                                concatenate.append(first.charAt(i));
+                                result[threeIndex + 3] = CHAR;
+                                result[threeIndex + 4] = '3';
+                                result[bIndex + 3] = CHAR;
+                                result[bIndex + 4] = 'b';
                             }
-                            scoreboard.setObjectiveName(concatenate.toString());
+                            else
+                            {
+                                result[threeIndex + 1] = CHAR;
+                                result[threeIndex + 2] = '3';
+                                if(bIndex + 2 < result.length)
+                                {
+                                    result[bIndex + 1] = CHAR;
+                                    result[bIndex + 2] = 'b';
+                                }
+                            }
+
+                            int iterated = 0;
+                            int iterator = 0;
+                            while (iterated < empty.length())
+                            {
+                                if(result[iterator] == '\u0000')
+                                {
+                                    result[iterator] = emptyArray[iterated];
+                                    iterated++;
+                                }
+                                iterator++;
+                            }
+
+                            scoreboard.setObjectiveName(new String(result));
                         }
+                    }
+
+                    private String calcEmpty()
+                    {
+                        return ScoreboardSign.this.objectiveName.replace(CHAR + "3", "").replace(CHAR + "b", "");
                     }
 
                     @Override
                     public void onTimerEnd()
                     {
-                        ScoreboardSign.this.setObjectiveName("\u00A7b" + ScoreboardSign.this.objectiveName.replace("\u00A73", ""));
+                        ScoreboardSign.this.setObjectiveName(CHAR + "b" + ScoreboardSign.this.objectiveName.replace(CHAR + "3", "").replace(CHAR + "b", ""));
+                        this.timer.set(ScoreboardSign.this.objectiveName.length() - 1);
                     }
 
                     @Override
@@ -100,7 +149,7 @@ class ScoreboardSign implements IScoreboardSign
                     {
                         return this.timer;
                     }
-                }), false, ScoreboardSign.this.caller, 0L, TimeUnit.SECONDS, 1L, TimeUnit.SECONDS);
+                }), false, ScoreboardSign.this.caller, 0L, TimeUnit.SECONDS, 350L, TimeUnit.MILLISECONDS);
             }
         }), false, this.caller, 0L, TimeUnit.SECONDS, 10L, TimeUnit.SECONDS);
     }

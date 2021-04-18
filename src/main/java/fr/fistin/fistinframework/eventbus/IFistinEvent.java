@@ -4,5 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IFistinEvent
 {
-    @NotNull String getName();
+    default @NotNull String getName()
+    {
+        return this.getClass().getSimpleName();
+    }
 }
