@@ -27,9 +27,6 @@ jobs:
     
     - name: Permission
       run: sudo chmod -R 777 libs/
-        
-    - name: Build with Gradle
-      run: gradle build
 
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
