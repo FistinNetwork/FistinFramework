@@ -16,12 +16,13 @@ import java.util.Random;
 
 public abstract class DefaultGameManager implements GameManager
 {
-    protected boolean init = false;
-
     @Nullable
     protected ILevelingProvider cacheLeveling;
     @Nullable
     protected LuckPermsToFistin cacheLuckPermsToFistin;
+
+    protected boolean init = false;
+    protected Game game;
 
     @Override
     public void init()
@@ -40,6 +41,22 @@ public abstract class DefaultGameManager implements GameManager
     public void throwNotInitializedError()
     {
         throw new FistinFrameworkException("GameManager must be initialized before any action");
+    }
+
+    @Override
+    public @NotNull Game game()
+    {
+        if(!this.init)
+            this.throwNotInitializedError();
+        return this.game;
+    }
+
+    @Override
+    public void setGame(@NotNull Game game)
+    {
+        if(!this.init)
+            this.throwNotInitializedError();
+        this.game = game;
     }
 
     // Don't need any initialization

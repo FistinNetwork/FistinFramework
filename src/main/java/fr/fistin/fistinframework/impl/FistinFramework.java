@@ -6,6 +6,7 @@ import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.addon.AddonProcessor;
 import fr.fistin.fistinframework.configuration.LanguageManager;
+import fr.fistin.fistinframework.configuration.Messages;
 import fr.fistin.fistinframework.event.GameManagerInitEvent;
 import fr.fistin.fistinframework.event.InnerListenerEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
@@ -14,7 +15,6 @@ import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.impl.smartinvs.InventoryContentsImpl;
 import fr.fistin.fistinframework.item.IFistinItems;
 import fr.fistin.fistinframework.listener.ListenerManager;
-import fr.fistin.fistinframework.configuration.Messages;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
 import fr.fistin.fistinframework.utils.FireworkFactory;
@@ -25,6 +25,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.util.Locale;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 
@@ -65,6 +66,8 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.playerHelper = new PlayerHelper();
         this.smartInvsManager = new InventoryManager(this, InventoryContentsImpl::new);
 
+        this.languageManager.load(this, Locale.FRENCH);
+
         this.eventBus.registerEvent(GameManagerInitEvent.class);
         this.eventBus.registerEvent(InnerListenerEvent.class);
 
@@ -84,6 +87,20 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
                     if(loc != null)
                         ((Player)sender).getInventory().addItem(this.items.getItem(loc).enclosingItem());
                     else sender.sendMessage("\u00A7cItem name not valid!\u00A7r");
+                    return true;
+                }
+            }
+            return false;
+        });
+        this.getCommand("ffirework").setExecutor((sender, command, label, args) -> {
+            if(args.length == 1)
+            {
+                if(sender instanceof Player)
+                 {
+                    final PluginLocation loc = PluginLocation.getLocation(args[0]);
+                    if(loc != null)
+                        this.fireworkFactory.spawnFirework(loc, ((Player)sender).getLocation());
+                    else sender.sendMessage("\u00A7cFirework name not valid!\u00A7r");
                     return true;
                 }
             }

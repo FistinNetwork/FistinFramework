@@ -1,15 +1,19 @@
 package fr.fistin.fistinframework.impl;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.configuration.Language;
 import fr.fistin.fistinframework.configuration.LanguageManager;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 class LanguageManagerImpl implements LanguageManager
 {
-    private final Map<Locale, Language> languages = new HashMap<>();
+    private final Table<Locale, IBukkitPluginProvider, Language> table = HashBasedTable.create();
 
     @ApiStatus.Internal
     private final List<Locale> remainingLanguages = new ArrayList<>();
@@ -28,21 +32,23 @@ class LanguageManagerImpl implements LanguageManager
     public void load(IBukkitPluginProvider plugin, Locale... locales)
     {
         final Language defaultLanguage = new Language(Locale.ENGLISH, plugin);
-        this.languages.put(Locale.ENGLISH, defaultLanguage);
+        this.table.put(Locale.ENGLISH, plugin, defaultLanguage);
 
         for (Locale locale : locales)
         {
             if (this.remainingLanguages.contains(locale))
-                this.languages.put(locale, new Language(locale, plugin));
+            {
+                this.table.put(locale, plugin, new Language(locale, plugin));
+            }
         }
 
-        for (Locale locale : this.languages.keySet())
+        for (Locale locale : this.table.column(plugin).keySet())
             this.remainingLanguages.remove(locale);
     }
 
     @Override
-    public Language getLanguage(Locale locale)
+    public Language getLanguage(IBukkitPluginProvider plugin, Locale locale)
     {
-        return this.languages.getOrDefault(locale, this.languages.get(Locale.ENGLISH));
+        return this.table.get(locale, plugin);
     }
 }

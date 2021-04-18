@@ -1,0 +1,3 @@
+starting_game: "La partie a &adémarré&r ! Bonne chance à tous."
+stopping_game: "Partie &aterminée&r ! À bientôt sur &aplay.fistin.fr&r"
+winner: "&a%PLAYER_NAME%&r a gagné la partie ! Bravo à lui/elle."

@@ -6,6 +6,6 @@ import java.util.Locale;
 
 public interface LanguageManager
 {
-    Language getLanguage(Locale locale);
+    Language getLanguage(IBukkitPluginProvider plugin, Locale locale);
     void load(IBukkitPluginProvider plugin, Locale... locales);
 }

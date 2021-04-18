@@ -2,6 +2,7 @@ package fr.fistin.fistinframework.game;
 
 import fr.fistin.fistinframework.grade.PlayerGrade;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public interface GameManager
 {
@@ -9,7 +10,10 @@ public interface GameManager
     boolean isInitialized();
     void throwNotInitializedError();
 
-    void winGame(Player player, int expBonus, int coinsBonus);
-    void looseGame(Player player, int expBonus, int coinsBonus);
+    @NotNull Game game();
+    void setGame(@NotNull Game game);
+
+    void winGame(@NotNull Player player, int expBonus, int coinsBonus);
+    void looseGame(@NotNull Player player, int expBonus, int coinsBonus);
     float gradeMultiplier(PlayerGrade grade);
 }

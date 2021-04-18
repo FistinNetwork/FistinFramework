@@ -2,9 +2,11 @@ package fr.fistin.fistinframework.listener;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.ApiStatus;
 
 public interface ConfigurableListener<L extends Listener>
 {
+    @ApiStatus.Internal
     void register(IBukkitPluginProvider plugin);
 
     ConfigurableListener<L> reset();

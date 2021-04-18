@@ -5,6 +5,7 @@ import fr.fistin.fistinframework.impl.listener.WorldProtectionListenerImpl;
 import fr.fistin.fistinframework.listener.ConfigurableListener;
 import fr.fistin.fistinframework.listener.ListenerManager;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class ListenerManagerImpl implements ListenerManager
     private final List<Class<? extends Listener>> registered = new ArrayList<>();
 
     @Override
-    public void enableWorldProtectionListener(IBukkitPluginProvider plugin, Consumer<ConfigurableListener<? extends Listener>> configurable)
+    public void enableWorldProtectionListener(@NotNull IBukkitPluginProvider plugin, @NotNull Consumer<ConfigurableListener<? extends Listener>> configurable)
     {
         if(this.enable(WorldProtectionListenerImpl.class))
             configurable.andThen(configurableListener -> configurableListener.register(plugin))

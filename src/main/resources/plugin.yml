@@ -24,3 +24,11 @@ commands:
       - fistingive
       - fisting
       - givefistin
+  ffirework:
+    description: Summon Fistin's firework
+    permission: fistin.staff
+    usage: /ffirework [firework]
+    aliases:
+      - fistinfirework
+      - fistinf
+      - fireworkfistin

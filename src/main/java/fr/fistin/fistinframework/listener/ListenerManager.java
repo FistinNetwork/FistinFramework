@@ -2,6 +2,7 @@ package fr.fistin.fistinframework.listener;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -22,5 +23,5 @@ public interface ListenerManager
      * @param plugin plugin.
      * @param configurable configurable listener.
      */
-    void enableWorldProtectionListener(IBukkitPluginProvider plugin, Consumer<ConfigurableListener<? extends Listener>> configurable);
+    void enableWorldProtectionListener(@NotNull IBukkitPluginProvider plugin, @NotNull Consumer<ConfigurableListener<? extends Listener>> configurable);
 }

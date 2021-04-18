@@ -3,7 +3,9 @@ package fr.fistin.fistinframework.impl;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -65,36 +67,56 @@ final class DebugCommand implements CommandExecutor, TabCompleter
     private void sendItems(CommandSender sender)
     {
         sender.sendMessage("-- Items --");
-        this.framework.items().getRegisteredItemsName().forEach(name -> {
-            final String finalPath = this.framework.items().nameToLocation().get(name).getFinalPath();
-            if(sender instanceof Player)
-            {
-                final TextComponent clickable = new TextComponent(name);
-                clickable.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/fgive " + finalPath));
+        this.framework
+                .items()
+                .getRegisteredItemsName()
+                .forEach(name -> {
+                    final String finalPath = this.framework.items().nameToLocation().get(name).getFinalPath();
+                    if (sender instanceof Player)
+                    {
+                        final TextComponent clickable = new TextComponent(name);
+                        clickable.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("\u00A7Click to get this item.\u00A7r")}));
+                        clickable.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/fgive " + finalPath));
 
-                final TextComponent component = new TextComponent("* ");
-                component.addExtra(clickable);
-                component.addExtra("\u00A7r (" + finalPath + ")");
+                        final TextComponent component = new TextComponent("* ");
+                        component.addExtra(clickable);
+                        component.addExtra("\u00A7r (" + finalPath + ")");
 
-                ((Player)sender).spigot().sendMessage(component);
-            }
-            else sender.sendMessage("* " + name + "\u00A7r (" + finalPath + ")");
-        });
+                        ((Player)sender).spigot().sendMessage(component);
+                    }
+                    else sender.sendMessage("* " + name + "\u00A7r (" + finalPath + ")");
+                });
     }
 
     private void sendFireworks(CommandSender sender)
     {
         sender.sendMessage("-- Fireworks --");
-        this.framework.fireworkFactory()
+        this.framework
+                .fireworkFactory()
                 .effectsLocation()
                 .stream()
                 .map(PluginLocation::getFinalPath)
-                .forEach(name -> sender.sendMessage("* " + name));
+                .forEach(name -> {
+                    if(sender instanceof Player)
+                    {
+                        final TextComponent clickable = new TextComponent(name);
+                        final TextComponent hover = new TextComponent("\u00A7Click to summon this firework.\u00A7r");
+                        clickable.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{hover}));
+                        clickable.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ffirework " + name));
+
+                        final TextComponent component = new TextComponent("* ");
+                        component.addExtra(clickable);
+                        component.addExtra("\u00A7r (" + name + ")");
+
+                        ((Player)sender).spigot().sendMessage(component);
+                    }
+                    else sender.sendMessage("* " + name);
+                });
     }
 
     private void sendEvents(CommandSender sender, String bus)
     {
-        sender.sendMessage("-- Events --");
+        sender.sendMessage(String.format("-- Events on '%s' eventbus --", bus));
         if(bus.equalsIgnoreCase(this.framework.eventBus().implName()))
             DefaultEventBus.getEventExecutions().forEach(eventExecution -> sender.sendMessage("* " + eventExecution.getName() + " -> "  + new SimpleDateFormat("hh:mm:ss").format(new Date(eventExecution.getTimestamp()))));
     }
@@ -102,16 +124,13 @@ final class DebugCommand implements CommandExecutor, TabCompleter
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
-        List<String> result = null;
-        if(command.getName().equalsIgnoreCase("fistindebug"))
+        List<String> result = new ArrayList<>();
+        if (args.length == 0)
+            result = Arrays.asList("providers", "events", "items", "fireworks");
+        else if(args.length == 1)
         {
-            if (args.length == 0)
-                result = Arrays.asList("providers", "events", "items", "fireworks");
-            else if(args.length == 1)
-            {
-                if(args[0].equalsIgnoreCase("events"))
-                    result = Collections.singletonList("default");
-            }
+            if(args[0].equalsIgnoreCase("events"))
+                result = Collections.singletonList("default");
         }
         return result;
     }
