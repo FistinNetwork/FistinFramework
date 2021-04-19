@@ -8,14 +8,13 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class DefaultFistinPlayer implements FistinPlayer
 {
-    private Player player;
-    private PlayerState playerState;
-    private IScoreboard scoreboard;
+    protected Player player;
+    protected PlayerState playerState;
+    protected IScoreboard scoreboard;
 
-    public DefaultFistinPlayer(Player player, IScoreboard scoreboard)
+    public DefaultFistinPlayer(Player player)
     {
         this.player = player;
-        this.setScoreboard(scoreboard);
     }
 
     @Override
