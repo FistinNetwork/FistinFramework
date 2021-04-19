@@ -100,8 +100,8 @@ class ScoreboardSign implements IScoreboardSign
 
                             if(threeIndex == 0)
                             {
-                                result[threeIndex + 3] = CHAR;
-                                result[threeIndex + 4] = '3';
+                                result[3] = CHAR;
+                                result[4] = '3';
                                 result[bIndex + 3] = CHAR;
                                 result[bIndex + 4] = 'b';
                             }

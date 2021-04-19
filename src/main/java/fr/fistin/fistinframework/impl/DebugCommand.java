@@ -75,7 +75,7 @@ final class DebugCommand implements CommandExecutor, TabCompleter
                     if (sender instanceof Player)
                     {
                         final TextComponent clickable = new TextComponent(name);
-                        clickable.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("\u00A7Click to get this item.\u00A7r")}));
+                        clickable.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("\u00A7aClick to get this item.\u00A7r")}));
                         clickable.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/fgive " + finalPath));
 
                         final TextComponent component = new TextComponent("* ");
@@ -100,7 +100,7 @@ final class DebugCommand implements CommandExecutor, TabCompleter
                     if(sender instanceof Player)
                     {
                         final TextComponent clickable = new TextComponent(name);
-                        final TextComponent hover = new TextComponent("\u00A7Click to summon this firework.\u00A7r");
+                        final TextComponent hover = new TextComponent("\u00A7aClick to summon this firework.\u00A7r");
                         clickable.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{hover}));
                         clickable.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ffirework " + name));
 
@@ -125,7 +125,7 @@ final class DebugCommand implements CommandExecutor, TabCompleter
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args)
     {
         List<String> result = new ArrayList<>();
-        if (args.length == 0)
+        if (args.length == 0 || args[0].equalsIgnoreCase(" "))
             result = Arrays.asList("providers", "events", "items", "fireworks");
         else if(args.length == 1)
         {
@@ -134,4 +134,5 @@ final class DebugCommand implements CommandExecutor, TabCompleter
         }
         return result;
     }
+
 }

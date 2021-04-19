@@ -5,10 +5,13 @@ import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.addon.AddonProcessor;
+import fr.fistin.fistinframework.configuration.ConfigurationMappings;
 import fr.fistin.fistinframework.configuration.LanguageManager;
 import fr.fistin.fistinframework.configuration.Messages;
 import fr.fistin.fistinframework.event.GameManagerInitEvent;
+import fr.fistin.fistinframework.event.GameStateChangedEvent;
 import fr.fistin.fistinframework.event.InnerListenerEvent;
+import fr.fistin.fistinframework.event.PlayerStateChangedEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
@@ -33,6 +36,7 @@ import java.util.logging.Level;
 public final class FistinFramework extends JavaPlugin implements IFistinFramework
 {
     private AddonProcessor addonProcessor;
+    private ConfigurationMappings mappings;
     private IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus;
     private FireworkFactory fireworkFactory;
     private IFistinItems items;
@@ -56,6 +60,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     private void init()
     {
         this.addonProcessor = new AddonProcessorImpl();
+        this.mappings = new ConfigurationMappingsImpl();
         this.eventBus = new DefaultEventBus();
         this.fireworkFactory = new FireworkFactory();
         this.items = new FistinItemsImpl();
@@ -69,7 +74,9 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.languageManager.load(this, Locale.FRENCH);
 
         this.eventBus.registerEvent(GameManagerInitEvent.class);
+        this.eventBus.registerEvent(GameStateChangedEvent.class);
         this.eventBus.registerEvent(InnerListenerEvent.class);
+        this.eventBus.registerEvent(PlayerStateChangedEvent.class);
 
         this.smartInvsManager.init();
     }
@@ -134,6 +141,12 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     public @NotNull AddonProcessor addonProcessor()
     {
         return this.addonProcessor;
+    }
+
+    @Override
+    public @NotNull ConfigurationMappings mappings()
+    {
+        return this.mappings;
     }
 
     @Override

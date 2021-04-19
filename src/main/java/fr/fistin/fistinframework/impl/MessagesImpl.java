@@ -2,12 +2,11 @@ package fr.fistin.fistinframework.impl;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
-import fr.fistin.fistinframework.configuration.LanguageContainer;
 import fr.fistin.fistinframework.configuration.LanguageManager;
 import fr.fistin.fistinframework.configuration.Messages;
+import fr.fistin.fistinframework.player.FistinPlayer;
 import org.bukkit.ChatColor;
 
-import java.util.Collection;
 import java.util.Locale;
 
 public class MessagesImpl implements Messages
@@ -31,15 +30,9 @@ public class MessagesImpl implements Messages
     }
 
     @Override
-    public String getWinnerMessage(IBukkitPluginProvider plugin, Locale locale)
+    public String getWinnerMessage(IBukkitPluginProvider plugin, Locale locale, FistinPlayer fistinPlayer)
     {
-        return this.fixColor(this.getLanguageManager().getLanguage(plugin, locale).getTranslatedMessage("winner"));
-    }
-
-    @Override
-    public void broadcastToPlayers(Collection<LanguageContainer> containers, String key)
-    {
-        containers.forEach(container -> container.getPlayer().sendMessage(container.getSelectedLanguage().getTranslatedMessage(key)));
+        return IFistinFramework.framework().mappings().getPlayerMappings().map(this.fixColor(this.getLanguageManager().getLanguage(plugin, locale).getTranslatedMessage("winner")), fistinPlayer);
     }
 
     private LanguageManager getLanguageManager()
