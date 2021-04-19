@@ -7,7 +7,7 @@ import fr.fistin.fistinframework.configuration.LanguageManager;
 import fr.fistin.fistinframework.configuration.Messages;
 import org.bukkit.ChatColor;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 
 public class MessagesImpl implements Messages
@@ -37,7 +37,7 @@ public class MessagesImpl implements Messages
     }
 
     @Override
-    public void broadcastToPlayers(List<LanguageContainer> containers, String key)
+    public void broadcastToPlayers(Collection<LanguageContainer> containers, String key)
     {
         containers.forEach(container -> container.getPlayer().sendMessage(container.getSelectedLanguage().getTranslatedMessage(key)));
     }

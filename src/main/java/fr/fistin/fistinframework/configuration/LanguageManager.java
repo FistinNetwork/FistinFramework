@@ -8,4 +8,5 @@ public interface LanguageManager
 {
     Language getLanguage(IBukkitPluginProvider plugin, Locale locale);
     void load(IBukkitPluginProvider plugin, Locale... locales);
+    void clear();
 }

@@ -114,6 +114,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.fireworkFactory.clear();
         this.eventBus.clear();
         this.items.clear();
+        this.languageManager.clear();
 
         try
         {

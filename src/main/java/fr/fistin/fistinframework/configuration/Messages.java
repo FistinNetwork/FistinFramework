@@ -2,7 +2,7 @@ package fr.fistin.fistinframework.configuration;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 
 public interface Messages
@@ -12,5 +12,5 @@ public interface Messages
     String getStoppingGameMessage(IBukkitPluginProvider plugin, Locale locale);
     String getWinnerMessage(IBukkitPluginProvider plugin, Locale locale);
 
-    void broadcastToPlayers(List<LanguageContainer> containers, String key);
+    void broadcastToPlayers(Collection<LanguageContainer> containers, String key);
 }

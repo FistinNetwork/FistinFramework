@@ -38,7 +38,18 @@ public class Language
 
     public String getTranslatedMessage(String key)
     {
-        return this.translatedMessages.getOrDefault(key, IFistinFramework.framework().languageManager().getLanguage(this.plugin, Locale.ENGLISH).getTranslatedMessage(key));
+        final IFistinFramework framework = IFistinFramework.framework();
+        final LanguageManager languageManager = framework.languageManager();
+        final String unsafe = this.translatedMessages.getOrDefault(key, languageManager.getLanguage(this.plugin, Locale.ENGLISH).getTranslatedMessage(key));
+        if(unsafe != null || this.translatedMessages.containsKey(key))
+            return unsafe;
+        else
+        {
+            final String fallback = languageManager.getLanguage(framework, this.locale).getTranslatedMessage(key);
+            if(fallback != null)
+                return fallback;
+            else return languageManager.getLanguage(framework, Locale.ENGLISH).getTranslatedMessage(key);
+        }
     }
 
     public Locale getLocale()
