@@ -1,16 +1,17 @@
-package fr.fistin.fistinframework.impl;
+package fr.fistin.fistinframework.impl.listener;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
-import fr.fistin.fistinframework.impl.listener.WorldProtectionListenerImpl;
 import fr.fistin.fistinframework.listener.ConfigurableListener;
 import fr.fistin.fistinframework.listener.ListenerManager;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+@ApiStatus.Internal
 public class ListenerManagerImpl implements ListenerManager
 {
     private final List<Class<? extends Listener>> registered = new ArrayList<>();

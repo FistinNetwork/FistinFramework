@@ -3,9 +3,11 @@ package fr.fistin.fistinframework.impl.smartinvs;
 import fr.fistin.fistinframework.smartinvs.ClickableItem;
 import fr.fistin.fistinframework.smartinvs.content.Pagination;
 import fr.fistin.fistinframework.smartinvs.content.SlotIterator;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Arrays;
 
+@ApiStatus.Internal
 class PaginationImpl implements Pagination
 {
     private int currentPage;

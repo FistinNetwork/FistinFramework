@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 
 import java.util.Locale;
 
-public class MessagesImpl implements Messages
+class MessagesImpl implements Messages
 {
     @Override
     public String fixColor(String toFix)

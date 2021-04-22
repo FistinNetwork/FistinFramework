@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class AddonProcessorImpl implements AddonProcessor
+final class AddonProcessorImpl implements AddonProcessor
 {
     @Override
     public final List<AddonInfo> detectAddons(String searchingPackage)

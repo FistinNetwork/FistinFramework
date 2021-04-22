@@ -9,7 +9,9 @@ public interface IScoreboard
     default void createScoreboard()
     {
         this.getScoreboardSign().create();
+        this.updateScoreboard();
     }
+
     default void destroy()
     {
         this.getScoreboardSign().destroy();

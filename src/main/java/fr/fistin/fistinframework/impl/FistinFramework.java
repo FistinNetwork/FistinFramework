@@ -15,10 +15,14 @@ import fr.fistin.fistinframework.event.PlayerStateChangedEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
+import fr.fistin.fistinframework.impl.listener.ListenerManagerImpl;
+import fr.fistin.fistinframework.impl.scoreboard.ScoreboardBuilderImpl;
+import fr.fistin.fistinframework.impl.scoreboard.ScoreboardSign;
 import fr.fistin.fistinframework.impl.smartinvs.InventoryContentsImpl;
 import fr.fistin.fistinframework.item.IFistinItems;
 import fr.fistin.fistinframework.listener.ListenerManager;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
+import fr.fistin.fistinframework.scoreboard.ScoreboardBuilder;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
 import fr.fistin.fistinframework.utils.FireworkFactory;
 import fr.fistin.fistinframework.utils.PlayerHelper;
@@ -201,6 +205,18 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     public @NotNull PlayerHelper playerHelper()
     {
         return this.playerHelper;
+    }
+
+    @Override
+    public @NotNull <P> ScoreboardBuilder<P> scoreboardBuilder()
+    {
+        return new ScoreboardBuilderImpl<>();
+    }
+
+    @Override
+    public @NotNull <P> ScoreboardBuilder<P> scoreboardBuilder(Class<P> paramClass)
+    {
+        return new ScoreboardBuilderImpl<>();
     }
 
     @Override

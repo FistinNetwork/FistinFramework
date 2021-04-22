@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.impl;
+package fr.fistin.fistinframework.impl.scoreboard;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
@@ -24,7 +24,7 @@ import static fr.fistin.fistinframework.runnable.RunnableUtils.*;
  * Don't use directly this class, use {@link IScoreboardSign} instead!
  */
 @ApiStatus.Internal
-class ScoreboardSign implements IScoreboardSign
+public class ScoreboardSign implements IScoreboardSign
 {
     private static final IFistinFramework FRAMEWORK = IFistinFramework.framework();
     private static final char CHAR = '\u00A7';
@@ -35,7 +35,7 @@ class ScoreboardSign implements IScoreboardSign
     private final IBukkitPluginProvider caller;
     private String objectiveName;
 
-    ScoreboardSign(Player player, String objectiveName, IBukkitPluginProvider caller)
+    public ScoreboardSign(Player player, String objectiveName, IBukkitPluginProvider caller)
     {
         this.player = player;
         this.caller = caller;
@@ -66,6 +66,9 @@ class ScoreboardSign implements IScoreboardSign
             @Override
             public void run()
             {
+                if(!ScoreboardSign.this.created)
+                    return;
+
                 runTimerBukkitRunnable(newBukkitRunnableTimer(new FistinRunnableTimer()
                 {
                     private final AtomicLong timer = new AtomicLong(ScoreboardSign.this.objectiveName.length() - 2);
@@ -116,8 +119,7 @@ class ScoreboardSign implements IScoreboardSign
                                 }
                             }
 
-                            int iterated = 0;
-                            int iterator = 0;
+                            int iterated = 0, iterator = 0;
                             while (iterated < empty.length())
                             {
                                 if(result[iterator] == '\u0000')

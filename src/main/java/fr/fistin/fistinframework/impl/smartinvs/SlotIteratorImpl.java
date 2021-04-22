@@ -5,11 +5,13 @@ import fr.fistin.fistinframework.smartinvs.SmartInventory;
 import fr.fistin.fistinframework.smartinvs.content.InventoryContents;
 import fr.fistin.fistinframework.smartinvs.content.SlotIterator;
 import fr.fistin.fistinframework.smartinvs.content.SlotPos;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@ApiStatus.Internal
 class SlotIteratorImpl implements SlotIterator
 {
     private final InventoryContents contents;

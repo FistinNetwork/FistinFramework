@@ -13,6 +13,7 @@ import fr.fistin.fistinframework.item.IFistinItems;
 import fr.fistin.fistinframework.listener.ListenerManager;
 import fr.fistin.fistinframework.configuration.Messages;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
+import fr.fistin.fistinframework.scoreboard.ScoreboardBuilder;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
 import fr.fistin.fistinframework.utils.FireworkFactory;
 import fr.fistin.fistinframework.utils.PlayerHelper;
@@ -53,6 +54,8 @@ public interface IFistinFramework extends IBukkitPluginProvider
     @NotNull LuckPermsToFistin luckPermsToFistin();
     @NotNull Messages messages();
     @NotNull PlayerHelper playerHelper();
+    @NotNull <P> ScoreboardBuilder<P> scoreboardBuilder();
+    @NotNull <P> ScoreboardBuilder<P> scoreboardBuilder(Class<P> paramClass);
     @NotNull IScoreboardSign newScoreboardSign(Player player, String objectiveName, IBukkitPluginProvider caller);
     @NotNull InventoryManager smartInvsManager();
 
