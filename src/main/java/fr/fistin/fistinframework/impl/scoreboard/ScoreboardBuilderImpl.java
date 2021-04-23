@@ -1,7 +1,6 @@
 package fr.fistin.fistinframework.impl.scoreboard;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
-import fr.fistin.api.utils.triapi.TriConsumer;
 import fr.fistin.fistinframework.scoreboard.IScoreboard;
 import fr.fistin.fistinframework.scoreboard.ScoreboardBuilder;
 import fr.fistin.fistinframework.utils.FistinFrameworkException;
@@ -10,20 +9,22 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
+import java.util.function.Function;
 
 @ApiStatus.Internal
 public class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
 {
-    private final Map<Predicate<P>, TriConsumer<IScoreboard, Integer, P>> scoreboardActions = new HashMap<>();
+    private final Map<Integer, Function<P, String>> lines = new HashMap<>();
     private P parameter = null;
     private IBukkitPluginProvider caller = null;
     private String name = null;
 
     @Override
-    public ScoreboardBuilder<P> addAction(Predicate<P> condition, TriConsumer<IScoreboard, Integer, P> action)
+    public ScoreboardBuilder<P> addLine(int line, Function<P, String> value)
     {
-        this.scoreboardActions.put(condition, action);
+        if(line > 14)
+            throw new FistinFrameworkException("line cannot be superior than 14!");
+        this.lines.put(line, value);
         return this;
     }
 
@@ -55,6 +56,6 @@ public class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
         if(this.parameter == null) throw new FistinFrameworkException("parameter cannot be null!");
         if(this.caller == null) throw new FistinFrameworkException("caller cannot be null!");
 
-        return new BuiltScoreboard<>(player, this.name, this.caller, this.parameter, this.scoreboardActions);
+        return new BuiltScoreboard<>(player, this.name, this.caller, this.parameter, this.lines);
     }
 }
