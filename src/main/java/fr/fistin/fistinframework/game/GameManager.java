@@ -15,5 +15,5 @@ public interface GameManager
 
     void winGame(@NotNull Player player, int expBonus, int coinsBonus);
     void looseGame(@NotNull Player player, int expBonus, int coinsBonus);
-    float gradeMultiplier(PlayerGrade grade);
+    float gradeMultiplier(@NotNull PlayerGrade grade);
 }

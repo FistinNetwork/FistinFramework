@@ -16,6 +16,7 @@ public interface Game extends Castex<Game>
     int minPlayers();
     int players();
     int timerBeforeGameStart();
+    boolean checkPlayersCount();
 
     void addNewPlayer(@NotNull Player player);
     @NotNull Map<Player, FistinPlayer> inLobbyPlayers();
