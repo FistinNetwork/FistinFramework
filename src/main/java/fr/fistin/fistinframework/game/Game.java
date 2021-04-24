@@ -1,16 +1,18 @@
 package fr.fistin.fistinframework.game;
 
 import fr.fistin.fistinframework.player.FistinPlayer;
+import fr.fistin.fistinframework.player.FistinPlayerContainer;
 import fr.fistin.fistinframework.utils.Castex;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public interface Game extends Castex<Game>
+public interface Game extends Castex<Game>, FistinPlayerContainer
 {
     void start();
+    void time();
     void stop();
     int maxPlayers();
     int minPlayers();
@@ -18,12 +20,13 @@ public interface Game extends Castex<Game>
     int timerBeforeGameStart();
     boolean checkPlayersCount();
 
-    void addNewPlayer(@NotNull Player player);
     @NotNull Map<Player, FistinPlayer> inLobbyPlayers();
     @NotNull Map<Player, FistinPlayer> playingPlayers();
     @NotNull Map<Player, FistinPlayer> spectatingPlayers();
-    @Nullable FistinPlayer findPlayer(@NotNull Player player);
 
     @NotNull GameState gameState();
     void setGameState(@NotNull GameState gameState);
+
+    @ApiStatus.Experimental
+    void changeGameState(@NotNull String newState);
 }

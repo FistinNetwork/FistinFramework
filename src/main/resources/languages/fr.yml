@@ -1,3 +1,5 @@
+player_join: "&4%PLAYER_NAME%&r a rejoint la partie (%PLAYERS%/%MAX_PLAYERS%). La partie démarre à %MIN_PLAYERS% joueurs."
 starting_game: "La partie a &adémarré&r ! Bonne chance à tous."
 stopping_game: "Partie &aterminée&r ! À bientôt sur &aplay.fistin.fr&r"
 winner: "&a%PLAYER_NAME%&r a gagné la partie ! Bravo à lui/elle."
+kick_message_at_end: "&cNous avons eu des problèmes lors de la redirection vers un lobby."

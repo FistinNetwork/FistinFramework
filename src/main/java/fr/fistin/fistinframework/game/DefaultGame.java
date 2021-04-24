@@ -5,9 +5,11 @@ import fr.fistin.fistinframework.event.GameStateChangedEvent;
 import fr.fistin.fistinframework.player.FistinPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public abstract class DefaultGame implements Game
 {
@@ -55,9 +57,48 @@ public abstract class DefaultGame implements Game
     }
 
     @Override
+    public @Nullable FistinPlayer findPlayer(@NotNull Player player)
+    {
+        return this.playingPlayers.getOrDefault(player, this.inLobbyPlayers.getOrDefault(player, this.spectatingPlayers.get(player)));
+    }
+
+    @Override
+    public void addNewPlayer(@NotNull FistinPlayer player)
+    {
+        player.changePlayerState("IN_LOBBY");
+        this.inLobbyPlayers.put(player.getPlayer(), player);
+        final IFistinFramework framework = IFistinFramework.framework();
+        this.sendToAllPlayers((player1, fistinPlayer) -> player1.sendMessage(framework.messages().getPlayerJoinMessage(fistinPlayer.getSelectedLanguage(), fistinPlayer, this)));
+    }
+
+    protected void sendToAllPlayers(BiConsumer<Player, FistinPlayer> consumer)
+    {
+        this.inLobbyPlayers.forEach(consumer);
+        this.playingPlayers.forEach(consumer);
+        this.spectatingPlayers.forEach(consumer);
+    }
+
+    @Override
     public boolean checkPlayersCount()
     {
         return this.players() <= this.maxPlayers() && this.players() >= this.minPlayers();
+    }
+
+    @Override
+    public void start()
+    {
+        if(this.playingPlayers.size() != 0)
+        {
+            this.playingPlayers.forEach((player, fistinPlayer) -> player.kickPlayer(IFistinFramework.framework().messages().getKickMessageAtEnd(fistinPlayer.getSelectedLanguage())));
+            this.playingPlayers.clear();
+        }
+
+        if(this.checkPlayersCount())
+        {
+            this.changeGameState("STARTING");
+            this.sendToAllPlayers((player, fistinPlayer) -> player.sendMessage(IFistinFramework.framework().messages().getStartingGameMessage(fistinPlayer.getSelectedLanguage())));
+            this.time();
+        }
     }
 
     @Override

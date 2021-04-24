@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Prevent problems at compilation due to used NMS classes in implementation.
+ * Prevent problems at compilation due to NMS classes used in implementation.
  * Represent a (low-level) Scoreboard in FistinFramework.
  *
  * @see ScoreboardBuilder
@@ -67,7 +67,7 @@ public interface IScoreboardSign
     IBukkitPluginProvider getCaller();
 
     /**
-     * Represent a virtual team.
+     * Represent a virtual team in a {@link IScoreboardSign}.
      */
     interface IVirtualTeam
     {

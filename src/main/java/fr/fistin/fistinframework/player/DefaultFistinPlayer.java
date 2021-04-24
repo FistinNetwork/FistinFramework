@@ -1,10 +1,13 @@
 package fr.fistin.fistinframework.player;
 
 import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.configuration.Language;
 import fr.fistin.fistinframework.event.PlayerStateChangedEvent;
 import fr.fistin.fistinframework.scoreboard.IScoreboard;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Locale;
 
 public abstract class DefaultFistinPlayer implements FistinPlayer
 {
@@ -52,5 +55,11 @@ public abstract class DefaultFistinPlayer implements FistinPlayer
     {
         this.scoreboard = scoreboard;
         this.scoreboard.createScoreboard();
+    }
+
+    @Override
+    public Language getSelectedLanguage()
+    {
+        return IFistinFramework.framework().languageManager().getLanguage(IFistinFramework.framework(), Locale.ENGLISH);
     }
 }
