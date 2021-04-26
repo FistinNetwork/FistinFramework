@@ -3,7 +3,7 @@ apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
 group 'fr.fistin'
-version '1.0.2'
+version '1.0.3'
 archivesBaseName = "FistinFramework"
 
 java {

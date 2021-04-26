@@ -23,6 +23,10 @@ class BuiltScoreboard<P> extends DefaultScoreboard
     @Override
     public void updateScoreboard()
     {
-        this.lines.forEach((lineIn, value) -> this.getScoreboardSign().setLine(lineIn, value.apply(this.parameter)));
+        this.lines.forEach((lineIn, value) -> {
+            final String str = value.apply(this.parameter);
+            if(!str.isEmpty())
+                this.getScoreboardSign().setLine(lineIn, str);
+        });
     }
 }
