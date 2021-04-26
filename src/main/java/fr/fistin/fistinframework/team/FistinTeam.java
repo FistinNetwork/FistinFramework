@@ -2,7 +2,6 @@ package fr.fistin.fistinframework.team;
 
 import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.player.FistinPlayerContainer;
-import fr.fistin.fistinframework.utils.FistinFrameworkException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,47 +11,52 @@ import java.util.Map;
 
 public class FistinTeam implements FistinPlayerContainer
 {
+    @NotNull
     private String name;
+
+    @NotNull
     private Map<Player, FistinPlayer> players = new HashMap<>();
 
-    public FistinTeam(String name)
+    public FistinTeam(@NotNull String name)
     {
         this.name = name;
     }
 
-    public String getName()
+    public @NotNull String getName()
     {
         return this.name;
     }
 
-    public void transferToAnotherTeam(FistinTeam anotherTeam, boolean overrideName)
+    public @NotNull Map<Player, FistinPlayer> getPlayers()
     {
-        if(this.equals(anotherTeam))
-            throw new FistinFrameworkException("anotherTeam cannot be same!");
+        return this.players;
+    }
 
-        if(overrideName)
-            anotherTeam.name = this.name;
-        anotherTeam.players = this.players;
+    public void setName(@NotNull String name)
+    {
+        this.name = name;
+    }
+
+    public void setPlayers(@NotNull Map<Player, FistinPlayer> players)
+    {
+        this.players = players;
     }
 
     @Override
     public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
 
-        FistinTeam that = (FistinTeam)o;
+        final FistinTeam that = (FistinTeam)o;
 
-        if (!name.equals(that.name)) return false;
-        return players.equals(that.players);
+        return this.name.equals(that.name);
     }
 
     @Override
     public int hashCode()
     {
-        int result = name.hashCode();
-        result = 31 * result + players.hashCode();
-        return result;
+        return this.name.hashCode();
     }
 
     @Override
@@ -65,5 +69,27 @@ public class FistinTeam implements FistinPlayerContainer
     public void addNewPlayer(@NotNull FistinPlayer player)
     {
         this.players.put(player.getPlayer(), player);
+    }
+    
+    public static class SplitData
+    {
+        private final int index;
+        private final String name;
+
+        public SplitData(int index, String name)
+        {
+            this.index = index;
+            this.name = name;
+        }
+
+        public int getIndex()
+        {
+            return this.index;
+        }
+
+        public String getName()
+        {
+            return this.name;
+        }
     }
 }

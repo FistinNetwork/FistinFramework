@@ -52,7 +52,6 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     private Messages messages;
     private PlayerHelper playerHelper;
     private InventoryManager smartInvsManager;
-    private TeamManager teamManager;
 
     @Override
     public void onEnable()
@@ -77,7 +76,6 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.messages = new MessagesImpl();
         this.playerHelper = new PlayerHelper();
         this.smartInvsManager = new InventoryManager(this, InventoryContentsImpl::new);
-        this.teamManager = new TeamManagerImpl();
 
         this.languageManager.load(this, Locale.FRENCH);
 
@@ -238,6 +236,6 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     @Override
     public @NotNull TeamManager teamManager()
     {
-        return this.teamManager;
+        return new TeamManagerImpl();
     }
 }

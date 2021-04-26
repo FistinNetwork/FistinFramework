@@ -1,45 +1,103 @@
 package fr.fistin.fistinframework.impl.team;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
+import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.team.FistinTeam;
 import fr.fistin.fistinframework.team.TeamManager;
+import fr.fistin.fistinframework.utils.FistinFrameworkException;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @ApiStatus.Internal
 public class TeamManagerImpl implements TeamManager
 {
-    private final Map<IBukkitPluginProvider, Map<String, FistinTeam>> teams = new HashMap<>();
+    @NotNull
+    private final Map<String, FistinTeam> teams = new HashMap<>();
 
-    public void addTeam(@NotNull IBukkitPluginProvider caller, @NotNull FistinTeam team)
+    @Override
+    public void addTeam(@NotNull FistinTeam team)
     {
-        if(this.teams.containsKey(caller))
-            this.teams.get(caller).put(team.getName(), team);
-        else
+        this.teams.put(team.getName(), team);
+    }
+
+    public void remove(@NotNull FistinTeam team)
+    {
+        this.teams.remove(team.getName());
+    }
+
+    @Override
+    public void removeAll()
+    {
+        this.teams.clear();
+    }
+
+    @Override
+    public @Nullable FistinTeam getTeam(@NotNull String teamName)
+    {
+        return this.teams.get(teamName);
+    }
+
+    @Override
+    public void transfer(@NotNull FistinTeam origin, @NotNull FistinTeam destination, boolean overrideName)
+    {
+        if(origin.equals(destination))
+            throw new FistinFrameworkException("origin == destination");
+
+        if(overrideName)
+            destination.setName(origin.getName());
+        destination.setPlayers(origin.getPlayers());
+
+        this.remove(origin);
+        this.addTeam(destination);
+    }
+
+    @Override
+    public FistinTeam merge(@NotNull FistinTeam... toMerge)
+    {
+        if(toMerge.length < 2)
+            throw new FistinFrameworkException("toMerge < 2! (%d)", toMerge.length);
+        return this.merge(toMerge[0].getName(), toMerge);
+    }
+
+    @Override
+    public FistinTeam merge(@NotNull String name, @NotNull FistinTeam... toMerge)
+    {
+        if(toMerge.length < 2)
+            throw new FistinFrameworkException("toMerge < 2! (%d)", toMerge.length);
+
+        final FistinTeam merged = new FistinTeam(name);
+
+        for (FistinTeam fistinTeam : toMerge)
         {
-            final Map<String, FistinTeam> toPut = new HashMap<>();
-            toPut.put(team.getName(), team);
-            this.teams.put(caller, toPut);
+            fistinTeam.getPlayers().forEach((player, fistinPlayer) -> merged.addNewPlayer(fistinPlayer));
+            this.remove(fistinTeam);
         }
+
+        this.addTeam(merged);
+        return merged;
     }
 
-    public void removeAll(@NotNull IBukkitPluginProvider caller)
+    @Override
+    public FistinTeam[] split(@NotNull FistinTeam origin, @NotNull Function<FistinPlayer, FistinTeam.SplitData> fillFunction, int numberOf)
     {
-        this.getTeams(caller).clear();
-        this.teams.remove(caller);
-    }
+        final FistinTeam[] result = new FistinTeam[numberOf];
+        for (FistinPlayer player : origin.getPlayers().values())
+        {
+            final FistinTeam.SplitData data = fillFunction.apply(player);
+            final int index = data.getIndex();
+            if(result[index] == null)
+                result[index] = new FistinTeam(data.getName());
+            result[index].addNewPlayer(player);
+        }
 
-    public @NotNull Map<String, FistinTeam> getTeams(IBukkitPluginProvider caller)
-    {
-        return this.teams.getOrDefault(caller, new HashMap<>());
-    }
+        this.remove(origin);
+        for (FistinTeam fistinTeam : result)
+            this.addTeam(fistinTeam);
 
-    public @Nullable FistinTeam getTeam(IBukkitPluginProvider caller, String teamName)
-    {
-        return this.getTeams(caller).get(teamName);
+        return result;
     }
 }
