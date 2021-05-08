@@ -3,7 +3,7 @@ package fr.fistin.fistinframework.impl.team;
 import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.team.FistinTeam;
 import fr.fistin.fistinframework.team.TeamManager;
-import fr.fistin.fistinframework.utils.FistinFrameworkException;
+import fr.fistin.fistinframework.utils.FistinValidate;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,8 +44,7 @@ public class TeamManagerImpl implements TeamManager
     @Override
     public void transfer(@NotNull FistinTeam origin, @NotNull FistinTeam destination, boolean overrideName)
     {
-        if(origin.equals(destination))
-            throw new FistinFrameworkException("origin == destination");
+        FistinValidate.notEquals(origin, destination, "origin == destination");
 
         if(overrideName)
             destination.setName(origin.getName());
@@ -58,16 +57,14 @@ public class TeamManagerImpl implements TeamManager
     @Override
     public FistinTeam merge(@NotNull FistinTeam... toMerge)
     {
-        if(toMerge.length < 2)
-            throw new FistinFrameworkException("toMerge < 2! (%d)", toMerge.length);
+        FistinValidate.numberSuperior(toMerge.length, 1, "toMerge < 2! (%d)", toMerge.length);
         return this.merge(toMerge[0].getName(), toMerge);
     }
 
     @Override
     public FistinTeam merge(@NotNull String name, @NotNull FistinTeam... toMerge)
     {
-        if(toMerge.length < 2)
-            throw new FistinFrameworkException("toMerge < 2! (%d)", toMerge.length);
+        FistinValidate.numberSuperior(toMerge.length, 1, "toMerge < 2! (%d)", toMerge.length);
 
         final FistinTeam merged = new FistinTeam(name);
 

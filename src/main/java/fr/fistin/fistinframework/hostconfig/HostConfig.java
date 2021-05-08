@@ -15,8 +15,7 @@ public class HostConfig
 
     public HostConfig(@NotNull IBukkitPluginProvider plugin, @NotNull List<Category> categories, Category defaultCategory)
     {
-        this.plugin = plugin;
-        this.categories = categories;
+        this(plugin, categories);
         this.defaultCategory = defaultCategory;
     }
 
@@ -24,12 +23,13 @@ public class HostConfig
     {
         this.plugin = plugin;
         this.categories = categories;
+
+        this.categories.forEach(category -> category.setPlugin(this.plugin));
     }
 
     public HostConfig(@NotNull IBukkitPluginProvider plugin)
     {
-        this.plugin = plugin;
-        this.categories = new ArrayList<>();
+        this(plugin, new ArrayList<>());
     }
 
     public @NotNull IBukkitPluginProvider getPlugin()
@@ -44,6 +44,7 @@ public class HostConfig
 
     public void addCategory(Category category, boolean defaultCategory)
     {
+        category.setPlugin(this.plugin);
         this.categories.add(category);
         if(defaultCategory) this.setDefaultCategory(category);
     }

@@ -4,7 +4,7 @@ import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.runnable.FistinRunnableTimer;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
-import fr.fistin.fistinframework.utils.FistinFrameworkException;
+import fr.fistin.fistinframework.utils.FistinValidate;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -41,10 +41,9 @@ public class ScoreboardSign implements IScoreboardSign
         this.caller = caller;
         this.objectiveName = CHAR + "b" + objectiveName;
 
-        if(this.objectiveName.length() + 4 > 32)
-            throw new FistinFrameworkException("Scoreboard name is too long !");
-        else if(this.objectiveName.length() - 2 <= 0)
-            throw new FistinFrameworkException("Scoreboard name is too short !");
+        final int length = this.objectiveName.length();
+        FistinValidate.numberInferior(length + 4, 32, "Scoreboard name is too long!");
+        FistinValidate.numberSuperior(length - 2, 0, "Scoreboard name is too short!");
     }
 
     @Override

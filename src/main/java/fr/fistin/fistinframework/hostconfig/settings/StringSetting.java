@@ -1,11 +1,11 @@
 package fr.fistin.fistinframework.hostconfig.settings;
 
-import org.bukkit.Bukkit;
+import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.anvilgui.AnvilGUI;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -31,7 +31,21 @@ public class StringSetting extends AbstractSetting<String>
     @Override
     public Consumer<InventoryClickEvent> rightClickConsumer()
     {
-        return e -> {};
+        return e -> {
+            if(e.getWhoClicked() instanceof Player)
+            {
+                IFistinFramework.framework().anvilGUI()
+                        .title(this.getDisplayName())
+                        .plugin(this.getParent().getPlugin())
+                        .itemLeft(new ItemStack(this.getDisplayItem()))
+                        .text(this.getDefaultValue())
+                        .onComplete((player, s) -> {
+                            this.setValue(s);
+                            return AnvilGUI.Response.openInventory(e.getInventory());
+                        })
+                        .open((Player)e.getWhoClicked());
+            }
+        };
     }
 
     @Override

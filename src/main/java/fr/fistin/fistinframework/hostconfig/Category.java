@@ -1,5 +1,6 @@
 package fr.fistin.fistinframework.hostconfig;
 
+import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.hostconfig.settings.AbstractSetting;
 import fr.fistin.fistinframework.item.ItemStackGenerator;
 import org.bukkit.Material;
@@ -15,6 +16,7 @@ public class Category implements ItemStackGenerator
     private final List<String> lore;
 
     private final List<AbstractSetting<?>> settings = new ArrayList<>();
+    private IBukkitPluginProvider plugin;
 
     public Category(String id, String displayName, Material displayItem, List<String> lore)
     {
@@ -28,6 +30,16 @@ public class Category implements ItemStackGenerator
     {
         setting.setParent(this);
         this.settings.add(setting);
+    }
+
+    public void setPlugin(IBukkitPluginProvider plugin)
+    {
+        this.plugin = plugin;
+    }
+
+    public IBukkitPluginProvider getPlugin()
+    {
+        return this.plugin;
     }
 
     public String getId()

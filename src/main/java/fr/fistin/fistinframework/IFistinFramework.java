@@ -4,6 +4,7 @@ import fr.fistin.api.plugin.PluginType;
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.fistinframework.addon.AddonProcessor;
+import fr.fistin.fistinframework.anvilgui.AnvilGUI;
 import fr.fistin.fistinframework.configuration.ConfigurationMappings;
 import fr.fistin.fistinframework.configuration.LanguageManager;
 import fr.fistin.fistinframework.configuration.Messages;
@@ -53,6 +54,7 @@ public interface IFistinFramework extends IBukkitPluginProvider
     @NotNull String NAMESPACE = "fistinframework";
 
     @NotNull AddonProcessor addonProcessor();
+    @NotNull AnvilGUI.Builder anvilGUI();
     @NotNull ConfigurationMappings mappings();
     @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus();
     @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> newEventBus();

@@ -1,7 +1,7 @@
 package fr.fistin.fistinframework.runnable;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
-import fr.fistin.fistinframework.utils.FistinFrameworkException;
+import fr.fistin.fistinframework.utils.FistinValidate;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.TimeUnit;
@@ -195,8 +195,7 @@ public final class RunnableUtils
      */
     public static long convertToTick(long numberOf, TimeUnit unit)
     {
-        if(numberOf < 0)
-            throw new FistinFrameworkException("numberOf must be positive ! Actual: " + numberOf + ", given param: " + numberOf + " " + unit.name());
+        FistinValidate.numberPositive(numberOf, "numberOf must be positive ! Actual: %d, given params: %d %s.", numberOf, numberOf, unit.name());
 
         long result = 0;
         switch (unit)
@@ -211,19 +210,16 @@ public final class RunnableUtils
                 return numberOf * TICK_MULTIPLIER;
             case MILLISECONDS:
                 final double milliResult = (double) numberOf * TICK_MULTIPLIER / MILLI_DIVIDER;
-                if(milliResult >= 0)
-                    return Math.round(milliResult);
-                else throw new FistinFrameworkException("result must be positive ! Actual: " + milliResult + ", given param: " + numberOf + " " + unit.name());
+                FistinValidate.numberPositive(milliResult, "result must be positive ! Actual: %d, given params: %d %s.", milliResult, milliResult, unit.name());
+                return Math.round(milliResult);
             case MICROSECONDS:
                 final double microResult = (double) numberOf * TICK_MULTIPLIER / MICRO_DIVIDER;
-                if(microResult >= 0)
-                    return Math.round(microResult);
-                else throw new FistinFrameworkException("result must be positive ! Actual: " + microResult + ", given param: " + numberOf + " " + unit.name());
+                FistinValidate.numberPositive(microResult, "result must be positive ! Actual: %d, given params: %d %s.", microResult, microResult, unit.name());
+                return Math.round(microResult);
             case NANOSECONDS:
                 final double nanoResult = (double) numberOf * TICK_MULTIPLIER / NANO_DIVIDER;
-                if(nanoResult >= 0)
-                    return Math.round(nanoResult);
-                else throw new FistinFrameworkException("result must be positive ! Actual: " + nanoResult + ", given param: " + numberOf + " " + unit.name());
+                FistinValidate.numberPositive(nanoResult, "result must be positive ! Actual: %d, given params: %d %s.", nanoResult, nanoResult, unit.name());
+                return Math.round(nanoResult);
         }
         return result;
     }

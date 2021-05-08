@@ -5,6 +5,7 @@ import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.addon.AddonProcessor;
+import fr.fistin.fistinframework.anvilgui.AnvilGUI;
 import fr.fistin.fistinframework.configuration.ConfigurationMappings;
 import fr.fistin.fistinframework.configuration.LanguageManager;
 import fr.fistin.fistinframework.configuration.Messages;
@@ -16,6 +17,7 @@ import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.hostconfig.HostConfigurationManager;
+import fr.fistin.fistinframework.impl.anvilgui.AnvilGUIImpl;
 import fr.fistin.fistinframework.impl.listener.ListenerManagerImpl;
 import fr.fistin.fistinframework.impl.scoreboard.ScoreboardBuilderImpl;
 import fr.fistin.fistinframework.impl.scoreboard.ScoreboardSign;
@@ -138,6 +140,12 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     public @NotNull AddonProcessor addonProcessor()
     {
         return this.addonProcessor;
+    }
+
+    @Override
+    public @NotNull AnvilGUI.Builder anvilGUI()
+    {
+        return new AnvilGUIImpl.BuilderImpl();
     }
 
     @Override
