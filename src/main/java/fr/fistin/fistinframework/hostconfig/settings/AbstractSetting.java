@@ -23,7 +23,7 @@ public abstract class AbstractSetting<S> implements ItemStackGenerator
 
     protected AbstractSetting(String id, String displayName, Material displayItem, List<String> lore)
     {
-        this.id = id;
+        this.id = id.toLowerCase();
         this.displayName = displayName;
         this.displayItem = displayItem;
         this.lore = lore;
@@ -32,7 +32,7 @@ public abstract class AbstractSetting<S> implements ItemStackGenerator
 
     protected AbstractSetting(String id, String displayName, Material displayItem, List<String> lore, S value)
     {
-        this.id = id;
+        this.id = id.toLowerCase();
         this.displayName = displayName;
         this.displayItem = displayItem;
         this.lore = lore;

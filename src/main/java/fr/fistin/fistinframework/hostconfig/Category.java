@@ -5,8 +5,10 @@ import fr.fistin.fistinframework.hostconfig.settings.AbstractSetting;
 import fr.fistin.fistinframework.item.ItemStackGenerator;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 public class Category implements ItemStackGenerator
 {
@@ -15,12 +17,12 @@ public class Category implements ItemStackGenerator
     private final Material displayItem;
     private final List<String> lore;
 
-    private final List<AbstractSetting<?>> settings = new ArrayList<>();
+    private final Map<String, AbstractSetting<?>> settings = new HashMap<>();
     private IBukkitPluginProvider plugin;
 
     public Category(String id, String displayName, Material displayItem, List<String> lore)
     {
-        this.id = id;
+        this.id = id.toLowerCase();
         this.displayName = displayName;
         this.displayItem = displayItem;
         this.lore = lore;
@@ -29,7 +31,7 @@ public class Category implements ItemStackGenerator
     public <S> void addSetting(AbstractSetting<S> setting)
     {
         setting.setParent(this);
-        this.settings.add(setting);
+        this.settings.put(setting.getId(), setting);
     }
 
     public void setPlugin(IBukkitPluginProvider plugin)
@@ -64,8 +66,13 @@ public class Category implements ItemStackGenerator
     {
         return this.lore;
     }
+    
+    public <S> AbstractSetting<S> getSettingByID(String id)
+    {
+        return (AbstractSetting<S>)this.settings.get(id);
+    }
 
-    public List<AbstractSetting<?>> getSettings()
+    public Map<String, AbstractSetting<?>> getSettings()
     {
         return this.settings;
     }
