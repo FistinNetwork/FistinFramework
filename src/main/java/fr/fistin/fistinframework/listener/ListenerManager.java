@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 public interface ListenerManager
 {
     /**
+     * <pre>
      * ===================== Parameters =====================
      *                      blockBroken
      *                      blockPlaced
@@ -20,6 +21,7 @@ public interface ListenerManager
      *                      playerDrop
      *                      playerTakeDamage
      * ===================== Parameters =====================
+     * </pre>
      * @param plugin plugin.
      * @param configurable configurable listener.
      */

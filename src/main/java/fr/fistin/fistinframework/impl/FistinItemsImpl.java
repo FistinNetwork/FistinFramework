@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-final class FistinItemsImpl implements IFistinItems
+class FistinItemsImpl implements IFistinItems
 {
     private final Map<PluginLocation, FistinItem> items = new HashMap<>();
 

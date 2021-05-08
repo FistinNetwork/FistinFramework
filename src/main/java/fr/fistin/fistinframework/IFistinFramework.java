@@ -9,7 +9,9 @@ import fr.fistin.fistinframework.configuration.LanguageManager;
 import fr.fistin.fistinframework.configuration.Messages;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
+import fr.fistin.fistinframework.game.IGamePluginProvider;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
+import fr.fistin.fistinframework.hostconfig.HostConfigurationManager;
 import fr.fistin.fistinframework.item.IFistinItems;
 import fr.fistin.fistinframework.listener.ListenerManager;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
@@ -42,13 +44,20 @@ public interface IFistinFramework extends IBukkitPluginProvider
         }
     }
 
-    String NAMESPACE = "fistinframework";
+    @Override
+    default void onDisable()
+    {
+        Cache.cache = null;
+    }
+
+    @NotNull String NAMESPACE = "fistinframework";
 
     @NotNull AddonProcessor addonProcessor();
     @NotNull ConfigurationMappings mappings();
     @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus();
     @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> newEventBus();
     @NotNull FireworkFactory fireworkFactory();
+    @NotNull HostConfigurationManager hostConfigurationManager();
     @NotNull IFistinItems items();
     @NotNull LanguageManager languageManager();
     @NotNull ListenerManager listenerManager();

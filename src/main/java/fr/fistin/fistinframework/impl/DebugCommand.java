@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-final class DebugCommand implements CommandExecutor, TabCompleter
+class DebugCommand implements CommandExecutor, TabCompleter
 {
     private final IFistinFramework framework;
 

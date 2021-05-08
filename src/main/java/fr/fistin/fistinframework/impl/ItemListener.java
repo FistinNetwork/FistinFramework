@@ -14,7 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-final class ItemListener implements Listener
+class ItemListener implements Listener
 {
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemClickEvent(PlayerInteractEvent event)

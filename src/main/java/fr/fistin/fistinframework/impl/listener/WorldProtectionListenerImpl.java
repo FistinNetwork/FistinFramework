@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ApiStatus.Internal
-public final class WorldProtectionListenerImpl implements Listener
+public class WorldProtectionListenerImpl implements Listener
 {
     private final Map<String, Boolean> configuration = new HashMap<>();
 

@@ -15,6 +15,7 @@ import fr.fistin.fistinframework.event.PlayerStateChangedEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
+import fr.fistin.fistinframework.hostconfig.HostConfigurationManager;
 import fr.fistin.fistinframework.impl.listener.ListenerManagerImpl;
 import fr.fistin.fistinframework.impl.scoreboard.ScoreboardBuilderImpl;
 import fr.fistin.fistinframework.impl.scoreboard.ScoreboardSign;
@@ -33,10 +34,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.function.Supplier;
-import java.util.logging.Level;
 
 @ApiStatus.Internal
 public final class FistinFramework extends JavaPlugin implements IFistinFramework
@@ -45,6 +44,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     private ConfigurationMappings mappings;
     private IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus;
     private FireworkFactory fireworkFactory;
+    private HostConfigurationManager hostConfigurationManager;
     private IFistinItems items;
     private LanguageManager languageManager;
     private ListenerManager listenerManager;
@@ -69,6 +69,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.mappings = new ConfigurationMappingsImpl();
         this.eventBus = new DefaultEventBus();
         this.fireworkFactory = new FireworkFactory();
+        this.hostConfigurationManager = new HostConfigurationManagerImpl();
         this.items = new FistinItemsImpl();
         this.languageManager = new LanguageManagerImpl();
         this.listenerManager = new ListenerManagerImpl();
@@ -129,17 +130,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.items.clear();
         this.languageManager.clear();
 
-        try
-        {
-            final Field cache = Cache.class.getDeclaredField("cache");
-            cache.setAccessible(true);
-            cache.set(null, null);
-        }
-        catch (Exception e)
-        {
-            this.getLogger().log(Level.SEVERE, e.getMessage(), e);
-        }
-
+        super.onDisable();
         this.getLogger().info("Stopped Fistin Framework, have a nice day !");
     }
 
@@ -171,6 +162,12 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     public @NotNull FireworkFactory fireworkFactory()
     {
         return this.fireworkFactory;
+    }
+
+    @Override
+    public @NotNull HostConfigurationManager hostConfigurationManager()
+    {
+        return this.hostConfigurationManager;
     }
 
     @Override
