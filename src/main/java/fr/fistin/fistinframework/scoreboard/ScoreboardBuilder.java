@@ -31,6 +31,7 @@ public interface ScoreboardBuilder<P>
 
     /**
      * Set the {@link IBukkitPluginProvider} who is creating the scoreboard.
+     * @param caller the bukkit caller.
      * @return the scoreboard builder.
      */
     ScoreboardBuilder<P> setCaller(IBukkitPluginProvider caller);

@@ -1,7 +1,6 @@
 package fr.fistin.fistinframework.anvilgui;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
-import fr.fistin.fistinframework.impl.anvilgui.AnvilGUIImpl;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +44,7 @@ public interface AnvilGUI
          * Listens for when the inventory is closed
          *
          * @param closeListener An {@link Consumer} that is called when the anvil GUI is closed
-         * @return The {@link AnvilGUIImpl.BuilderImpl} instance
+         * @return The {@link Builder} instance
          * @throws IllegalArgumentException when the closeListener is null
          */
         Builder onClose(Consumer<Player> closeListener);

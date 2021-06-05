@@ -12,23 +12,7 @@ public interface IGamePluginProvider extends IBukkitPluginProvider
 
     default TeamManager teamManager()
     {
-        return Cache.cache();
-    }
-
-    final class Cache
-    {
-        private static TeamManager cache;
-
-        private static TeamManager cache()
-        {
-            return cache != null ? cache : (cache = IFistinFramework.framework().teamManager());
-        }
-    }
-
-    @Override
-    default void onDisable()
-    {
-        Cache.cache = null;
+        return null;
     }
 
     @Override
