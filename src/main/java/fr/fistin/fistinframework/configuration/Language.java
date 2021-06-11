@@ -4,17 +4,21 @@ import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class Language
 {
     private final Locale locale;
     private final IBukkitPluginProvider plugin;
     private final String name;
-    private final File file;
+    private final Path file;
     private final Map<String, String> translatedMessages = new HashMap<>();
 
     public Language(Locale locale, IBukkitPluginProvider plugin)
@@ -23,17 +27,23 @@ public class Language
         this.plugin = plugin;
         this.name = this.locale.getLanguage();
         final String emplacement = "languages/" + this.name + ".yml";
-        this.file = new File(this.plugin.getDataFolder(), emplacement);
+        this.file = Paths.get(this.plugin.getDataFolder().getAbsolutePath(), emplacement);
 
-        if(!this.file.exists())
+        try
         {
-            this.file.getParentFile().mkdirs();
-            this.plugin.saveResource(emplacement, false);
-        }
+            if(Files.notExists(this.file))
+            {
+                Files.createDirectories(this.file.getParent());
+                this.plugin.saveResource(emplacement, false);
+            }
 
-        final YamlConfiguration configuration = YamlConfiguration.loadConfiguration(this.file);
-        for (String translation : configuration.getKeys(false))
-            this.translatedMessages.put(translation, configuration.getString(translation));
+            final YamlConfiguration configuration = YamlConfiguration.loadConfiguration(Files.newBufferedReader(this.file));
+            for (String translation : configuration.getKeys(false))
+                this.translatedMessages.put(translation, configuration.getString(translation));
+        } catch (IOException e)
+        {
+            this.plugin.getLogger().log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     public String getTranslatedMessage(String key)
@@ -67,7 +77,7 @@ public class Language
         return this.name;
     }
 
-    public File getFile()
+    public Path getFile()
     {
         return this.file;
     }

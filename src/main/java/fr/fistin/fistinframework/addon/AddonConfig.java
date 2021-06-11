@@ -4,17 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.plugin.Plugin;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.logging.Level;
 
 public class AddonConfig<C>
 {
     private final Gson gson;
-    private final File file;
+    private final Path file;
     private final Class<C> type;
     private final C defaultConfig;
     private final Plugin plugin;
@@ -22,7 +22,7 @@ public class AddonConfig<C>
 
     public AddonConfig(String name, Class<C> type, C def, Plugin plugin)
     {
-        this.file = new File(plugin.getDataFolder(), name + ".json");
+        this.file = Paths.get(plugin.getDataFolder().getAbsolutePath(), name + ".json");
         this.gson = new GsonBuilder()
                 .disableHtmlEscaping()
                 .serializeNulls()
@@ -48,7 +48,7 @@ public class AddonConfig<C>
     {
         try
         {
-            if(!this.file.exists())
+            if(Files.notExists(this.file))
             {
                 this.save();
                 this.load();
@@ -56,12 +56,12 @@ public class AddonConfig<C>
             else
             {
                 final StringBuilder sb = new StringBuilder();
-                Files.readAllLines(this.file.toPath(), StandardCharsets.UTF_8).forEach(s -> sb.append(s).append('\n'));
+                Files.readAllLines(this.file, StandardCharsets.UTF_8).forEach(s -> sb.append(s).append('\n'));
                 final String json = sb.toString();
                 final C conf = this.gson.fromJson(json, this.type);
                 if(conf == null)
                 {
-                    this.file.delete();
+                    Files.delete(this.file);
                     this.load();
                 }
                 else this.config = conf;
@@ -77,12 +77,12 @@ public class AddonConfig<C>
     {
         try
         {
-            if(!this.file.exists())
-                this.file.getParentFile().mkdirs();
-            this.file.createNewFile();
-            final BufferedWriter writer = new BufferedWriter(new FileWriter(this.file));
-            writer.write(this.gson.toJson(this.config));
-            writer.close();
+            if(Files.notExists(this.file))
+            {
+                Files.createDirectories(this.file.getParent());
+                Files.createFile(this.file);
+            }
+            Files.write(this.file, Collections.singletonList(this.gson.toJson(this.config)));
         }
         catch (Exception e)
         {
