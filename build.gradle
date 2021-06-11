@@ -25,7 +25,6 @@ repositories {
         url "https://hub.spigotmc.org/nexus/content/repositories/public"
     }
     mavenCentral()
-    jcenter()
 
     maven {
         credentials {
