@@ -2,7 +2,6 @@ package fr.fistin.fistinframework.scoreboard;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -12,7 +11,7 @@ import java.util.function.Supplier;
  * Represent a (low-level) Scoreboard in FistinFramework.
  *
  * @see ScoreboardBuilder
- * @see IFistinFramework#newScoreboardSign(Player, String, IBukkitPluginProvider)
+ * @see IFistinFramework#newScoreboardSign(fr.fistin.fistinframework.player.FistinPlayer, String, IBukkitPluginProvider)
 
  */
 public interface IScoreboardSign

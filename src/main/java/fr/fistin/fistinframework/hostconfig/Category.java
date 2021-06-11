@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class Category implements ItemStackGenerator
 {
     private final String id;
@@ -66,7 +65,8 @@ public class Category implements ItemStackGenerator
     {
         return this.lore;
     }
-    
+
+    @SuppressWarnings("unchecked")
     public <S> AbstractSetting<S> getSettingByID(String id)
     {
         return (AbstractSetting<S>)this.settings.get(id);

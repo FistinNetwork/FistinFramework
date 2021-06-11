@@ -19,4 +19,6 @@ public interface FistinPlayer extends LanguageContainer, Castex<FistinPlayer>
 
     @NotNull IScoreboard scoreboard();
     void setScoreboard(@NotNull IScoreboard scoreboard);
+
+    String getName();
 }

@@ -2,12 +2,12 @@ package fr.fistin.fistinframework.impl;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.runnable.FistinRunnableTimer;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import fr.fistin.fistinframework.utils.FistinValidate;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.reflect.Field;
@@ -31,11 +31,11 @@ public class ScoreboardSign implements IScoreboardSign
 
     private boolean created = false;
     private final IVirtualTeam[] lines = new IVirtualTeam[15];
-    private final Player player;
+    private final FistinPlayer player;
     private final IBukkitPluginProvider caller;
     private String objectiveName;
 
-    public ScoreboardSign(Player player, String objectiveName, IBukkitPluginProvider caller)
+    public ScoreboardSign(FistinPlayer player, String objectiveName, IBukkitPluginProvider caller)
     {
         this.player = player;
         this.caller = caller;
@@ -233,7 +233,7 @@ public class ScoreboardSign implements IScoreboardSign
 
     private PlayerConnection getPlayerConnection()
     {
-        return ((CraftPlayer)this.player).getHandle().playerConnection;
+        return ((CraftPlayer)this.player.getPlayer()).getHandle().playerConnection;
     }
 
     private void sendLine(int line)

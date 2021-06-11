@@ -1,10 +1,10 @@
 package fr.fistin.fistinframework.impl;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
+import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.scoreboard.IScoreboard;
 import fr.fistin.fistinframework.scoreboard.ScoreboardBuilder;
 import fr.fistin.fistinframework.utils.FistinValidate;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
     }
 
     @Override
-    public IScoreboard build(Player player)
+    public IScoreboard build(FistinPlayer player)
     {
         FistinValidate.notNull(this.name, "name cannot be null!");
         FistinValidate.notNull(this.parameter, "parameter cannot be null!");

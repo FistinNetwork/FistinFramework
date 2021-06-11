@@ -2,7 +2,7 @@ package fr.fistin.fistinframework.addon;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.bukkit.plugin.Plugin;
+import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,10 +17,10 @@ public class AddonConfig<C>
     private final Path file;
     private final Class<C> type;
     private final C defaultConfig;
-    private final Plugin plugin;
+    private final IBukkitPluginProvider plugin;
     private C config;
 
-    public AddonConfig(String name, Class<C> type, C def, Plugin plugin)
+    public AddonConfig(String name, Class<C> type, C def, IBukkitPluginProvider plugin)
     {
         this.file = Paths.get(plugin.getDataFolder().getAbsolutePath(), name + ".json");
         this.gson = new GsonBuilder()

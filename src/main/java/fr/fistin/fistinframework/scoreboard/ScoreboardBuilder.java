@@ -1,7 +1,7 @@
 package fr.fistin.fistinframework.scoreboard;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
-import org.bukkit.entity.Player;
+import fr.fistin.fistinframework.player.FistinPlayer;
 
 import java.util.function.Function;
 
@@ -48,5 +48,5 @@ public interface ScoreboardBuilder<P>
      * @param player the player attached to the scoreboard.
      * @return the built {@link IScoreboard}.
      */
-    IScoreboard build(Player player);
+    IScoreboard build(FistinPlayer player);
 }

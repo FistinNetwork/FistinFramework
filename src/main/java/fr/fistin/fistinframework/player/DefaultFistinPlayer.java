@@ -62,4 +62,10 @@ public abstract class DefaultFistinPlayer implements FistinPlayer
     {
         return IFistinFramework.framework().languageManager().getLanguage(IFistinFramework.framework(), Locale.ENGLISH);
     }
+
+    @Override
+    public String getName()
+    {
+        return this.player.getName();
+    }
 }

@@ -2,11 +2,11 @@ package fr.fistin.fistinframework.impl;
 
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.grade.PlayerGrade;
+import fr.fistin.fistinframework.player.FistinPlayer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedPermissionData;
 import net.luckperms.api.model.user.User;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -16,7 +16,7 @@ class LuckPermsToFistinImpl implements LuckPermsToFistin
     private static final LuckPerms LUCK_PERMS = LuckPermsProvider.get();
 
     @Override
-    public @NotNull PlayerGrade getGradeForPlayer(Player player)
+    public @NotNull PlayerGrade getGradeForPlayer(FistinPlayer player)
     {
         return this.getGradeForPlayer(player.getName());
     }

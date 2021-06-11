@@ -44,7 +44,7 @@ class ConfigurationMappingsImpl implements ConfigurationMappings
 
     ConfigurationMappingsImpl()
     {
-        this.playerMappings.mappings().put("%PLAYER_NAME%", fistinPlayer -> fistinPlayer.getPlayer().getName());
+        this.playerMappings.mappings().put("%PLAYER_NAME%", FistinPlayer::getName);
         this.gameMappings.mappings().put("%MAX_PLAYERS%", Game::maxPlayers);
         this.gameMappings.mappings().put("%MIN_PLAYERS%", Game::minPlayers);
         this.gameMappings.mappings().put("%PLAYERS%", Game::players);
