@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.impl.smartinvs;
+package fr.fistin.fistinframework.impl;
 
 import fr.fistin.fistinframework.smartinvs.ClickableItem;
 import fr.fistin.fistinframework.smartinvs.SmartInventory;

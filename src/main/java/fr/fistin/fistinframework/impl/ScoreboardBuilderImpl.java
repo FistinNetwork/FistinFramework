@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.impl.scoreboard;
+package fr.fistin.fistinframework.impl;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.scoreboard.IScoreboard;

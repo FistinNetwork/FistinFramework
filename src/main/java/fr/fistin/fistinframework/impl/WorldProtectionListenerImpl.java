@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.impl.listener;
+package fr.fistin.fistinframework.impl;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.listener.ConfigurableListener;

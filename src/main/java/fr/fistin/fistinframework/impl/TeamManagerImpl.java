@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.impl.team;
+package fr.fistin.fistinframework.impl;
 
 import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.team.FistinTeam;

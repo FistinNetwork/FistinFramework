@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.impl.anvilgui;
+package fr.fistin.fistinframework.impl;
 
 import fr.fistin.fistinframework.anvilgui.VersionWrapper;
 import net.minecraft.server.v1_8_R3.*;

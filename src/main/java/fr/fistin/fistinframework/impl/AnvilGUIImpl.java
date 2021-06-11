@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.impl.anvilgui;
+package fr.fistin.fistinframework.impl;
 
 import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.anvilgui.AnvilGUI;
