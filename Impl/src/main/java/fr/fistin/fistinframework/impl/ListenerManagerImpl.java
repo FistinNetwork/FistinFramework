@@ -16,6 +16,9 @@ public class ListenerManagerImpl implements ListenerManager
 {
     private final List<Class<? extends Listener>> registered = new ArrayList<>();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void enableWorldProtectionListener(@NotNull IBukkitPluginProvider plugin, @NotNull Consumer<ConfigurableListener<? extends Listener>> configurable)
     {

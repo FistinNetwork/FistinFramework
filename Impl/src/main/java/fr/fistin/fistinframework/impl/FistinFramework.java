@@ -72,7 +72,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.luckPermsToFistin = new LuckPermsToFistinImpl();
         this.messages = new MessagesImpl();
         this.playerHelper = new PlayerHelperImpl();
-        this.smartInvsManager = new InventoryManager(this, InventoryContentsImpl::new);
+        this.smartInvsManager = new InventoryManagerImpl(this, InventoryContentsImpl::new);
 
         this.languageManager.load(this, Locale.FRENCH);
 

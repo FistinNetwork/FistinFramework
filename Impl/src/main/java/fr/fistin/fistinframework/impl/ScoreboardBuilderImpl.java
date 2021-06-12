@@ -19,6 +19,9 @@ public class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
     private IBukkitPluginProvider caller = null;
     private String name = null;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScoreboardBuilder<P> addLine(int line, Function<P, String> value)
     {
@@ -27,6 +30,9 @@ public class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScoreboardBuilder<P> setParameter(P parameter)
     {
@@ -34,6 +40,9 @@ public class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScoreboardBuilder<P> setCaller(IBukkitPluginProvider caller)
     {
@@ -41,6 +50,9 @@ public class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScoreboardBuilder<P> setName(String name)
     {
@@ -48,6 +60,9 @@ public class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IScoreboard build(FistinPlayer player)
     {

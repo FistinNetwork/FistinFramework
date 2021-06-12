@@ -20,6 +20,9 @@ class BuiltScoreboard<P> extends DefaultScoreboard
         this.lines = lines;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateScoreboard()
     {

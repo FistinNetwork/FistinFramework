@@ -1,6 +1,5 @@
 package fr.fistin.fistinframework.smartinvs.opener;
 
-import com.google.common.collect.ImmutableList;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
 import fr.fistin.fistinframework.smartinvs.SmartInventory;
 import org.bukkit.Bukkit;
@@ -8,20 +7,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SpecialInventoryOpener implements InventoryOpener
 {
-    private static final List<InventoryType> SUPPORTED = ImmutableList.of(
-            InventoryType.FURNACE,
-            InventoryType.WORKBENCH,
-            InventoryType.DISPENSER,
-            InventoryType.DROPPER,
-            InventoryType.ENCHANTING,
-            InventoryType.BREWING,
-            InventoryType.ANVIL,
-            InventoryType.BEACON,
-            InventoryType.HOPPER
+    private static final List<InventoryType> SUPPORTED = Collections.unmodifiableList(
+            Arrays.asList(
+                    InventoryType.FURNACE,
+                    InventoryType.WORKBENCH,
+                    InventoryType.DISPENSER,
+                    InventoryType.DROPPER,
+                    InventoryType.ENCHANTING,
+                    InventoryType.BREWING,
+                    InventoryType.ANVIL,
+                    InventoryType.BEACON,
+                    InventoryType.HOPPER
+            )
     );
 
     @Override

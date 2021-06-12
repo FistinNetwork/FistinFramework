@@ -12,23 +12,14 @@ allprojects {
         }
     }
 
-    compileJava {
-        targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
-        options.encoding = 'UTF-8'
-    }
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier 'sources'
-        from sourceSets.main.allSource
-    }
-
     task javadocJar(type: Jar) {
         classifier 'javadoc'
         from javadoc
     }
 
-    artifacts {
-        archives sourcesJar, javadocJar
+    compileJava {
+        targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
+        options.encoding = 'UTF-8'
     }
 
     repositories {
@@ -55,6 +46,15 @@ allprojects {
             url = "https://maven.pkg.github.com/FistinNetwork/FistinAPI"
         }
     }
+}
+
+task sourcesJar(type: Jar) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
 }
 
 publishing {

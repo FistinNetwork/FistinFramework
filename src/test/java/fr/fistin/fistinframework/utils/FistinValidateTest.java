@@ -29,6 +29,30 @@ public class FistinValidateTest
     }
 
     @Test(expected = FistinFrameworkException.class)
+    public void testEqualsWithNotEquals()
+    {
+        FistinValidate.equals("foo", "bar", "equals");
+    }
+
+    @Test
+    public void testEqualsWithEquals()
+    {
+        FistinValidate.equals("foo", "foo", "equals");
+    }
+
+    @Test(expected = FistinFrameworkException.class)
+    public void testAssertTrueWithFalse()
+    {
+        FistinValidate.assertTrue(false, "assert true");
+    }
+
+    @Test
+    public void testAssertTrueWithTrue()
+    {
+        FistinValidate.assertTrue(true, "assert true");
+    }
+
+    @Test(expected = FistinFrameworkException.class)
     public void testNumberInferiorWithSuperior()
     {
         FistinValidate.numberInferior(2, 1, "not inferior");

@@ -43,11 +43,11 @@ public final class RunnableUtils
             @Override
             public void run()
             {
-                runnable.onTimerPass(runnable.timer().get());
+                runnable.onTimerPass(this::cancel, runnable.timer().get());
 
                 if(runnable.timer().get() == 0)
                 {
-                    runnable.onTimerEnd();
+                    runnable.onTimerEnd(this::cancel);
                     this.cancel();
                 }
                 else runnable.timer().getAndDecrement();

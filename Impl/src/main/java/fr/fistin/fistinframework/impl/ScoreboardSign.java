@@ -47,6 +47,9 @@ public class ScoreboardSign implements IScoreboardSign
         FistinValidate.numberSuperior(length - 2, 0, "Scoreboard name is too short!");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void create()
     {
@@ -74,7 +77,7 @@ public class ScoreboardSign implements IScoreboardSign
                     private final AtomicLong timer = new AtomicLong(ScoreboardSign.this.objectiveName.length() - 2);
 
                     @Override
-                    public void onTimerPass(long timer)
+                    public void onTimerPass(CancellableRunnable cancellableRunnable, long timer)
                     {
                         if(timer == 0)
                             return;
@@ -140,7 +143,7 @@ public class ScoreboardSign implements IScoreboardSign
                     }
 
                     @Override
-                    public void onTimerEnd()
+                    public void onTimerEnd(CancellableRunnable cancellableRunnable)
                     {
                         ScoreboardSign.this.setObjectiveName(CHAR + "b" + ScoreboardSign.this.objectiveName.replace(CHAR + "3", "").replace(CHAR + "b", ""));
                         this.timer.set(ScoreboardSign.this.objectiveName.length() - 1);
@@ -156,6 +159,9 @@ public class ScoreboardSign implements IScoreboardSign
         }), false, this.caller, 0L, TimeUnit.SECONDS, 10L, TimeUnit.SECONDS);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void destroy()
     {
@@ -170,6 +176,9 @@ public class ScoreboardSign implements IScoreboardSign
         this.created = false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setObjectiveName(String name)
     {
@@ -178,6 +187,9 @@ public class ScoreboardSign implements IScoreboardSign
             this.getPlayerConnection().sendPacket(this.createObjectivePacket(PacketScoreboardMode.UPDATE.ordinal(), name));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setLine(int line, String value)
     {
@@ -191,6 +203,9 @@ public class ScoreboardSign implements IScoreboardSign
         this.sendLine(line);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeLine(int line)
     {
@@ -206,6 +221,9 @@ public class ScoreboardSign implements IScoreboardSign
         this.lines[line] = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getLine(int line)
     {
@@ -216,6 +234,9 @@ public class ScoreboardSign implements IScoreboardSign
         return this.getOrCreateTeam(line).getValue();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IVirtualTeam getTeam(int line)
     {
@@ -226,6 +247,9 @@ public class ScoreboardSign implements IScoreboardSign
         return this.getOrCreateTeam(line);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IBukkitPluginProvider getCaller()
     {

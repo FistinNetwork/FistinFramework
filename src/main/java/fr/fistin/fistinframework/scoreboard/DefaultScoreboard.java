@@ -21,8 +21,7 @@ public abstract class DefaultScoreboard implements IScoreboard
     }
 
     /**
-     * Get the wrapped scoreboard sign.
-     * @return the wrapper scoreboard sign.
+     * {@inheritDoc}
      */
     @Override
     public IScoreboardSign getScoreboardSign()
@@ -31,8 +30,7 @@ public abstract class DefaultScoreboard implements IScoreboard
     }
 
     /**
-     * Define the {@link IScoreboardSign} of the wrapper.
-     * @param scoreboardSign the new {@link IScoreboardSign}
+     * {@inheritDoc}
      */
     @Override
     public void setScoreboardSign(IScoreboardSign scoreboardSign)
