@@ -23,10 +23,10 @@ jobs:
     - name: Download jar
       uses: wei/curl@v1
       with:
-        args: https://cdn.getbukkit.org/spigot/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar --create-dirs -o libs/spigot.jar
+        args: https://cdn.getbukkit.org/spigot/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar --create-dirs -o Impl/libs/spigot.jar
     
     - name: Permission
-      run: sudo chmod -R 777 libs/
+      run: sudo chmod -R 777 Impl/libs/
 
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
