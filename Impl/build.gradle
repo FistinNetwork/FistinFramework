@@ -1,11 +1,6 @@
-configurations {
-    fistinframework
-}
-
 dependencies {
     compileOnly fileTree(dir: 'libs', include: '*.jar')
     implementation project.parent
-    fistinframework project.parent
     implementation 'org.reflections:reflections:0.9.12'
 }
 
