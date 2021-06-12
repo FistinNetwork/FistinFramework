@@ -4,6 +4,7 @@ import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.runnable.FistinRunnableTimer;
+import fr.fistin.fistinframework.runnable.RunnableUtils;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import fr.fistin.fistinframework.utils.FistinValidate;
 import net.minecraft.server.v1_8_R3.*;
@@ -61,14 +62,14 @@ public class ScoreboardSign implements IScoreboardSign
 
         this.created = true;
 
-        runRepeatedBukkitRunnable(newBukkitRunnable(new Runnable() {
+        RunnableUtils.runRepeatedBukkitRunnable(newBukkitRunnable(new Runnable() {
             @Override
             public void run()
             {
                 if(!ScoreboardSign.this.created)
                     return;
 
-                runTimerBukkitRunnable(newBukkitRunnableTimer(new FistinRunnableTimer()
+                RunnableUtils.runTimerBukkitRunnable(newBukkitRunnableTimer(new FistinRunnableTimer()
                 {
                     private final AtomicLong timer = new AtomicLong(ScoreboardSign.this.objectiveName.length() - 2);
 

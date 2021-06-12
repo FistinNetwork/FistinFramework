@@ -12,6 +12,7 @@ import fr.fistin.fistinframework.event.GameManagerInitEvent;
 import fr.fistin.fistinframework.event.GameStateChangedEvent;
 import fr.fistin.fistinframework.event.InnerListenerEvent;
 import fr.fistin.fistinframework.event.PlayerStateChangedEvent;
+import fr.fistin.fistinframework.eventbus.DefaultEventBus;
 import fr.fistin.fistinframework.eventbus.IFistinEvent;
 import fr.fistin.fistinframework.eventbus.IFistinEventBus;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;

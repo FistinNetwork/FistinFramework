@@ -1,4 +1,4 @@
-package fr.fistin.fistinframework.impl;
+package fr.fistin.fistinframework.eventbus;
 
 import fr.fistin.fistinframework.eventbus.FistinEventHandler;
 import fr.fistin.fistinframework.eventbus.FistinEventListener;

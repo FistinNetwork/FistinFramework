@@ -1,66 +1,60 @@
-apply plugin: 'idea'
-apply plugin: 'java-library'
-apply plugin: 'maven-publish'
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
 
-group 'fr.fistin'
-version '1.0.3'
-archivesBaseName = "FistinFramework"
+    group 'fr.fistin'
+    version '1.1.0'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
-    }
-}
-
-compileJava {
-    targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
-    options.encoding = 'UTF-8'
-}
-
-repositories {
-    maven {
-        url "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
-    }
-    maven {
-        url "https://hub.spigotmc.org/nexus/content/repositories/public"
-    }
-    mavenCentral()
-
-    maven {
-        credentials {
-            if(System.getProperty("user.home").contains("flow")) {
-                username "${USERNAME}"
-                password "${TOKEN}"
-            }
-            else {
-                username System.getenv('USERNAME')
-                password System.getenv('TOKEN')
-            }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(8)
         }
-        name = "FistinAPI_maven"
-        url = "https://maven.pkg.github.com/FistinNetwork/FistinAPI"
     }
-}
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier 'sources'
-    from sourceSets.main.allSource
-}
+    compileJava {
+        targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
+        options.encoding = 'UTF-8'
+    }
 
-task javadocJar(type: Jar) {
-    classifier 'javadoc'
-    from javadoc
-}
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier 'sources'
+        from sourceSets.main.allSource
+    }
 
-task apiJar(type: Jar) {
-    classifier 'api'
-    from sourceSets.main.output
-    include 'fr/fistin/fistinframework/**'
-    exclude 'fr/fistin/fistinframework/impl/**'
-}
+    task javadocJar(type: Jar) {
+        classifier 'javadoc'
+        from javadoc
+    }
 
-artifacts {
-    archives sourcesJar, javadocJar, apiJar
+    artifacts {
+        archives sourcesJar, javadocJar
+    }
+
+    repositories {
+        maven {
+            url "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
+        }
+        maven {
+            url "https://hub.spigotmc.org/nexus/content/repositories/public"
+        }
+        mavenCentral()
+
+        maven {
+            credentials {
+                if(System.getProperty("user.home").contains("flow")) {
+                    username "${USERNAME}"
+                    password "${TOKEN}"
+                }
+                else {
+                    username System.getenv('USERNAME')
+                    password System.getenv('TOKEN')
+                }
+            }
+            name = "FistinAPI_maven"
+            url = "https://maven.pkg.github.com/FistinNetwork/FistinAPI"
+        }
+    }
 }
 
 publishing {
@@ -69,14 +63,13 @@ publishing {
             from components.java
             artifact tasks.sourcesJar
             artifact tasks.javadocJar
-            artifact tasks.apiJar
 
             pom {
                 groupId = project.group
-                artifactId = 'fistinframework'
+                artifactId = 'fistinframework-api'
                 version = project.version
-                name = 'FistinFramework'
-                description = 'Framework permettant de standardiser & d\'aider la création des mini-jeux FistinNetwork.'
+                name = 'FistinFramework (API)'
+                description = 'Framework (API) permettant de standardiser & d\'aider la création des mini-jeux FistinNetwork.'
                 url = 'https://github.com/FistinNetwork/FistinFramework'
             }
         }
@@ -97,6 +90,4 @@ publishing {
 dependencies {
     api 'fr.fistin:fistinapi:1.5.0:api'
     api 'net.luckperms:api:5.2'
-    compileOnly fileTree(dir: 'libs', include: '*.jar')
-    implementation 'org.reflections:reflections:0.9.12'
 }

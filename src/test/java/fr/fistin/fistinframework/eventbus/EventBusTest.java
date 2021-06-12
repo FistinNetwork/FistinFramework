@@ -1,6 +1,5 @@
 package fr.fistin.fistinframework.eventbus;
 
-import fr.fistin.fistinframework.impl.DefaultEventBus;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 

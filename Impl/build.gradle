@@ -1,0 +1,35 @@
+dependencies {
+    compileOnly fileTree(dir: 'libs', include: '*.jar')
+    implementation project.parent
+    implementation 'org.reflections:reflections:0.9.12'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact tasks.sourcesJar
+            artifact tasks.javadocJar
+
+            pom {
+                groupId = project.group
+                artifactId = 'fistinframework'
+                version = project.version
+                name = 'FistinFramework'
+                description = 'Framework permettant de standardiser & d\'aider la création des mini-jeux FistinNetwork.'
+                url = 'https://github.com/FistinNetwork/FistinFramework'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            credentials {
+                username System.getenv('USERNAME')
+                password System.getenv('TOKEN')
+            }
+            name = "FistinFramework_maven"
+            url = "https://maven.pkg.github.com/FistinNetwork/FistinFramework"
+        }
+    }
+}

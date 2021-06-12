@@ -3,6 +3,7 @@ package fr.fistin.fistinframework.impl;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.eventbus.DefaultEventBus;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
