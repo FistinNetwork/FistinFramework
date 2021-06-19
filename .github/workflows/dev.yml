@@ -29,7 +29,7 @@ jobs:
     - name: Permission
       run: sudo chmod -R 777 Impl/libs/
     - name: Run all JUnit tests
-      run: gradle test
+      run: gradle test javadoc
       env:
         USERNAME: ${{ github.actor }}
         TOKEN: ${{ secrets.TOKEN }}

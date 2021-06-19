@@ -42,7 +42,7 @@ public interface TeamManager
     FistinTeam merge(@NotNull FistinTeam... toMerge);
 
     /**
-     * Merge all the teams in params to a new team & specify a new name.
+     * Merge all the teams in params to a new team &amp; specify a new name.
      * @param name the name to set.
      * @param toMerge teams to merge.
      * @return the merged team.
