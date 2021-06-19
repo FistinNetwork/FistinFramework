@@ -3,8 +3,10 @@ package fr.fistin.fistinframework.impl;
 import fr.fistin.fistinframework.utils.PlayerHelper;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 
-public class PlayerHelperImpl implements PlayerHelper
+@ApiStatus.Internal
+class PlayerHelperImpl implements PlayerHelper
 {
     @Override
     public void clearPlayer(Player player)

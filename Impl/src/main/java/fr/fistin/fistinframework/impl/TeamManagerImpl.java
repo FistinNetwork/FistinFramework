@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @ApiStatus.Internal
-public class TeamManagerImpl implements TeamManager
+class TeamManagerImpl implements TeamManager
 {
     @NotNull
     private final Map<String, FistinTeam> teams = new HashMap<>();

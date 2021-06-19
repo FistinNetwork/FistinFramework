@@ -25,7 +25,7 @@ import static fr.fistin.fistinframework.runnable.RunnableUtils.*;
  * Don't use directly this class, use {@link IScoreboardSign} instead!
  */
 @ApiStatus.Internal
-public class ScoreboardSign implements IScoreboardSign
+class ScoreboardSign implements IScoreboardSign
 {
     private static final IFistinFramework FRAMEWORK = IFistinFramework.framework();
     private static final char CHAR = '\u00A7';

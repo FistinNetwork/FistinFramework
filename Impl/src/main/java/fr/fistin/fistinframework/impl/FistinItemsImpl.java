@@ -4,6 +4,7 @@ import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.item.FistinItem;
 import fr.fistin.fistinframework.item.IFistinItems;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+@ApiStatus.Internal
 class FistinItemsImpl implements IFistinItems
 {
     private final Map<PluginLocation, FistinItem> items = new HashMap<>();

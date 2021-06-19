@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @ApiStatus.Internal
-public class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
+class ScoreboardBuilderImpl<P> implements ScoreboardBuilder<P>
 {
     private final Map<Integer, Function<P, String>> lines = new HashMap<>();
     private P parameter = null;

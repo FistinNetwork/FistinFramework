@@ -7,10 +7,12 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedPermissionData;
 import net.luckperms.api.model.user.User;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+@ApiStatus.Internal
 class LuckPermsToFistinImpl implements LuckPermsToFistin
 {
     private static final LuckPerms LUCK_PERMS = LuckPermsProvider.get();

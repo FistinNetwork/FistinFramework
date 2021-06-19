@@ -8,13 +8,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-public class FireworkFactoryImpl implements FireworkFactory
+@ApiStatus.Internal
+class FireworkFactoryImpl implements FireworkFactory
 {
     private final Map<PluginLocation, FireworkEffect> effects = new HashMap<>();
 

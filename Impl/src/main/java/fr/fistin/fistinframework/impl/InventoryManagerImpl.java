@@ -20,11 +20,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class InventoryManagerImpl implements InventoryManager
+@ApiStatus.Internal
+class InventoryManagerImpl implements InventoryManager
 {
     private final IBukkitPluginProvider plugin;
     private final PluginManager pluginManager;

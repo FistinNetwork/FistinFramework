@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @ApiStatus.Internal
-public class ListenerManagerImpl implements ListenerManager
+class ListenerManagerImpl implements ListenerManager
 {
     private final List<Class<? extends Listener>> registered = new ArrayList<>();
 

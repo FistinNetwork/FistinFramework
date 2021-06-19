@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @ApiStatus.Internal
-public class InventoryContentsImpl implements InventoryContents
+class InventoryContentsImpl implements InventoryContents
 {
     private final SmartInventory inv;
     private final UUID player;

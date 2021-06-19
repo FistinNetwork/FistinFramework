@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@ApiStatus.Internal
 class LanguageManagerImpl implements LanguageManager
 {
     private final Table<Locale, IBukkitPluginProvider, Language> table = HashBasedTable.create();

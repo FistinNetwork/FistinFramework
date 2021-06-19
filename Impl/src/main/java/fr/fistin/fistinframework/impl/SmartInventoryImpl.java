@@ -13,12 +13,14 @@ import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SmartInventoryImpl implements SmartInventory
+@ApiStatus.Internal
+class SmartInventoryImpl implements SmartInventory
 {
     private String id;
     private String title;

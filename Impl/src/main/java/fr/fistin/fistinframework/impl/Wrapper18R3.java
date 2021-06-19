@@ -6,6 +6,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * {@link VersionWrapper} implemented for NMS version 1_8_R3
@@ -13,6 +14,7 @@ import org.bukkit.inventory.Inventory;
  * @author Wesley Smith
  * @since 1.0
  */
+@ApiStatus.Internal
 class Wrapper18R3 implements VersionWrapper
 {
     /**

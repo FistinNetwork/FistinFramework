@@ -4,12 +4,14 @@ import fr.fistin.fistinframework.configuration.ConfigurationMapping;
 import fr.fistin.fistinframework.configuration.ConfigurationMappings;
 import fr.fistin.fistinframework.game.Game;
 import fr.fistin.fistinframework.player.FistinPlayer;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@ApiStatus.Internal
 class ConfigurationMappingsImpl implements ConfigurationMappings
 {
     private final ConfigurationMapping<FistinPlayer, String> playerMappings = new ConfigurationMapping<FistinPlayer, String>() {

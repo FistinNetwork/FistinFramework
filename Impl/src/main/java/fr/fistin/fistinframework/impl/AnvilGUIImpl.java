@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -27,7 +28,8 @@ import java.util.function.Consumer;
  * @author Wesley Smith
  * @since 1.0
  */
-public class AnvilGUIImpl implements AnvilGUI
+@ApiStatus.Internal
+class AnvilGUIImpl implements AnvilGUI
 {
     /**
      * The local {@link VersionWrapper} object for the server's version

@@ -13,10 +13,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@ApiStatus.Internal
 class DebugCommand implements CommandExecutor, TabCompleter
 {
     private final IFistinFramework framework;

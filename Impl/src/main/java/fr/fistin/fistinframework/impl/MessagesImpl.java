@@ -9,9 +9,11 @@ import fr.fistin.fistinframework.configuration.Messages;
 import fr.fistin.fistinframework.game.Game;
 import fr.fistin.fistinframework.player.FistinPlayer;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Locale;
 
+@ApiStatus.Internal
 class MessagesImpl implements Messages
 {
     @Override

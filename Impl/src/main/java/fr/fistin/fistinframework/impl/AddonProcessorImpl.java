@@ -4,6 +4,7 @@ import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.addon.AddonInfo;
 import fr.fistin.fistinframework.addon.AddonProcessor;
 import fr.fistin.fistinframework.addon.FistinAddon;
+import org.jetbrains.annotations.ApiStatus;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ApiStatus.Internal
 class AddonProcessorImpl implements AddonProcessor
 {
     @Override
