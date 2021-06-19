@@ -70,26 +70,10 @@ public class FistinTeam implements FistinPlayerContainer
     {
         this.players.put(player.getPlayer(), player);
     }
-    
-    public static class SplitData
+
+    public interface SplitData
     {
-        private final int index;
-        private final String name;
-
-        public SplitData(int index, String name)
-        {
-            this.index = index;
-            this.name = name;
-        }
-
-        public int getIndex()
-        {
-            return this.index;
-        }
-
-        public String getName()
-        {
-            return this.name;
-        }
+        String getName();
+        int getIndex();
     }
 }

@@ -4,7 +4,6 @@ import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.player.FistinPlayerContainer;
 import fr.fistin.fistinframework.utils.Castex;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -24,9 +23,10 @@ public interface Game extends Castex<Game>, FistinPlayerContainer
     @NotNull Map<Player, FistinPlayer> playingPlayers();
     @NotNull Map<Player, FistinPlayer> spectatingPlayers();
 
+    @NotNull GameManager gameManager();
+
     @NotNull GameState gameState();
     void setGameState(@NotNull GameState gameState);
-
-    @ApiStatus.Experimental
     void changeGameState(@NotNull String newState);
+    void changeGameState(int newState);
 }

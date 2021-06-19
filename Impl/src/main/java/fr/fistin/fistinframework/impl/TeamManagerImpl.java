@@ -18,29 +18,45 @@ class TeamManagerImpl implements TeamManager
     @NotNull
     private final Map<String, FistinTeam> teams = new HashMap<>();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addTeam(@NotNull FistinTeam team)
     {
         this.teams.put(team.getName(), team);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void remove(@NotNull FistinTeam team)
     {
         this.teams.remove(team.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeAll()
     {
+        this.teams.forEach((s, fistinTeam) -> fistinTeam.getPlayers().clear());
         this.teams.clear();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @Nullable FistinTeam getTeam(@NotNull String teamName)
     {
         return this.teams.get(teamName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void transfer(@NotNull FistinTeam origin, @NotNull FistinTeam destination, boolean overrideName)
     {
@@ -54,6 +70,9 @@ class TeamManagerImpl implements TeamManager
         this.addTeam(destination);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FistinTeam merge(@NotNull FistinTeam... toMerge)
     {
@@ -61,6 +80,9 @@ class TeamManagerImpl implements TeamManager
         return this.merge(toMerge[0].getName(), toMerge);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FistinTeam merge(@NotNull String name, @NotNull FistinTeam... toMerge)
     {
@@ -78,6 +100,9 @@ class TeamManagerImpl implements TeamManager
         return merged;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FistinTeam[] split(@NotNull FistinTeam origin, @NotNull Function<FistinPlayer, FistinTeam.SplitData> fillFunction, int numberOf)
     {

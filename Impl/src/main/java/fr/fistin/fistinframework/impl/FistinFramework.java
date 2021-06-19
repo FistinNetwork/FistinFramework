@@ -197,7 +197,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     @Override
     public @NotNull IScoreboardSign newScoreboardSign(FistinPlayer player, String objectiveName, IBukkitPluginProvider caller)
     {
-        return new ScoreboardSign(player, objectiveName, caller);
+        return new ScoreboardSignImpl(player, objectiveName, caller);
     }
 
     @Override

@@ -8,10 +8,13 @@ import fr.fistin.fistinframework.event.GameManagerInitEvent;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.grade.PlayerGrade;
 import fr.fistin.fistinframework.player.FistinPlayer;
+import fr.fistin.fistinframework.player.PlayerState;
 import fr.fistin.fistinframework.utils.FistinFrameworkException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public abstract class DefaultGameManager implements GameManager
@@ -23,6 +26,13 @@ public abstract class DefaultGameManager implements GameManager
 
     protected boolean init = false;
     protected Game game;
+
+    private final Map<String, GameState> gameStatesByName = new HashMap<>();
+    private final Map<Integer, GameState> gameStatesByID = new HashMap<>();
+    private final Map<String, PlayerState> playerStatesByName = new HashMap<>();
+    private final Map<Integer, PlayerState> playerStatesByID = new HashMap<>();
+    private int gameStateIDIncrement = 0;
+    private int playerStateIDIncrement = 0;
 
     @Override
     public void init()
@@ -59,7 +69,57 @@ public abstract class DefaultGameManager implements GameManager
         this.game = game;
     }
 
+    @Override
+    public GameState getGameState(int id)
+    {
+        if(!this.init)
+            this.throwNotInitializedError();
+        return this.gameStatesByID.get(id);
+    }
+
+    @Override
+    public GameState getGameState(String name)
+    {
+        if(!this.init)
+            this.throwNotInitializedError();
+        return this.gameStatesByName.get(name);
+    }
+
+    @Override
+    public PlayerState getPlayerState(int id)
+    {
+        if(!this.init)
+            this.throwNotInitializedError();
+        return this.playerStatesByID.get(id);
+    }
+
+    @Override
+    public PlayerState getPlayerState(String name)
+    {
+        if(!this.init)
+            this.throwNotInitializedError();
+        return this.playerStatesByName.get(name);
+    }
+
     // Don't need any initialization
+
+    @Override
+    public GameState registerGameNewState(String name)
+    {
+        final GameState state = new GameState(name, this.gameStateIDIncrement++);
+        this.gameStatesByID.put(state.getID(), state);
+        this.gameStatesByName.put(state.getName(), state);
+        return state;
+    }
+
+    @Override
+    public PlayerState registerNewPlayerState(String name)
+    {
+        final PlayerState state = new PlayerState(name, this.playerStateIDIncrement++);
+        this.playerStatesByID.put(state.getID(), state);
+        this.playerStatesByName.put(state.getName(), state);
+        return state;
+    }
 
     @Override
     public void winGame(@NotNull FistinPlayer player, int expBonus, int coinsBonus)

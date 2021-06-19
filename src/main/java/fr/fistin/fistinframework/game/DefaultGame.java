@@ -33,6 +33,18 @@ public abstract class DefaultGame implements Game
     }
 
     @Override
+    public void changeGameState(@NotNull String newState)
+    {
+        this.setGameState(this.gameManager().getGameState(newState));
+    }
+
+    @Override
+    public void changeGameState(int newState)
+    {
+        this.setGameState(this.gameManager().getGameState(newState));
+    }
+
+    @Override
     public @NotNull Map<Player, FistinPlayer> inLobbyPlayers()
     {
         return this.inLobbyPlayers;

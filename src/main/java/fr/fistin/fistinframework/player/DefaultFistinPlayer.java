@@ -45,6 +45,18 @@ public abstract class DefaultFistinPlayer implements FistinPlayer
     }
 
     @Override
+    public void changePlayerState(@NotNull String newState)
+    {
+        this.setPlayerState(this.gameManager().getPlayerState(newState));
+    }
+
+    @Override
+    public void changePlayerState(int newState)
+    {
+        this.setPlayerState(this.gameManager().getPlayerState(newState));
+    }
+
+    @Override
     public @NotNull IScoreboard scoreboard()
     {
         return this.scoreboard;

@@ -34,7 +34,7 @@ class AnvilGUIImpl implements AnvilGUI
     /**
      * The local {@link VersionWrapper} object for the server's version
      */
-    private static final VersionWrapper WRAPPER = new Wrapper18R3();
+    private static final VersionWrapper WRAPPER = new Wrapper18R3Impl();
 
     /**
      * The {@link IBukkitPluginProvider} that this anvil GUI is associated with

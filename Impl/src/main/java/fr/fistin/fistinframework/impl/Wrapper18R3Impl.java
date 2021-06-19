@@ -15,7 +15,7 @@ import org.jetbrains.annotations.ApiStatus;
  * @since 1.0
  */
 @ApiStatus.Internal
-class Wrapper18R3 implements VersionWrapper
+class Wrapper18R3Impl implements VersionWrapper
 {
     /**
      * {@inheritDoc}

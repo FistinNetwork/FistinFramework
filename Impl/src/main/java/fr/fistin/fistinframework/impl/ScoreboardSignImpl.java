@@ -25,7 +25,7 @@ import static fr.fistin.fistinframework.runnable.RunnableUtils.*;
  * Don't use directly this class, use {@link IScoreboardSign} instead!
  */
 @ApiStatus.Internal
-class ScoreboardSign implements IScoreboardSign
+class ScoreboardSignImpl implements IScoreboardSign
 {
     private static final IFistinFramework FRAMEWORK = IFistinFramework.framework();
     private static final char CHAR = '\u00A7';
@@ -36,7 +36,7 @@ class ScoreboardSign implements IScoreboardSign
     private final IBukkitPluginProvider caller;
     private String objectiveName;
 
-    public ScoreboardSign(FistinPlayer player, String objectiveName, IBukkitPluginProvider caller)
+    public ScoreboardSignImpl(FistinPlayer player, String objectiveName, IBukkitPluginProvider caller)
     {
         this.player = player;
         this.caller = caller;
@@ -69,12 +69,12 @@ class ScoreboardSign implements IScoreboardSign
             @Override
             public void run()
             {
-                if(!ScoreboardSign.this.created)
+                if(!ScoreboardSignImpl.this.created)
                     return;
 
                 RunnableUtils.runTimerBukkitRunnable(newBukkitRunnableTimer(new FistinRunnableTimer()
                 {
-                    private final AtomicLong timer = new AtomicLong(ScoreboardSign.this.objectiveName.length() - 2);
+                    private final AtomicLong timer = new AtomicLong(ScoreboardSignImpl.this.objectiveName.length() - 2);
 
                     @Override
                     public void onTimerPass(CancellableRunnable cancellableRunnable, long timer)
@@ -82,7 +82,7 @@ class ScoreboardSign implements IScoreboardSign
                         if(timer == 0)
                             return;
 
-                        final ScoreboardSign scoreboard = ScoreboardSign.this;
+                        final ScoreboardSignImpl scoreboard = ScoreboardSignImpl.this;
                         final int threeIndex = scoreboard.objectiveName.indexOf(CHAR + "3");
                         final int bIndex = scoreboard.objectiveName.lastIndexOf(CHAR + "b");
 
@@ -139,14 +139,14 @@ class ScoreboardSign implements IScoreboardSign
 
                     private String calcEmpty()
                     {
-                        return ScoreboardSign.this.objectiveName.replace(CHAR + "3", "").replace(CHAR + "b", "");
+                        return ScoreboardSignImpl.this.objectiveName.replace(CHAR + "3", "").replace(CHAR + "b", "");
                     }
 
                     @Override
                     public void onTimerEnd(CancellableRunnable cancellableRunnable)
                     {
-                        ScoreboardSign.this.setObjectiveName(CHAR + "b" + ScoreboardSign.this.objectiveName.replace(CHAR + "3", "").replace(CHAR + "b", ""));
-                        this.timer.set(ScoreboardSign.this.objectiveName.length() - 1);
+                        ScoreboardSignImpl.this.setObjectiveName(CHAR + "b" + ScoreboardSignImpl.this.objectiveName.replace(CHAR + "3", "").replace(CHAR + "b", ""));
+                        this.timer.set(ScoreboardSignImpl.this.objectiveName.length() - 1);
                     }
 
                     @Override
@@ -154,7 +154,7 @@ class ScoreboardSign implements IScoreboardSign
                     {
                         return this.timer;
                     }
-                }), false, ScoreboardSign.this.caller, 0L, TimeUnit.SECONDS, 350L, TimeUnit.MILLISECONDS);
+                }), false, ScoreboardSignImpl.this.caller, 0L, TimeUnit.SECONDS, 350L, TimeUnit.MILLISECONDS);
             }
         }), false, this.caller, 0L, TimeUnit.SECONDS, 10L, TimeUnit.SECONDS);
     }
