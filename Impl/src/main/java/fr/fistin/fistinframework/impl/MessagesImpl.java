@@ -22,43 +22,43 @@ class MessagesImpl implements Messages
     @Override
     public String getPlayerJoinMessage(Language language, FistinPlayer fistinPlayer, Game game)
     {
-        return this.getMappings().getPlayerMappings().map(this.getMappings().getGameMappings().map(this.fixColor(language.getTranslatedMessage("player_join")), game), fistinPlayer);
+        return this.getMappings().getPlayerMappings().map(this.getMappings().getGameMappings().map(this.fixColor(this.getLanguageManager().translate(language, "player_join")), game), fistinPlayer);
     }
 
     @Override
     public String getStartingGameMessage(Language language)
     {
-        return this.fixColor(language.getTranslatedMessage("starting_game"));
+        return this.fixColor(this.getLanguageManager().translate(language, "starting_game"));
     }
 
     @Override
     public String getStoppingGameMessage(Language language)
     {
-        return this.fixColor(language.getTranslatedMessage("stopping_game"));
+        return this.fixColor(this.getLanguageManager().translate(language, "stopping_game"));
     }
 
     @Override
     public String getWinnerMessage(Language language, FistinPlayer fistinPlayer)
     {
-        return this.getMappings().getPlayerMappings().map(this.fixColor(language.getTranslatedMessage("winner")), fistinPlayer);
+        return this.getMappings().getPlayerMappings().map(this.fixColor(this.getLanguageManager().translate(language, "winner")), fistinPlayer);
     }
 
     @Override
     public String getKickMessageAtEnd(Language language)
     {
-        return this.fixColor(language.getTranslatedMessage("kick_message_at_end"));
+        return this.fixColor(this.getLanguageManager().translate(language, "kick_message_at_end"));
     }
 
     @Override
     public String getPlayerRequiredMessage(Language language)
     {
-        return this.fixColor(language.getTranslatedMessage("player_required"));
+        return this.fixColor(this.getLanguageManager().translate(language, "player_required"));
     }
 
     @Override
     public String getMissingPermissionMessage(Language language)
     {
-        return this.fixColor(language.getTranslatedMessage("missing_permission"));
+        return this.fixColor(this.getLanguageManager().translate(language, "missing_permission"));
     }
 
     private ConfigurationMappings getMappings()

@@ -10,6 +10,7 @@ import fr.fistin.fistinframework.smartinvs.opener.ChestInventoryOpener;
 import fr.fistin.fistinframework.smartinvs.opener.InventoryOpener;
 import fr.fistin.fistinframework.smartinvs.opener.SpecialInventoryOpener;
 import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
+import fr.fistin.fistinframework.utils.IgnoreDetection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -133,7 +134,8 @@ class InventoryManagerImpl implements InventoryManager
     }
 
     @SuppressWarnings("unchecked")
-    class InvListener implements Listener
+    @IgnoreDetection
+    private class InvListener implements Listener
     {
         @EventHandler(priority = EventPriority.LOW)
         public void onInventoryClick(InventoryClickEvent e)
@@ -255,6 +257,5 @@ class InventoryManagerImpl implements InventoryManager
         this.inventories.clear();
         this.contents.clear();
         this.openers.clear();
-        this.defaultOpeners.clear();
     }
 }

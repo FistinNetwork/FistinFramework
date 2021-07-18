@@ -27,7 +27,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
 import java.util.function.Supplier;
 
 @ApiStatus.Internal
@@ -53,6 +52,8 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.getLogger().info("Starting Fistin Framework...");
 
         PluginProviders.setProvider(IFistinFramework.class, this);
+        this.saveDefaultConfig();
+
         this.init();
         this.postInit();
     }
@@ -75,7 +76,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.inventoryManager = new InventoryManagerImpl(this, InventoryContentsImpl::new);
 
         this.getLogger().info("Loading languages...");
-        this.languageManager.load(this, Locale.FRENCH);
+        this.languageManager.load(this, this.getConfig().getString("global_language"));
 
         this.automaticRegisterer.register(this, "fr.fistin.fistinframework.event", AutomaticRegisterer.Type.EVENT);
 
@@ -101,7 +102,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.listenerManager.clean();
         this.inventoryManager.clean();
 
-        this.getLogger().info("Shutdown Fistin Framework, have a nice day !");
+        this.getLogger().info("Shutdown Fistin Framework, have a nice day!");
     }
 
     @Override

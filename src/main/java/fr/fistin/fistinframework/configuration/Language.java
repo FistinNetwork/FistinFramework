@@ -9,25 +9,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 
 public class Language implements Cleanable
 {
-    public static final Language DEFAULT = IFistinFramework.framework().languageManager().getLanguage(IFistinFramework.framework(), Locale.ENGLISH);
-
-    private final Locale locale;
     private final IBukkitPluginProvider plugin;
     private final String name;
     private final Path file;
     private final Map<String, String> translatedMessages = new HashMap<>();
 
-    public Language(Locale locale, IBukkitPluginProvider plugin)
+    public Language(String name, IBukkitPluginProvider plugin)
     {
-        this.locale = locale;
         this.plugin = plugin;
-        this.name = this.locale.getLanguage();
+        this.name = name;
         this.file = this.plugin.getDataFolder().toPath().resolve("languages").resolve(this.name + ".yml");
 
         try
@@ -49,23 +44,7 @@ public class Language implements Cleanable
 
     public String getTranslatedMessage(String key)
     {
-        final IFistinFramework framework = IFistinFramework.framework();
-        final LanguageManager languageManager = framework.languageManager();
-        final String unsafe = this.translatedMessages.getOrDefault(key, languageManager.getLanguage(this.plugin, Locale.ENGLISH).getTranslatedMessage(key));
-        if(unsafe != null || this.translatedMessages.containsKey(key))
-            return unsafe;
-        else
-        {
-            final String fallback = languageManager.getLanguage(framework, this.locale).getTranslatedMessage(key);
-            if(fallback != null)
-                return fallback;
-            else return languageManager.getLanguage(framework, Locale.ENGLISH).getTranslatedMessage(key);
-        }
-    }
-
-    public Locale getLocale()
-    {
-        return this.locale;
+        return this.translatedMessages.get(key);
     }
 
     public IBukkitPluginProvider getPlugin()
@@ -87,5 +66,16 @@ public class Language implements Cleanable
     public void clean()
     {
         this.translatedMessages.clear();
+    }
+
+    public static Language defaultLanguage()
+    {
+        return IFistinFramework.framework().languageManager().getLanguage(IFistinFramework.framework(), "en");
+    }
+
+    public static Language globalLanguage()
+    {
+        final IFistinFramework framework = IFistinFramework.framework();
+        return framework.languageManager().getLanguage(framework, framework.getConfig().getString("global_language"));
     }
 }

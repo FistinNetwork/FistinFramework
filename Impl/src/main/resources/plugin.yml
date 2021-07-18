@@ -32,3 +32,6 @@ commands:
       - fistinfirework
       - fistinf
       - fireworkfistin
+permissions:
+  fistin.staff:
+    description: Allows the usage of all fistin administration commands.

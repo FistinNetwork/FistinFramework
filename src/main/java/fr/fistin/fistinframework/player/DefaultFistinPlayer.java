@@ -102,7 +102,7 @@ public abstract class DefaultFistinPlayer implements FistinPlayer
     @Override
     public Language getSelectedLanguage()
     {
-        return IFistinFramework.framework().languageManager().getLanguage(IFistinFramework.framework(), Locale.forLanguageTag(this.preferences().getLocale()));
+        return IFistinFramework.framework().languageManager().getLanguage(IFistinFramework.framework(), this.preferences().getLocale());
     }
 
     /**

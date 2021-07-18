@@ -19,7 +19,7 @@ public abstract class FistinCommand implements CommandExecutor
     protected FistinCommand()
     {
         this.fistinCommandInfo = this.getClass().getDeclaredAnnotation(FistinCommandInfo.class);
-        FistinValidate.notNull(this.fistinCommandInfo, "`fistinCommandInfo` cannot be null.");
+        FistinValidate.notNull(this.fistinCommandInfo, "`fistinCommandInfo` cannot be null. (%s)", this.getClass().getName());
     }
 
     protected FistinCommand(@NotNull IGamePluginProvider gamePluginProvider)
@@ -35,7 +35,7 @@ public abstract class FistinCommand implements CommandExecutor
         {
             if(!sender.hasPermission(this.fistinCommandInfo.permission()))
             {
-                sender.sendMessage(IFistinFramework.framework().messages().getMissingPermissionMessage(Language.DEFAULT));
+                sender.sendMessage(IFistinFramework.framework().messages().getMissingPermissionMessage(Language.globalLanguage()));
                 return true;
             }
         }
@@ -44,7 +44,7 @@ public abstract class FistinCommand implements CommandExecutor
         {
             if(!(sender instanceof Player))
             {
-                sender.sendMessage(IFistinFramework.framework().messages().getPlayerRequiredMessage(Language.DEFAULT));
+                sender.sendMessage(IFistinFramework.framework().messages().getPlayerRequiredMessage(Language.globalLanguage()));
                 return true;
             }
 

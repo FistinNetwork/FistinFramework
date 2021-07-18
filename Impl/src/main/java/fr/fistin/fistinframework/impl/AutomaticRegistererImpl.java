@@ -25,7 +25,7 @@ class AutomaticRegistererImpl implements AutomaticRegisterer
     @Override
     public void register(IBukkitPluginProvider plugin, String packageName, Type type)
     {
-        plugin.getLogger().info(String.format("Registering %ss in package '%s' (%s).", Type.COMMAND.name().toLowerCase(), packageName, plugin.getName()));
+        plugin.getLogger().info(String.format("Registering %ss in package '%s' (%s).", type.name().toLowerCase(), packageName, plugin.getName()));
         final Reflections reflections = new Reflections(packageName);
 
         switch (type)
@@ -60,7 +60,7 @@ class AutomaticRegistererImpl implements AutomaticRegisterer
                     command = commandClass.getDeclaredConstructor(IGamePluginProvider.class).newInstance(temp);
                 }
                 else command = commandClass.getDeclaredConstructor().newInstance();
-                ((JavaPlugin)plugin).getCommand(command.getFistinCommandInfo().name()).setExecutor(plugin);
+                ((JavaPlugin)plugin).getCommand(command.getFistinCommandInfo().name()).setExecutor(command);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
             {
                 plugin.getLogger().log(Level.SEVERE, e.getMessage(), e);

@@ -4,6 +4,7 @@ import fr.fistin.fistinframework.anvilgui.AnvilGUI;
 import fr.fistin.fistinframework.anvilgui.VersionWrapper;
 import fr.fistin.fistinframework.utils.FistinValidate;
 import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
+import fr.fistin.fistinframework.utils.IgnoreDetection;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -209,6 +210,7 @@ class AnvilGUIImpl implements AnvilGUI
     /**
      * Simply holds the listeners for the GUI
      */
+    @IgnoreDetection
     private class ListenUp implements Listener
     {
         @EventHandler

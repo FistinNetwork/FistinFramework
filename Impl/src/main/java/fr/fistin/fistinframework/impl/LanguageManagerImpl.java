@@ -1,61 +1,63 @@
 package fr.fistin.fistinframework.impl;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Table;
+import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.configuration.Language;
 import fr.fistin.fistinframework.configuration.LanguageManager;
 import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 @ApiStatus.Internal
 class LanguageManagerImpl implements LanguageManager
 {
-    private final Table<Locale, IBukkitPluginProvider, Language> table = HashBasedTable.create();
-    private final Multimap<IBukkitPluginProvider, Locale> remainingLanguagesByPlugin = ArrayListMultimap.create();
+    private final Table<String, IBukkitPluginProvider, Language> table = HashBasedTable.create();
 
-    @ApiStatus.Internal
-    private final List<Locale> remainingLanguages = new ArrayList<>();
-
-    public LanguageManagerImpl()
+    @Override
+    public void load(IBukkitPluginProvider plugin, String... locales)
     {
-        this.remainingLanguages.add(Locale.FRENCH);
-        this.remainingLanguages.add(Locale.GERMAN);
-        this.remainingLanguages.add(Locale.ITALIAN);
-        this.remainingLanguages.add(Locale.JAPANESE);
-        this.remainingLanguages.add(Locale.KOREAN);
-        this.remainingLanguages.add(Locale.CHINESE);
+        final Language defaultLanguage = new Language("en", plugin);
+        this.table.put("en", plugin, defaultLanguage);
+
+        for (String locale : locales)
+            this.table.put(locale, plugin, new Language(locale, plugin));
     }
 
     @Override
-    public void load(IBukkitPluginProvider plugin, Locale... locales)
-    {
-        this.remainingLanguagesByPlugin.putAll(plugin, this.remainingLanguages);
-
-        final Language defaultLanguage = new Language(Locale.ENGLISH, plugin);
-        this.table.put(Locale.ENGLISH, plugin, defaultLanguage);
-
-        for (Locale locale : locales)
-        {
-            if (this.remainingLanguagesByPlugin.containsEntry(plugin, locale))
-            {
-                this.table.put(locale, plugin, new Language(locale, plugin));
-            }
-        }
-
-        for (Locale locale : this.table.column(plugin).keySet())
-            this.remainingLanguagesByPlugin.remove(plugin, locale);
-    }
-
-    @Override
-    public Language getLanguage(IBukkitPluginProvider plugin, Locale locale)
+    public Language getLanguage(IBukkitPluginProvider plugin, String locale)
     {
         return this.table.get(locale, plugin);
+    }
+
+    @Override
+    public String translate(Language language, String key)
+    {
+        final String first = language.getTranslatedMessage(key);
+
+        if(first != null && !first.isEmpty())
+            return first;
+
+        final String second = this.getLanguage(language.getPlugin(), "en").getTranslatedMessage(key);
+
+        if(second != null && !second.isEmpty())
+            return second;
+
+        final String third = this.getLanguage(IFistinFramework.framework(), language.getName()).getTranslatedMessage(key);
+
+        if(third != null && !third.isEmpty())
+            return third;
+
+        final String fourth = Language.globalLanguage().getTranslatedMessage(key);
+
+        if(fourth != null && !fourth.isEmpty())
+            return fourth;
+
+        final String fifth = Language.defaultLanguage().getTranslatedMessage(key);
+
+        if(fifth != null && !fifth.isEmpty())
+            return fifth;
+
+        return "";
     }
 
     @Override
@@ -63,7 +65,5 @@ class LanguageManagerImpl implements LanguageManager
     {
         this.table.values().forEach(Language::clean);
         this.table.clear();
-        this.remainingLanguagesByPlugin.clear();
-        this.remainingLanguages.clear();
     }
 }
