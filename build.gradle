@@ -1,3 +1,7 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0' apply false
+}
+
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'java-library'

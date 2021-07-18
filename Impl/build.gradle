@@ -1,7 +1,18 @@
+apply plugin: 'com.github.johnrengelman.shadow'
+
+configurations {
+    shade
+    implementation.extendsFrom shade
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+}
+
 dependencies {
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    implementation project.parent
-    implementation 'org.reflections:reflections:0.9.12'
+    shade project.parent
+    shade 'org.reflections:reflections:0.9.12'
 }
 
 task sourcesJar(type: Jar) {
@@ -16,12 +27,17 @@ jar {
     }
 }
 
+artifacts {
+    archives sourcesJar, javadocJar, shadowJar
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
             from components.java
             artifact tasks.sourcesJar
             artifact tasks.javadocJar
+            artifact tasks.shadowJar
 
             pom {
                 groupId = project.group
@@ -44,8 +60,4 @@ publishing {
             url = "https://maven.pkg.github.com/FistinNetwork/FistinFramework"
         }
     }
-}
-
-artifacts {
-    archives sourcesJar, javadocJar
 }
