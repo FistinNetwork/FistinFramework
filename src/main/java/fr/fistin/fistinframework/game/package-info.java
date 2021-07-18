@@ -1,5 +1,6 @@
 /**
  * Game API of FistinNetwork.
+ *
  * @see fr.fistin.fistinframework.game.DefaultGame
  * @see fr.fistin.fistinframework.game.DefaultGameManager
  * @see fr.fistin.fistinframework.game.Game

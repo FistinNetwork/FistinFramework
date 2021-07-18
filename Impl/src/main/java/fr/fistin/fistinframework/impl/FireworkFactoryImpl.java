@@ -10,6 +10,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -51,7 +52,7 @@ class FireworkFactoryImpl implements FireworkFactory
     }
 
     @Override
-    public void clear()
+    public void clean()
     {
         this.effects.clear();
     }
@@ -59,6 +60,6 @@ class FireworkFactoryImpl implements FireworkFactory
     @Override
     public Set<PluginLocation> effectsLocation()
     {
-        return this.effects.keySet();
+        return Collections.unmodifiableSet(this.effects.keySet());
     }
 }

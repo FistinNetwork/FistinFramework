@@ -1,7 +1,6 @@
-package fr.fistin.fistinframework.impl;
+package fr.fistin.fistinframework.listener;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
-import fr.fistin.fistinframework.listener.ConfigurableListener;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,17 +14,15 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.PlayerInventory;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@ApiStatus.Internal
-class WorldProtectionListenerImpl implements Listener
+public class WorldProtectionListener implements Listener
 {
     private final Map<String, Boolean> configuration = new HashMap<>();
 
-    private WorldProtectionListenerImpl(Map<String, Boolean> configuration)
+    private WorldProtectionListener(Map<String, Boolean> configuration)
     {
         this.configuration.putAll(configuration);
     }
@@ -99,7 +96,7 @@ class WorldProtectionListenerImpl implements Listener
         }
     }
 
-    public static class Builder implements ConfigurableListener<Listener>
+    public static class Builder implements ConfigurableListener<WorldProtectionListener>
     {
         private final Map<String, Boolean> configuration = new HashMap<>();
 
@@ -119,45 +116,45 @@ class WorldProtectionListenerImpl implements Listener
         @Override
         public void register(IBukkitPluginProvider plugin)
         {
-            plugin.getServer().getPluginManager().registerEvents(new WorldProtectionListenerImpl(this.configuration), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new WorldProtectionListener(this.configuration), plugin);
         }
 
         @Override
-        public ConfigurableListener<Listener> reset()
+        public ConfigurableListener<WorldProtectionListener> reset()
         {
             return new Builder();
         }
 
         @Override
-        public ConfigurableListener<Listener> enableAll()
+        public ConfigurableListener<WorldProtectionListener> enableAll()
         {
             this.configuration.replaceAll((s, aBoolean) -> true);
             return this;
         }
 
         @Override
-        public ConfigurableListener<Listener> disableAll()
+        public ConfigurableListener<WorldProtectionListener> disableAll()
         {
             this.configuration.replaceAll((s, aBoolean) -> false);
             return this;
         }
 
         @Override
-        public ConfigurableListener<Listener> enable(String parameter)
+        public ConfigurableListener<WorldProtectionListener> enable(String parameter)
         {
             this.configuration.replace(parameter, true);
             return this;
         }
 
         @Override
-        public ConfigurableListener<Listener> disable(String parameter)
+        public ConfigurableListener<WorldProtectionListener> disable(String parameter)
         {
             this.configuration.replace(parameter, false);
             return this;
         }
 
         @Override
-        public ConfigurableListener<Listener> enable(String... parameters)
+        public ConfigurableListener<WorldProtectionListener> enable(String... parameters)
         {
             for (String parameter : parameters)
                 this.configuration.replace(parameter, true);
@@ -165,7 +162,7 @@ class WorldProtectionListenerImpl implements Listener
         }
 
         @Override
-        public ConfigurableListener<Listener> disable(String... parameters)
+        public ConfigurableListener<WorldProtectionListener> disable(String... parameters)
         {
             for (String parameter : parameters)
                 this.configuration.replace(parameter, false);

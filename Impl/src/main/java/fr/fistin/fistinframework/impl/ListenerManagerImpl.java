@@ -1,8 +1,9 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.listener.ConfigurableListener;
 import fr.fistin.fistinframework.listener.ListenerManager;
+import fr.fistin.fistinframework.listener.WorldProtectionListener;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -20,11 +21,11 @@ class ListenerManagerImpl implements ListenerManager
      * {@inheritDoc}
      */
     @Override
-    public void enableWorldProtectionListener(@NotNull IBukkitPluginProvider plugin, @NotNull Consumer<ConfigurableListener<? extends Listener>> configurable)
+    public void enableWorldProtectionListener(@NotNull IBukkitPluginProvider plugin, @NotNull Consumer<ConfigurableListener<WorldProtectionListener>> configurable)
     {
-        if(this.enable(WorldProtectionListenerImpl.class))
+        if(this.enable(WorldProtectionListener.class))
             configurable.andThen(configurableListener -> configurableListener.register(plugin))
-                    .accept(new WorldProtectionListenerImpl.Builder());
+                    .accept(new WorldProtectionListener.Builder());
     }
 
     private boolean enable(Class<? extends Listener> listener)
@@ -33,5 +34,11 @@ class ListenerManagerImpl implements ListenerManager
             return false;
         else this.registered.add(listener);
         return true;
+    }
+
+    @Override
+    public void clean()
+    {
+        this.registered.clear();
     }
 }

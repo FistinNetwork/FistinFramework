@@ -92,7 +92,7 @@ class TeamManagerImpl implements TeamManager
 
         for (FistinTeam fistinTeam : toMerge)
         {
-            fistinTeam.getPlayers().forEach((player, fistinPlayer) -> merged.addNewPlayer(fistinPlayer));
+            fistinTeam.getPlayers().forEach((player, fistinPlayer) -> merged.add(fistinPlayer));
             this.remove(fistinTeam);
         }
 
@@ -113,7 +113,7 @@ class TeamManagerImpl implements TeamManager
             final int index = data.getIndex();
             if(result[index] == null)
                 result[index] = new FistinTeam(data.getName());
-            result[index].addNewPlayer(player);
+            result[index].add(player);
         }
 
         this.remove(origin);

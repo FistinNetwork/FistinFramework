@@ -20,48 +20,72 @@ public abstract class DefaultGame implements Game
     protected GameState gameState;
     protected int timer = -1;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @NotNull GameState gameState()
     {
         return this.gameState;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setGameState(@NotNull GameState gameState)
     {
-        IFistinFramework.framework().eventBus().handleEvent(() -> new GameStateChangedEvent(this.gameState, this.gameState = gameState, this));
+        IFistinFramework.framework().fistinEventBus().handleEvent(() -> new GameStateChangedEvent(this.gameState, this.gameState = gameState, this));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void changeGameState(@NotNull String newState)
     {
         this.setGameState(this.gameManager().getGameState(newState));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void changeGameState(int newState)
     {
         this.setGameState(this.gameManager().getGameState(newState));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @NotNull Map<Player, FistinPlayer> inLobbyPlayers()
     {
         return this.inLobbyPlayers;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @NotNull Map<Player, FistinPlayer> playingPlayers()
     {
         return this.playingPlayers;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public @NotNull Map<Player, FistinPlayer> spectatingPlayers()
     {
         return this.spectatingPlayers;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int players()
     {
@@ -69,13 +93,13 @@ public abstract class DefaultGame implements Game
     }
 
     @Override
-    public @Nullable FistinPlayer findPlayer(@NotNull Player player)
+    public @Nullable FistinPlayer find(@NotNull Player player)
     {
         return this.playingPlayers.getOrDefault(player, this.inLobbyPlayers.getOrDefault(player, this.spectatingPlayers.get(player)));
     }
 
     @Override
-    public void addNewPlayer(@NotNull FistinPlayer player)
+    public void add(@NotNull FistinPlayer player)
     {
         player.changePlayerState("IN_LOBBY");
         this.inLobbyPlayers.put(player.getPlayer(), player);
@@ -90,12 +114,18 @@ public abstract class DefaultGame implements Game
         this.spectatingPlayers.forEach(consumer);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkPlayersCount()
     {
         return this.players() <= this.maxPlayers() && this.players() >= this.minPlayers();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start()
     {
@@ -113,6 +143,9 @@ public abstract class DefaultGame implements Game
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int timerBeforeGameStart()
     {

@@ -1,35 +1,33 @@
 package fr.fistin.fistinframework.eventbus;
 
 import fr.fistin.fistinframework.utils.FistinFrameworkException;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.Supplier;
 
-@ApiStatus.Internal
-public class DefaultEventBus implements IFistinEventBus<Supplier<? extends IFistinEvent>>
+public class DefaultEventBus implements FistinEventBus<Supplier<? extends FistinEvent>>
 {
-    private static final List<EventExecution> EVENT_EXECUTIONS = new ArrayList<>();
+    private static final Map<DefaultEventBus, EventExecution> EVENT_EXECUTIONS = new HashMap<>();
 
-    private final Set<Class<? extends IFistinEvent>> registeredEvents = new HashSet<>();
+    private final Set<Class<? extends FistinEvent>> registeredEvents = new HashSet<>();
     private final Set<FistinEventListener> listeners = new HashSet<>();
 
     @Override
-    public @NotNull Set<Class<? extends IFistinEvent>> registeredEvents()
+    public @NotNull Set<Class<? extends FistinEvent>> registeredEvents()
     {
-        return this.registeredEvents;
+        return Collections.unmodifiableSet(this.registeredEvents);
     }
 
     @Override
     public @NotNull Set<FistinEventListener> listeners()
     {
-        return this.listeners;
+        return Collections.unmodifiableSet(this.listeners);
     }
 
     @Override
-    public void registerEvent(Class<? extends IFistinEvent> eventClass)
+    public void registerEvent(Class<? extends FistinEvent> eventClass)
     {
         this.registeredEvents.add(eventClass);
     }
@@ -41,10 +39,10 @@ public class DefaultEventBus implements IFistinEventBus<Supplier<? extends IFist
     }
 
     @Override
-    public void handleEvent(Supplier<? extends IFistinEvent> eventSup)
+    public void handleEvent(Supplier<? extends FistinEvent> eventSup)
     {
-        EVENT_EXECUTIONS.add(new EventExecution(eventSup.get().getName(), System.currentTimeMillis()));
-        final IFistinEvent event = eventSup.get();
+        EVENT_EXECUTIONS.put(this, new EventExecution(eventSup.get().getName(), System.currentTimeMillis()));
+        final FistinEvent event = eventSup.get();
         if(this.registeredEvents.contains(event.getClass()))
         {
             this.listeners.forEach(listener -> {
@@ -68,10 +66,11 @@ public class DefaultEventBus implements IFistinEventBus<Supplier<? extends IFist
     }
 
     @Override
-    public void clear()
+    public void clean()
     {
         this.registeredEvents.clear();
         this.listeners.clear();
+        EVENT_EXECUTIONS.remove(this);
     }
 
     @Override
@@ -80,9 +79,9 @@ public class DefaultEventBus implements IFistinEventBus<Supplier<? extends IFist
         return "default";
     }
 
-    public static List<EventExecution> getEventExecutions()
+    public static Map<DefaultEventBus, EventExecution> getEventExecutions()
     {
-        return EVENT_EXECUTIONS;
+        return Collections.unmodifiableMap(EVENT_EXECUTIONS);
     }
 
     public static class EventExecution

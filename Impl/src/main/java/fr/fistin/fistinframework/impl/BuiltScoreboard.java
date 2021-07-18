@@ -1,9 +1,9 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.scoreboard.DefaultScoreboard;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Map;

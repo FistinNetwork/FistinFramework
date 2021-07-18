@@ -1,12 +1,10 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.player.FistinPlayer;
-import fr.fistin.fistinframework.runnable.FistinRunnableTimer;
-import fr.fistin.fistinframework.runnable.RunnableUtils;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import fr.fistin.fistinframework.utils.FistinValidate;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.jetbrains.annotations.ApiStatus;
@@ -14,12 +12,8 @@ import org.jetbrains.annotations.ApiStatus;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.logging.Level;
-
-import static fr.fistin.fistinframework.runnable.RunnableUtils.*;
 
 /**
  * Don't use directly this class, use {@link IScoreboardSign} instead!
@@ -40,11 +34,13 @@ class ScoreboardSignImpl implements IScoreboardSign
     {
         this.player = player;
         this.caller = caller;
-        this.objectiveName = CHAR + "b" + objectiveName;
+        this.objectiveName = CHAR + "b" + CHAR + "6" + objectiveName;
 
         final int length = this.objectiveName.length();
-        FistinValidate.numberInferior(length + 4, 32, "Scoreboard name is too long!");
-        FistinValidate.numberSuperior(length - 2, 0, "Scoreboard name is too short!");
+        //FistinValidate.numberInferior(length + 4, 32, "Scoreboard name is too long!");
+        FistinValidate.numberInferior(length, 32, "Scoreboard name is too long!");
+        //FistinValidate.numberSuperior(length - 2, 0, "Scoreboard name is too short!");
+        FistinValidate.numberSuperior(length, 0, "Scoreboard name is too short!");
     }
 
     /**
@@ -65,7 +61,7 @@ class ScoreboardSignImpl implements IScoreboardSign
 
         this.created = true;
 
-        RunnableUtils.runRepeatedBukkitRunnable(newBukkitRunnable(new Runnable() {
+       /*RunnableUtils.runRepeatedBukkitRunnable(newBukkitRunnable(new Runnable() {
             @Override
             public void run()
             {
@@ -156,7 +152,7 @@ class ScoreboardSignImpl implements IScoreboardSign
                     }
                 }), false, ScoreboardSignImpl.this.caller, 0L, TimeUnit.SECONDS, 350L, TimeUnit.MILLISECONDS);
             }
-        }), false, this.caller, 0L, TimeUnit.SECONDS, 10L, TimeUnit.SECONDS);
+        }), false, this.caller, 0L, TimeUnit.SECONDS, 10L, TimeUnit.SECONDS);*/
     }
 
     /**

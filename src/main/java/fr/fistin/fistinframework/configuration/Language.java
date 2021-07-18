@@ -1,20 +1,22 @@
 package fr.fistin.fistinframework.configuration;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.utils.Cleanable;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 
-public class Language
+public class Language implements Cleanable
 {
+    public static final Language DEFAULT = IFistinFramework.framework().languageManager().getLanguage(IFistinFramework.framework(), Locale.ENGLISH);
+
     private final Locale locale;
     private final IBukkitPluginProvider plugin;
     private final String name;
@@ -26,15 +28,14 @@ public class Language
         this.locale = locale;
         this.plugin = plugin;
         this.name = this.locale.getLanguage();
-        final String emplacement = "languages/" + this.name + ".yml";
-        this.file = Paths.get(this.plugin.getDataFolder().getAbsolutePath(), emplacement);
+        this.file = this.plugin.getDataFolder().toPath().resolve("languages").resolve(this.name + ".yml");
 
         try
         {
             if(Files.notExists(this.file))
             {
                 Files.createDirectories(this.file.getParent());
-                this.plugin.saveResource(emplacement, false);
+                this.plugin.saveResource("languages/" + this.name + ".yml", false);
             }
 
             final YamlConfiguration configuration = YamlConfiguration.loadConfiguration(Files.newBufferedReader(this.file));
@@ -80,5 +81,11 @@ public class Language
     public Path getFile()
     {
         return this.file;
+    }
+
+    @Override
+    public void clean()
+    {
+        this.translatedMessages.clear();
     }
 }

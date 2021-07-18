@@ -10,7 +10,7 @@ public class EventBusTest
     @Test
     public void testEventBusAPI()
     {
-        final IFistinEventBus<Supplier<? extends IFistinEvent>> bus = new DefaultEventBus();
+        final FistinEventBus<Supplier<? extends FistinEvent>> bus = new DefaultEventBus();
         bus.registerEvent(TestEvent.class);
         bus.registerEvent(AnotherTestEvent.class);
         bus.addListener(new FistinEventListener() {
@@ -30,10 +30,10 @@ public class EventBusTest
             }
         });
         bus.handleEvent(() -> new AnotherTestEvent("waaaaaw"));
-        bus.clear();
+        bus.clean();
     }
 
-    private static class TestEvent implements IFistinEvent
+    private static class TestEvent implements FistinEvent
     {
         private final String toPrint;
 
@@ -54,7 +54,7 @@ public class EventBusTest
         }
     }
 
-    private static class AnotherTestEvent implements IFistinEvent
+    private static class AnotherTestEvent implements FistinEvent
     {
         private final String toPrint;
 

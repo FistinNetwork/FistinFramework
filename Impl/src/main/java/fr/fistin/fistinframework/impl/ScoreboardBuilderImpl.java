@@ -1,10 +1,10 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.scoreboard.IScoreboard;
 import fr.fistin.fistinframework.scoreboard.ScoreboardBuilder;
 import fr.fistin.fistinframework.utils.FistinValidate;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;

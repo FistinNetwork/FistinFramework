@@ -4,9 +4,9 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Table;
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.configuration.Language;
 import fr.fistin.fistinframework.configuration.LanguageManager;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
@@ -59,8 +59,9 @@ class LanguageManagerImpl implements LanguageManager
     }
 
     @Override
-    public void clear()
+    public void clean()
     {
+        this.table.values().forEach(Language::clean);
         this.table.clear();
         this.remainingLanguagesByPlugin.clear();
         this.remainingLanguages.clear();

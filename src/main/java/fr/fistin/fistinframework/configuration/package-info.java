@@ -1,5 +1,6 @@
 /**
  * Configuration API of FistinNetwork.
+ *
  * @see fr.fistin.fistinframework.configuration.ConfigurationMapping
  * @see fr.fistin.fistinframework.configuration.ConfigurationMappings
  * @see fr.fistin.fistinframework.configuration.Language

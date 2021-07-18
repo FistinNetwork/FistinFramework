@@ -1,12 +1,14 @@
 package fr.fistin.fistinframework.hostconfig;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
+import fr.fistin.fistinframework.utils.Cleanable;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class HostConfig
+public class HostConfig implements Cleanable
 {
     private final @NotNull IBukkitPluginProvider plugin;
     private final @NotNull List<Category> categories;
@@ -39,7 +41,7 @@ public class HostConfig
 
     public @NotNull List<Category> getCategories()
     {
-        return this.categories;
+        return Collections.unmodifiableList(this.categories);
     }
 
     public void addCategory(Category category, boolean defaultCategory)
@@ -57,5 +59,12 @@ public class HostConfig
     public Category getDefaultCategory()
     {
         return this.defaultCategory;
+    }
+
+    @Override
+    public void clean()
+    {
+        this.categories.forEach(Category::clean);
+        this.categories.clear();
     }
 }

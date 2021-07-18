@@ -1,6 +1,5 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.addon.AddonProcessor;
@@ -8,23 +7,21 @@ import fr.fistin.fistinframework.anvilgui.AnvilGUI;
 import fr.fistin.fistinframework.configuration.ConfigurationMappings;
 import fr.fistin.fistinframework.configuration.LanguageManager;
 import fr.fistin.fistinframework.configuration.Messages;
-import fr.fistin.fistinframework.event.GameManagerInitEvent;
-import fr.fistin.fistinframework.event.GameStateChangedEvent;
-import fr.fistin.fistinframework.event.InnerListenerEvent;
-import fr.fistin.fistinframework.event.PlayerStateChangedEvent;
 import fr.fistin.fistinframework.eventbus.DefaultEventBus;
-import fr.fistin.fistinframework.eventbus.IFistinEvent;
-import fr.fistin.fistinframework.eventbus.IFistinEventBus;
+import fr.fistin.fistinframework.eventbus.FistinEvent;
+import fr.fistin.fistinframework.eventbus.FistinEventBus;
 import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.hostconfig.HostConfigurationManager;
-import fr.fistin.fistinframework.item.IFistinItems;
+import fr.fistin.fistinframework.item.FistinItems;
 import fr.fistin.fistinframework.listener.ListenerManager;
 import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
 import fr.fistin.fistinframework.scoreboard.ScoreboardBuilder;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
 import fr.fistin.fistinframework.team.TeamManager;
+import fr.fistin.fistinframework.utils.AutomaticRegisterer;
 import fr.fistin.fistinframework.utils.FireworkFactory;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import fr.fistin.fistinframework.utils.PlayerHelper;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
@@ -37,17 +34,18 @@ import java.util.function.Supplier;
 public final class FistinFramework extends JavaPlugin implements IFistinFramework
 {
     private AddonProcessor addonProcessor;
-    private ConfigurationMappings mappings;
-    private IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus;
+    private AutomaticRegisterer automaticRegisterer;
+    private ConfigurationMappings configurationMappings;
     private FireworkFactory fireworkFactory;
+    private FistinEventBus<Supplier<? extends FistinEvent>> fistinEventBus;
+    private FistinItems fistinItems;
     private HostConfigurationManager hostConfigurationManager;
-    private IFistinItems items;
     private LanguageManager languageManager;
     private ListenerManager listenerManager;
     private LuckPermsToFistin luckPermsToFistin;
     private Messages messages;
     private PlayerHelper playerHelper;
-    private InventoryManager smartInvsManager;
+    private InventoryManager inventoryManager;
 
     @Override
     public void onEnable()
@@ -61,47 +59,49 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
 
     private void init()
     {
+        this.getLogger().info("Initializing APIs' Framework and Framework's official implementation...");
         this.addonProcessor = new AddonProcessorImpl();
-        this.mappings = new ConfigurationMappingsImpl();
-        this.eventBus = new DefaultEventBus();
+        this.automaticRegisterer = new AutomaticRegistererImpl();
+        this.configurationMappings = new ConfigurationMappingsImpl();
+        this.fistinEventBus = new DefaultEventBus();
         this.fireworkFactory = new FireworkFactoryImpl();
         this.hostConfigurationManager = new HostConfigurationManagerImpl();
-        this.items = new FistinItemsImpl();
+        this.fistinItems = new FistinItemsImpl();
         this.languageManager = new LanguageManagerImpl();
         this.listenerManager = new ListenerManagerImpl();
         this.luckPermsToFistin = new LuckPermsToFistinImpl();
         this.messages = new MessagesImpl();
         this.playerHelper = new PlayerHelperImpl();
-        this.smartInvsManager = new InventoryManagerImpl(this, InventoryContentsImpl::new);
+        this.inventoryManager = new InventoryManagerImpl(this, InventoryContentsImpl::new);
 
+        this.getLogger().info("Loading languages...");
         this.languageManager.load(this, Locale.FRENCH);
 
-        this.eventBus.registerEvent(GameManagerInitEvent.class);
-        this.eventBus.registerEvent(GameStateChangedEvent.class);
-        this.eventBus.registerEvent(InnerListenerEvent.class);
-        this.eventBus.registerEvent(PlayerStateChangedEvent.class);
+        this.automaticRegisterer.register(this, "fr.fistin.fistinframework.event", AutomaticRegisterer.Type.EVENT);
 
-        this.smartInvsManager.init();
+        this.inventoryManager.init();
     }
 
     private void postInit()
     {
-        this.getServer().getPluginManager().registerEvents(new ItemListener(), this);
-        this.getCommand("fistindebug").setExecutor(new DebugCommand(this));
-        this.getCommand("fgive").setExecutor(new FGiveCommand());
-        this.getCommand("ffirework").setExecutor(new FFireworkCommand());
+        this.automaticRegisterer.register(this, "fr.fistin.fistinframework.impl", AutomaticRegisterer.Type.LISTENER);
+        this.automaticRegisterer.register(this, "fr.fistin.fistinframework.impl", AutomaticRegisterer.Type.COMMAND);
     }
 
     @Override
     public void onDisable()
     {
-        this.fireworkFactory.clear();
-        this.eventBus.clear();
-        this.items.clear();
-        this.languageManager.clear();
+        this.getLogger().info("Cleaning up Framework...");
+        this.configurationMappings.clean();
+        this.fireworkFactory.clean();
+        this.fistinEventBus.clean();
+        this.fistinItems.clean();
+        this.hostConfigurationManager.clean();
+        this.languageManager.clean();
+        this.listenerManager.clean();
+        this.inventoryManager.clean();
 
-        super.onDisable();
-        this.getLogger().info("Stopped Fistin Framework, have a nice day !");
+        this.getLogger().info("Shutdown Fistin Framework, have a nice day !");
     }
 
     @Override
@@ -117,21 +117,15 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
-    public @NotNull ConfigurationMappings mappings()
+    public @NotNull AutomaticRegisterer automaticRegisterer()
     {
-        return this.mappings;
+        return this.automaticRegisterer;
     }
 
     @Override
-    public @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> eventBus()
+    public @NotNull ConfigurationMappings configurationMappings()
     {
-        return this.eventBus;
-    }
-
-    @Override
-    public @NotNull IFistinEventBus<Supplier<? extends IFistinEvent>> newEventBus()
-    {
-        return new DefaultEventBus();
+        return this.configurationMappings;
     }
 
     @Override
@@ -141,15 +135,33 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
+    public @NotNull FistinEventBus<Supplier<? extends FistinEvent>> fistinEventBus()
+    {
+        return this.fistinEventBus;
+    }
+
+    @Override
+    public @NotNull FistinEventBus<Supplier<? extends FistinEvent>> newFistinEventBus()
+    {
+        return new DefaultEventBus();
+    }
+
+    @Override
+    public @NotNull FistinItems fistinItems()
+    {
+        return this.fistinItems;
+    }
+
+    @Override
     public @NotNull HostConfigurationManager hostConfigurationManager()
     {
         return this.hostConfigurationManager;
     }
 
     @Override
-    public @NotNull IFistinItems items()
+    public @NotNull InventoryManager inventoryManager()
     {
-        return this.items;
+        return this.inventoryManager;
     }
 
     @Override
@@ -201,13 +213,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
-    public @NotNull InventoryManager smartInvsManager()
-    {
-        return this.smartInvsManager;
-    }
-
-    @Override
-    public @NotNull TeamManager teamManager()
+    public @NotNull TeamManager newTeamManager()
     {
         return new TeamManagerImpl();
     }

@@ -1,6 +1,5 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.runnable.RunnableUtils;
 import fr.fistin.fistinframework.smartinvs.InventoryListener;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
@@ -10,6 +9,7 @@ import fr.fistin.fistinframework.smartinvs.content.InventoryContentsWrapper;
 import fr.fistin.fistinframework.smartinvs.opener.ChestInventoryOpener;
 import fr.fistin.fistinframework.smartinvs.opener.InventoryOpener;
 import fr.fistin.fistinframework.smartinvs.opener.SpecialInventoryOpener;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -247,5 +247,14 @@ class InventoryManagerImpl implements InventoryManager
             InventoryManagerImpl.this.inventories.clear();
             InventoryManagerImpl.this.contents.clear();
         }
+    }
+
+    @Override
+    public void clean()
+    {
+        this.inventories.clear();
+        this.contents.clear();
+        this.openers.clear();
+        this.defaultOpeners.clear();
     }
 }

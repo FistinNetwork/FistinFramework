@@ -1,7 +1,7 @@
 package fr.fistin.fistinframework.runnable;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.utils.FistinValidate;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.TimeUnit;

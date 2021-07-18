@@ -12,10 +12,10 @@ authors:
   - Filouz (Contributor)
   - Faustin (Contributor)
 commands:
-  fistindebug:
+  fdebug:
     description: FistinDebug command
     permission: fistin.staff
-    usage: /fistindebug items|fireworks|events [implBusName]|providers
+    usage: /fdebug items|fireworks|events [implBusName]|providers
   fgive:
     description: Give command for Fistin items
     permission: fistin.staff

@@ -7,11 +7,10 @@ import org.bukkit.Location;
 import java.util.Set;
 import java.util.function.Function;
 
-public interface FireworkFactory
+public interface FireworkFactory extends Cleanable
 {
 	void registerFirework(PluginLocation location, Function<FireworkEffect.Builder, FireworkEffect> effect);
 	void spawnFirework(PluginLocation pluginLocation, Location location, double offsetY);
 	void spawnFirework(PluginLocation pluginLocation, Location location);
-	void clear();
 	Set<PluginLocation> effectsLocation();
 }

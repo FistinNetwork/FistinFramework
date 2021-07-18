@@ -2,7 +2,7 @@ package fr.fistin.fistinframework.eventbus;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface IFistinEvent
+public interface FistinEvent
 {
     default @NotNull String getName()
     {

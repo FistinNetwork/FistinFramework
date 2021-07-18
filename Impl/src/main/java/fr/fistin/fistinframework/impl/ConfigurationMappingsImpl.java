@@ -72,4 +72,12 @@ class ConfigurationMappingsImpl implements ConfigurationMappings
     {
         return this.timeMappings;
     }
+
+    @Override
+    public void clean()
+    {
+        this.playerMappings.clean();
+        this.gameMappings.clean();
+        this.timeMappings.clean();
+    }
 }

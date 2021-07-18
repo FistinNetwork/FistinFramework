@@ -217,7 +217,7 @@ class SmartInventoryImpl implements SmartInventory
             if(this.provider == null)
                 throw new IllegalStateException("The provider of the SmartInventory.Builder must be set.");
 
-            final InventoryManager manager = this.manager != null ? this.manager : IFistinFramework.framework().smartInvsManager();
+            final InventoryManager manager = this.manager != null ? this.manager : IFistinFramework.framework().inventoryManager();
             final SmartInventoryImpl inv = new SmartInventoryImpl(manager);
             inv.id = this.id;
             inv.title = this.title;

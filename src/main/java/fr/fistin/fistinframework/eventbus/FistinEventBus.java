@@ -1,17 +1,17 @@
 package fr.fistin.fistinframework.eventbus;
 
+import fr.fistin.fistinframework.utils.Cleanable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 import java.util.function.Supplier;
 
-public interface IFistinEventBus<E extends Supplier<? extends IFistinEvent>>
+public interface FistinEventBus<E extends Supplier<? extends FistinEvent>> extends Cleanable
 {
-    @NotNull Set<Class<? extends IFistinEvent>> registeredEvents();
+    @NotNull Set<Class<? extends FistinEvent>> registeredEvents();
     @NotNull Set<FistinEventListener> listeners();
-    void registerEvent(Class<? extends IFistinEvent> eventClass);
+    void registerEvent(Class<? extends FistinEvent> eventClass);
     void addListener(FistinEventListener listener);
     void handleEvent(E eventSup);
-    void clear();
     String implName();
 }

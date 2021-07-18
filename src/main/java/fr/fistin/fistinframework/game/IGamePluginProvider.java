@@ -1,11 +1,12 @@
 package fr.fistin.fistinframework.game;
 
 import fr.fistin.api.plugin.PluginType;
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.team.TeamManager;
+import fr.fistin.fistinframework.utils.Castex;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.jetbrains.annotations.NotNull;
 
-public interface IGamePluginProvider extends IBukkitPluginProvider
+public interface IGamePluginProvider extends IBukkitPluginProvider, Castex<IGamePluginProvider>
 {
     GameManager gameManager();
 

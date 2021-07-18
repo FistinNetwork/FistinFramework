@@ -1,10 +1,10 @@
 package fr.fistin.fistinframework.event;
 
-import fr.fistin.fistinframework.eventbus.IFistinEvent;
+import fr.fistin.fistinframework.eventbus.FistinEvent;
 import fr.fistin.fistinframework.game.GameManager;
 import org.jetbrains.annotations.NotNull;
 
-public class GameManagerInitEvent implements IFistinEvent
+public class GameManagerInitEvent implements FistinEvent
 {
     private final GameManager gameManager;
 

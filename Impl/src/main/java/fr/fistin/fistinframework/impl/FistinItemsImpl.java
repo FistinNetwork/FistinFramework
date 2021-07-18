@@ -3,9 +3,10 @@ package fr.fistin.fistinframework.impl;
 import fr.fistin.api.utils.PluginLocation;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.item.FistinItem;
-import fr.fistin.fistinframework.item.IFistinItems;
+import fr.fistin.fistinframework.item.FistinItems;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @ApiStatus.Internal
-class FistinItemsImpl implements IFistinItems
+class FistinItemsImpl implements FistinItems
 {
     private final Map<PluginLocation, FistinItem> items = new HashMap<>();
 
@@ -38,7 +39,7 @@ class FistinItemsImpl implements IFistinItems
     @Override
     public Set<String> getRegisteredItemsName()
     {
-        return this.items.values().stream().map(FistinItem::displayName).collect(Collectors.toSet());
+        return Collections.unmodifiableSet(this.items.values().stream().map(FistinItem::displayName).collect(Collectors.toSet()));
     }
 
     @Override
@@ -46,11 +47,11 @@ class FistinItemsImpl implements IFistinItems
     {
         final Map<String, PluginLocation> result = new HashMap<>();
         this.items.keySet().forEach(location -> result.put(this.items.get(location).displayName(), location));
-        return result;
+        return Collections.unmodifiableMap(result);
     }
 
     @Override
-    public void clear()
+    public void clean()
     {
         this.items.clear();
     }

@@ -1,7 +1,7 @@
 package fr.fistin.fistinframework.scoreboard;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 
 import java.util.List;
 import java.util.function.Supplier;

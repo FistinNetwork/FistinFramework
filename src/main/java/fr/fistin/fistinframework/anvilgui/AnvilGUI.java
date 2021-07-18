@@ -1,6 +1,6 @@
 package fr.fistin.fistinframework.anvilgui;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

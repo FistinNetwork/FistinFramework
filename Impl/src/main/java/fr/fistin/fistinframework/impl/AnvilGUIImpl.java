@@ -1,9 +1,9 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.anvilgui.AnvilGUI;
 import fr.fistin.fistinframework.anvilgui.VersionWrapper;
 import fr.fistin.fistinframework.utils.FistinValidate;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -212,20 +212,20 @@ class AnvilGUIImpl implements AnvilGUI
     private class ListenUp implements Listener
     {
         @EventHandler
-        public void onInventoryClick(InventoryClickEvent event) {
-            if (event.getInventory().equals(AnvilGUIImpl.this.inventory) && (event.getRawSlot() < 3
-                    || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)))
+        public void onInventoryClick(InventoryClickEvent event)
+        {
+            if (event.getInventory().equals(AnvilGUIImpl.this.inventory) && (event.getRawSlot() < 3 || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)))
             {
                 event.setCancelled(true);
                 final Player clicker = (Player) event.getWhoClicked();
-                if (event.getRawSlot() == Slot.OUTPUT) {
+                if (event.getRawSlot() == Slot.OUTPUT)
+                {
                     final ItemStack clicked = AnvilGUIImpl.this.inventory.getItem(Slot.OUTPUT);
+
                     if (clicked == null || clicked.getType() == Material.AIR) return;
 
-                    final Response response = completeFunction.apply(
-                            clicker,
-                            clicked.hasItemMeta() ? clicked.getItemMeta().getDisplayName() : ""
-                    );
+                    final Response response = completeFunction.apply(clicker, clicked.hasItemMeta() ? clicked.getItemMeta().getDisplayName() : "");
+
                     if (response.getText() != null)
                     {
                         final ItemMeta meta = clicked.getItemMeta();
@@ -237,26 +237,29 @@ class AnvilGUIImpl implements AnvilGUI
                     else AnvilGUIImpl.this.closeInventory();
                 }
                 else if (event.getRawSlot() == Slot.INPUT_LEFT)
-                    if (AnvilGUIImpl.this.inputLeftClickListener != null)
-                        AnvilGUIImpl.this.inputLeftClickListener.accept(AnvilGUIImpl.this.player);
+                {
+                    if (AnvilGUIImpl.this.inputLeftClickListener == null) return;
+                    AnvilGUIImpl.this.inputLeftClickListener.accept(AnvilGUIImpl.this.player);
+                }
                 else if (event.getRawSlot() == Slot.INPUT_RIGHT)
-                    if (AnvilGUIImpl.this.inputRightClickListener != null)
-                        AnvilGUIImpl.this.inputRightClickListener.accept(AnvilGUIImpl.this.player);
+                {
+                    if (AnvilGUIImpl.this.inputRightClickListener == null) return;
+                    AnvilGUIImpl.this.inputRightClickListener.accept(AnvilGUIImpl.this.player);
+                }
             }
         }
 
         @EventHandler
         public void onInventoryDrag(InventoryDragEvent event)
         {
-            if (event.getInventory().equals(AnvilGUIImpl.this.inventory))
+            if (!event.getInventory().equals(AnvilGUIImpl.this.inventory)) return;
+
+            for (int slot : Slot.values())
             {
-                for (int slot : Slot.values())
+                if (event.getRawSlots().contains(slot))
                 {
-                    if (event.getRawSlots().contains(slot))
-                    {
-                        event.setCancelled(true);
-                        break;
-                    }
+                    event.setCancelled(true);
+                    break;
                 }
             }
         }
@@ -264,11 +267,10 @@ class AnvilGUIImpl implements AnvilGUI
         @EventHandler
         public void onInventoryClose(InventoryCloseEvent event)
         {
-            if (AnvilGUIImpl.this.open && event.getInventory().equals(AnvilGUIImpl.this.inventory))
-            {
-                AnvilGUIImpl.this.closeInventory(false);
-                if (AnvilGUIImpl.this.preventClose) Bukkit.getScheduler().runTask(AnvilGUIImpl.this.plugin, AnvilGUIImpl.this::openInventory);
-            }
+            if(!AnvilGUIImpl.this.open || !event.getInventory().equals(AnvilGUIImpl.this.inventory)) return;
+
+            AnvilGUIImpl.this.closeInventory(false);
+            if (AnvilGUIImpl.this.preventClose) Bukkit.getScheduler().runTask(AnvilGUIImpl.this.plugin, AnvilGUIImpl.this::openInventory);
         }
     }
 

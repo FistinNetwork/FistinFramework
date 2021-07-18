@@ -1,15 +1,16 @@
 package fr.fistin.fistinframework.hostconfig;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.hostconfig.settings.AbstractSetting;
 import fr.fistin.fistinframework.item.ItemStackGenerator;
+import fr.fistin.fistinframework.utils.Cleanable;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.bukkit.Material;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Category implements ItemStackGenerator
+public class Category implements ItemStackGenerator, Cleanable
 {
     private final String id;
     private final String displayName;
@@ -75,5 +76,12 @@ public class Category implements ItemStackGenerator
     public Map<String, AbstractSetting<?>> getSettings()
     {
         return this.settings;
+    }
+
+    @Override
+    public void clean()
+    {
+        this.settings.clear();
+        this.lore.clear();
     }
 }

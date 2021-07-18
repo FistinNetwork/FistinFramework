@@ -9,6 +9,7 @@ import net.luckperms.api.cacheddata.CachedPermissionData;
 import net.luckperms.api.model.user.User;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -36,20 +37,19 @@ class LuckPermsToFistinImpl implements LuckPermsToFistin
     }
 
     @Override
-    public @NotNull PlayerGrade getGradeForPlayer(User user)
+    public @NotNull PlayerGrade getGradeForPlayer(@Nullable User user)
     {
-        if(user != null)
-        {
-            final CachedPermissionData data = user.getCachedData().getPermissionData();
-            if(data.checkPermission(PlayerGrade.ADMIN.getName()).asBoolean())
-                return PlayerGrade.ADMIN;
-            else if(data.checkPermission(PlayerGrade.STAFF.getName()).asBoolean())
-                return PlayerGrade.STAFF;
-            else if(data.checkPermission(PlayerGrade.VIP.getName()).asBoolean())
-                return PlayerGrade.VIP;
-            else if(data.checkPermission(PlayerGrade.NORMAL.getName()).asBoolean())
-                return PlayerGrade.NORMAL;
-        }
+        if(user == null) return PlayerGrade.NORMAL;
+
+        final CachedPermissionData data = user.getCachedData().getPermissionData();
+        if(data.checkPermission(PlayerGrade.ADMIN.getName()).asBoolean())
+            return PlayerGrade.ADMIN;
+        else if(data.checkPermission(PlayerGrade.STAFF.getName()).asBoolean())
+            return PlayerGrade.STAFF;
+        else if(data.checkPermission(PlayerGrade.VIP.getName()).asBoolean())
+            return PlayerGrade.VIP;
+        else if(data.checkPermission(PlayerGrade.NORMAL.getName()).asBoolean())
+            return PlayerGrade.NORMAL;
 
         return PlayerGrade.NORMAL;
     }

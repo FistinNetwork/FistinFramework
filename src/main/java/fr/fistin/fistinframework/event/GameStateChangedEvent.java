@@ -1,11 +1,11 @@
 package fr.fistin.fistinframework.event;
 
-import fr.fistin.fistinframework.eventbus.IFistinEvent;
+import fr.fistin.fistinframework.eventbus.FistinEvent;
 import fr.fistin.fistinframework.game.Game;
 import fr.fistin.fistinframework.game.GameState;
 import org.jetbrains.annotations.NotNull;
 
-public class GameStateChangedEvent implements IFistinEvent
+public class GameStateChangedEvent implements FistinEvent
 {
     private final GameState oldState;
     private final GameState newState;

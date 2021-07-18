@@ -1,5 +1,6 @@
 /**
  * Event API of FistinNetwork.
+ *
  * @see fr.fistin.fistinframework.event.GameManagerInitEvent
  * @see fr.fistin.fistinframework.event.GameStateChangedEvent
  * @see fr.fistin.fistinframework.event.ICancellable

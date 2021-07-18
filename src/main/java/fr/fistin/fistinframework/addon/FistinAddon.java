@@ -1,6 +1,6 @@
 package fr.fistin.fistinframework.addon;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 
 public abstract class FistinAddon<C>
 {

@@ -1,9 +1,9 @@
 package fr.fistin.fistinframework.impl;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.fistinframework.addon.AddonInfo;
 import fr.fistin.fistinframework.addon.AddonProcessor;
 import fr.fistin.fistinframework.addon.FistinAddon;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.jetbrains.annotations.ApiStatus;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;

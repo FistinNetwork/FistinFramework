@@ -23,27 +23,29 @@ allprojects {
     }
 
     repositories {
+        mavenCentral()
+
+        maven {
+            credentials {
+                if(System.getenv('USERNAME') != null) {
+                    username System.getenv('USERNAME')
+                }
+                else username "${USERNAME}"
+
+                if(System.getenv('TOKEN') != null) {
+                    password System.getenv('TOKEN')
+                }
+                else password "${TOKEN}"
+            }
+            name = "FistinAPI_maven"
+            url = "https://maven.pkg.github.com/FistinNetwork/FistinAPI"
+        }
+
         maven {
             url "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
         }
         maven {
             url "https://hub.spigotmc.org/nexus/content/repositories/public"
-        }
-        mavenCentral()
-
-        maven {
-            credentials {
-                if(System.getProperty("user.home").contains("flow")) {
-                    username "${USERNAME}"
-                    password "${TOKEN}"
-                }
-                else {
-                    username System.getenv('USERNAME')
-                    password System.getenv('TOKEN')
-                }
-            }
-            name = "FistinAPI_maven"
-            url = "https://maven.pkg.github.com/FistinNetwork/FistinAPI"
         }
     }
 }
@@ -81,13 +83,14 @@ publishing {
                 username System.getenv('USERNAME')
                 password System.getenv('TOKEN')
             }
-            name = "FistinFramework_maven"
-            url = "https://maven.pkg.github.com/FistinNetwork/FistinFramework"
+            name "FistinFramework_maven"
+            url "https://maven.pkg.github.com/FistinNetwork/FistinFramework"
         }
     }
 }
 
 dependencies {
-    api 'fr.fistin:fistinapi:1.5.0:api'
+    api 'fr.fistin:fistinapi-api:1.6.0'
     api 'net.luckperms:api:5.2'
+    api 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
 }

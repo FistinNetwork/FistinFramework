@@ -2,7 +2,7 @@ package fr.fistin.fistinframework.addon;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

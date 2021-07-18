@@ -60,15 +60,21 @@ public class FistinTeam implements FistinPlayerContainer
     }
 
     @Override
-    public @Nullable FistinPlayer findPlayer(@NotNull Player player)
+    public void add(@NotNull FistinPlayer player)
+    {
+        this.players.put(player.getPlayer(), player);
+    }
+
+    @Override
+    public @Nullable FistinPlayer find(@NotNull Player player)
     {
         return this.players.get(player);
     }
 
     @Override
-    public void addNewPlayer(@NotNull FistinPlayer player)
+    public void remove(@NotNull FistinPlayer fistinPlayer)
     {
-        this.players.put(player.getPlayer(), player);
+        this.players.remove(fistinPlayer.getPlayer(), fistinPlayer);
     }
 
     public interface SplitData

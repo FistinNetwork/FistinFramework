@@ -1,10 +1,10 @@
 package fr.fistin.fistinframework.event;
 
-import fr.fistin.fistinframework.eventbus.IFistinEvent;
+import fr.fistin.fistinframework.eventbus.FistinEvent;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
-public class InnerListenerEvent implements IFistinEvent, ICancellable
+public class InnerListenerEvent implements FistinEvent, ICancellable
 {
     private final String listenerName;
     private final Event processingEvent;

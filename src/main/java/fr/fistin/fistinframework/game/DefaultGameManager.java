@@ -1,7 +1,6 @@
 package fr.fistin.fistinframework.game;
 
 import fr.fistin.api.ILevelingProvider;
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.event.GameManagerInitEvent;
@@ -38,7 +37,7 @@ public abstract class DefaultGameManager implements GameManager
     public void init()
     {
         this.init = true;
-        IFistinFramework.framework().eventBus().handleEvent(() -> new GameManagerInitEvent(this));
+        IFistinFramework.framework().fistinEventBus().handleEvent(() -> new GameManagerInitEvent(this));
     }
 
     @Override
@@ -127,8 +126,8 @@ public abstract class DefaultGameManager implements GameManager
         final ILevelingProvider leveling = this.getLeveling();
         final LuckPermsToFistin luckPermsToFistin = this.getLuckPermsToFistin();
 
-        leveling.addExp(player.getPlayer(), new Random().nextInt(15) + 15 + expBonus, this.gradeMultiplier(luckPermsToFistin.getGradeForPlayer(player)));
-        leveling.addCoins(player.getPlayer(), new Random().nextInt(65) + 30 + coinsBonus, this.gradeMultiplier(luckPermsToFistin.getGradeForPlayer(player)));
+        leveling.addExp(player.getUniqueId(), new Random().nextInt(15) + 15 + expBonus, this.gradeMultiplier(luckPermsToFistin.getGradeForPlayer(player)));
+        leveling.addCoins(player.getUniqueId(), new Random().nextInt(65) + 30 + coinsBonus, this.gradeMultiplier(luckPermsToFistin.getGradeForPlayer(player)));
     }
 
     @Override
@@ -137,8 +136,8 @@ public abstract class DefaultGameManager implements GameManager
         final ILevelingProvider leveling = this.getLeveling();
         final LuckPermsToFistin luckPermsToFistin = this.getLuckPermsToFistin();
 
-        leveling.addExp(player.getPlayer(), new Random().nextInt(6) + new Random().nextInt(8), this.gradeMultiplier(luckPermsToFistin.getGradeForPlayer(player)));
-        leveling.addCoins(player.getPlayer(), coinsBonus, this.gradeMultiplier(luckPermsToFistin.getGradeForPlayer(player)));
+        leveling.addExp(player.getUniqueId(), new Random().nextInt(6) + new Random().nextInt(8), this.gradeMultiplier(luckPermsToFistin.getGradeForPlayer(player)));
+        leveling.addCoins(player.getUniqueId(), coinsBonus, this.gradeMultiplier(luckPermsToFistin.getGradeForPlayer(player)));
     }
 
     @Override
@@ -158,7 +157,7 @@ public abstract class DefaultGameManager implements GameManager
         return 1f;
     }
 
-    public abstract IBukkitPluginProvider getPlugin();
+    public abstract IGamePluginProvider getPlugin();
 
     @NotNull
     protected ILevelingProvider getLeveling()

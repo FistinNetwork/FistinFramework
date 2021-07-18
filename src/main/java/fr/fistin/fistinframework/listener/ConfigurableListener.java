@@ -1,6 +1,6 @@
 package fr.fistin.fistinframework.listener;
 
-import fr.fistin.api.plugin.providers.IBukkitPluginProvider;
+import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.ApiStatus;
 

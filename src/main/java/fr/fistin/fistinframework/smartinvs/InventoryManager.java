@@ -3,13 +3,14 @@ package fr.fistin.fistinframework.smartinvs;
 import fr.fistin.fistinframework.smartinvs.content.InventoryContents;
 import fr.fistin.fistinframework.smartinvs.content.InventoryContentsWrapper;
 import fr.fistin.fistinframework.smartinvs.opener.InventoryOpener;
+import fr.fistin.fistinframework.utils.Cleanable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface InventoryManager
+public interface InventoryManager extends Cleanable
 {
     void init();
     Optional<InventoryOpener> findOpener(InventoryType type);
