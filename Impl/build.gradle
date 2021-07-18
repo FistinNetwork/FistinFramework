@@ -12,6 +12,11 @@ shadowJar {
 dependencies {
     compileOnly fileTree(dir: 'libs', include: '*.jar')
     implementation project.parent
+    shade(project.parent) {
+        exclude module: 'api'
+        exclude module: 'fistinapi-api'
+        exclude module: 'spigot-api'
+    }
     shade 'org.reflections:reflections:0.9.12'
 }
 
