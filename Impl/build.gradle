@@ -11,7 +11,7 @@ shadowJar {
 
 dependencies {
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    shade project.parent
+    implementation project.parent
     shade 'org.reflections:reflections:0.9.12'
 }
 
