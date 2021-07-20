@@ -1,5 +1,6 @@
 package fr.fistin.fistinframework.impl;
 
+import fr.fistin.fistinframework.command.FistinCommand;
 import fr.fistin.fistinframework.configuration.ConfigurationMapping;
 import fr.fistin.fistinframework.configuration.ConfigurationMappings;
 import fr.fistin.fistinframework.game.Game;
@@ -44,6 +45,16 @@ class ConfigurationMappingsImpl implements ConfigurationMappings
         }
     };
 
+    private final ConfigurationMapping<FistinCommand, String> commandMappings = new ConfigurationMapping<FistinCommand, String>() {
+        private final Map<String, Function<FistinCommand, String>> mappings = new HashMap<>();
+
+        @Override
+        public @NotNull Map<String, Function<FistinCommand, String>> mappings()
+        {
+            return this.mappings;
+        }
+    };
+
     ConfigurationMappingsImpl()
     {
         this.playerMappings.mappings().put("%PLAYER_NAME%", FistinPlayer::getName);
@@ -54,6 +65,8 @@ class ConfigurationMappingsImpl implements ConfigurationMappings
         this.gameMappings.mappings().put("%START_TIMER%", Game::timerBeforeGameStart);
         this.timeMappings.mappings().put("%SECONDS%", time -> Integer.toString(time));
         this.timeMappings.mappings().put("%MINUTES%", time -> Integer.toString(time / 60));
+        this.commandMappings.mappings().put("%ERROR%", FistinCommand::currentError);
+        this.commandMappings.mappings().put("%USAGE%", command -> command.getFistinCommandInfo().usage());
     }
 
     @Override
@@ -71,6 +84,12 @@ class ConfigurationMappingsImpl implements ConfigurationMappings
     public @NotNull ConfigurationMapping<Integer, String> getTimeMappings()
     {
         return this.timeMappings;
+    }
+
+    @Override
+    public @NotNull ConfigurationMapping<FistinCommand, String> getCommandMappings()
+    {
+        return commandMappings;
     }
 
     @Override

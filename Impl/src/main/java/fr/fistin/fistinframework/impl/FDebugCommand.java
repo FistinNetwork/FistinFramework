@@ -19,31 +19,33 @@ import java.util.Date;
 import java.util.Locale;
 
 @ApiStatus.Internal
-@FistinCommandInfo(name = "fdebug", permission = "fistin.staff")
+@FistinCommandInfo(name = "fdebug", permission = "fistin.staff", usage = "/fdebug events [implBusName]|fireworks|items|providers")
 class FDebugCommand extends FistinCommand
 {
     private final IFistinFramework framework = IFistinFramework.framework();
 
     @Override
-    protected void execute(CommandSender sender, String[] args)
+    protected ResultType execute(CommandSender sender, String[] args)
     {
-        if(args.length < 1) return;
+        if(args.length < 1) return ResultType.BAD_USAGE;
 
         switch (args[0].toLowerCase(Locale.ROOT))
         {
             case "providers":
                 this.sendProviders(sender);
-                break;
+                return ResultType.SUCCESS;
             case "items":
                 this.sendItems(sender);
-                break;
+                return ResultType.SUCCESS;
             case "fireworks":
                 this.sendFireworks(sender);
-                break;
+                return ResultType.SUCCESS;
             case "events":
-                if (args.length > 1)
-                    this.sendEvents(sender, args[1]);
-                break;
+                if(args.length == 1) return ResultType.BAD_USAGE;
+                this.sendEvents(sender, args[1]);
+                return ResultType.SUCCESS;
+            default:
+                return ResultType.BAD_USAGE;
         }
     }
 
@@ -106,7 +108,9 @@ class FDebugCommand extends FistinCommand
     private void sendEvents(CommandSender sender, String bus)
     {
         sender.sendMessage(String.format("-- Events on '%s' eventbus --", bus));
-        if(bus.equalsIgnoreCase(this.framework.fistinEventBus().implName()))
-            DefaultEventBus.getEventExecutions().forEach((defaultEventBus, eventExecution) -> sender.sendMessage("* " + eventExecution.getName() + " -> "  + new SimpleDateFormat("hh:mm:ss").format(new Date(eventExecution.getTimestamp()))));
+        if(!bus.equalsIgnoreCase(this.framework.fistinEventBus().implName())) return;
+
+        if(this.framework.fistinEventBus() instanceof DefaultEventBus)
+            DefaultEventBus.getEventExecutions().get((DefaultEventBus)this.framework.fistinEventBus()).forEach((eventExecution) -> sender.sendMessage(String.format("* %s -> %s", eventExecution.getName(), new SimpleDateFormat("hh:mm:ss").format(new Date(eventExecution.getTimestamp())))));
     }
 }

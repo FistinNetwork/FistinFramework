@@ -1,6 +1,7 @@
 package fr.fistin.fistinframework.impl;
 
 import fr.fistin.fistinframework.IFistinFramework;
+import fr.fistin.fistinframework.command.FistinCommand;
 import fr.fistin.fistinframework.configuration.ConfigurationMappings;
 import fr.fistin.fistinframework.configuration.Language;
 import fr.fistin.fistinframework.configuration.LanguageManager;
@@ -50,15 +51,27 @@ class MessagesImpl implements Messages
     }
 
     @Override
-    public String getPlayerRequiredMessage(Language language)
+    public String getCommandPlayerRequiredMessage(Language language)
     {
-        return this.fixColor(this.getLanguageManager().translate(language, "player_required"));
+        return this.fixColor(this.getLanguageManager().translate(language, "command_player_required"));
     }
 
     @Override
-    public String getMissingPermissionMessage(Language language)
+    public String getCommandMissingPermissionMessage(Language language)
     {
-        return this.fixColor(this.getLanguageManager().translate(language, "missing_permission"));
+        return this.fixColor(this.getLanguageManager().translate(language, "command_missing_permission"));
+    }
+
+    @Override
+    public String getCommandBadUsage(Language language, FistinCommand command)
+    {
+        return this.getMappings().getCommandMappings().map(this.fixColor(this.getLanguageManager().translate(language, "command_bad_usage")), command);
+    }
+
+    @Override
+    public String getCommandError(Language language, FistinCommand command)
+    {
+        return this.getMappings().getCommandMappings().map(this.fixColor(this.getLanguageManager().translate(language, "command_error")), command);
     }
 
     private ConfigurationMappings getMappings()

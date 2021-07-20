@@ -15,23 +15,15 @@ commands:
   fdebug:
     description: FistinDebug command
     permission: fistin.staff
-    usage: /fdebug items|fireworks|events [implBusName]|providers
+    aliases: [fdebug]
   fgive:
     description: Give command for Fistin items
     permission: fistin.staff
-    usage: /fgive [item]
-    aliases:
-      - fistingive
-      - fisting
-      - givefistin
+    aliases: [fistingive]
   ffirework:
     description: Summon Fistin's firework
     permission: fistin.staff
-    usage: /ffirework [firework]
-    aliases:
-      - fistinfirework
-      - fistinf
-      - fireworkfistin
+    aliases: [fistinfirework]
 permissions:
   fistin.staff:
     description: Allows the usage of all fistin administration commands.

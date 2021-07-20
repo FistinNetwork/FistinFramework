@@ -3,11 +3,11 @@ package fr.fistin.fistinframework.player;
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.configuration.Language;
 import fr.fistin.fistinframework.event.PlayerStateChangedEvent;
+import fr.fistin.fistinframework.game.GameManager;
 import fr.fistin.fistinframework.scoreboard.IScoreboard;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
 import java.util.UUID;
 
 public abstract class DefaultFistinPlayer implements FistinPlayer
@@ -16,10 +16,12 @@ public abstract class DefaultFistinPlayer implements FistinPlayer
     protected PlayerState playerState;
     protected IScoreboard scoreboard;
     protected Preferences preferences;
+    protected GameManager gameManager;
 
-    public DefaultFistinPlayer(Player player)
+    public DefaultFistinPlayer(Player player, GameManager gameManager)
     {
         this.player = player;
+        this.gameManager = gameManager;
         this.preferences = new Preferences("fr"); // TODO: retrieve preferences from DB.
     }
 
@@ -130,5 +132,14 @@ public abstract class DefaultFistinPlayer implements FistinPlayer
     public Preferences preferences()
     {
         return this.preferences;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GameManager gameManager()
+    {
+        return this.gameManager;
     }
 }

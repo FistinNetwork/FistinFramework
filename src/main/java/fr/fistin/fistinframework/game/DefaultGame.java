@@ -18,7 +18,13 @@ public abstract class DefaultGame implements Game
     protected final Map<Player, FistinPlayer> spectatingPlayers = new HashMap<>();
 
     protected GameState gameState;
+    protected GameManager gameManager;
     protected int timer = -1;
+
+    protected DefaultGame(GameManager gameManager)
+    {
+        this.gameManager = gameManager;
+    }
 
     /**
      * {@inheritDoc}
@@ -107,6 +113,14 @@ public abstract class DefaultGame implements Game
         this.sendToAllPlayers((player1, fistinPlayer) -> player1.sendMessage(framework.messages().getPlayerJoinMessage(fistinPlayer.getSelectedLanguage(), fistinPlayer, this)));
     }
 
+    @Override
+    public void remove(@NotNull FistinPlayer player)
+    {
+        this.playingPlayers.remove(player.getPlayer());
+        this.inLobbyPlayers.remove(player.getPlayer());
+        this.spectatingPlayers.remove(player.getPlayer());
+    }
+
     protected void sendToAllPlayers(BiConsumer<Player, FistinPlayer> consumer)
     {
         this.inLobbyPlayers.forEach(consumer);
@@ -150,5 +164,25 @@ public abstract class DefaultGame implements Game
     public int timerBeforeGameStart()
     {
         return this.timer;
+    }
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public GameManager gameManager()
+   {
+       return this.gameManager;
+   }
+
+    /*
+     * {@inheritDoc}
+     */
+    @Override
+    public void clean()
+    {
+        this.inLobbyPlayers.clear();
+        this.playingPlayers.clear();
+        this.spectatingPlayers.clear();
     }
 }

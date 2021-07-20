@@ -12,5 +12,4 @@ public @interface AddonInfo
     String name();
     String version();
     boolean logging() default true;
-    Class<? extends FistinAddon<?>> addon();
 }

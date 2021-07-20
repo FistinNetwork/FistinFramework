@@ -1,5 +1,6 @@
 package fr.fistin.fistinframework.configuration;
 
+import fr.fistin.fistinframework.command.FistinCommand;
 import fr.fistin.fistinframework.game.Game;
 import fr.fistin.fistinframework.player.FistinPlayer;
 
@@ -12,6 +13,8 @@ public interface Messages
     String getStoppingGameMessage(Language language);
     String getWinnerMessage(Language language, FistinPlayer fistinPlayer);
     String getKickMessageAtEnd(Language language);
-    String getPlayerRequiredMessage(Language language);
-    String getMissingPermissionMessage(Language language);
+    String getCommandPlayerRequiredMessage(Language language);
+    String getCommandMissingPermissionMessage(Language language);
+    String getCommandBadUsage(Language language, FistinCommand command);
+    String getCommandError(Language language, FistinCommand command);
 }

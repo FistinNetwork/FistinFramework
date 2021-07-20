@@ -11,5 +11,6 @@ public @interface FistinCommandInfo
 {
     String name();
     String permission() default "";
+    String usage();
     boolean requiresPlayer() default false;
 }

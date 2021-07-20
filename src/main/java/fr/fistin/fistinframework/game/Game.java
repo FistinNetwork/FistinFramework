@@ -3,12 +3,13 @@ package fr.fistin.fistinframework.game;
 import fr.fistin.fistinframework.player.FistinPlayer;
 import fr.fistin.fistinframework.player.FistinPlayerContainer;
 import fr.fistin.fistinframework.utils.Castex;
+import fr.fistin.fistinframework.utils.Cleanable;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public interface Game extends Castex<Game>, FistinPlayerContainer
+public interface Game extends Castex<Game>, Cleanable, FistinPlayerContainer
 {
     /**
      * Start the game.

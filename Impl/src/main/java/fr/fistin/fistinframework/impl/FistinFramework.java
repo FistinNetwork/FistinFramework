@@ -2,7 +2,6 @@ package fr.fistin.fistinframework.impl;
 
 import fr.fistin.api.plugin.providers.PluginProviders;
 import fr.fistin.fistinframework.IFistinFramework;
-import fr.fistin.fistinframework.addon.AddonProcessor;
 import fr.fistin.fistinframework.anvilgui.AnvilGUI;
 import fr.fistin.fistinframework.configuration.ConfigurationMappings;
 import fr.fistin.fistinframework.configuration.LanguageManager;
@@ -32,7 +31,6 @@ import java.util.function.Supplier;
 @ApiStatus.Internal
 public final class FistinFramework extends JavaPlugin implements IFistinFramework
 {
-    private AddonProcessor addonProcessor;
     private AutomaticRegisterer automaticRegisterer;
     private ConfigurationMappings configurationMappings;
     private FireworkFactory fireworkFactory;
@@ -61,7 +59,6 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     private void init()
     {
         this.getLogger().info("Initializing APIs' Framework and Framework's official implementation...");
-        this.addonProcessor = new AddonProcessorImpl();
         this.automaticRegisterer = new AutomaticRegistererImpl();
         this.configurationMappings = new ConfigurationMappingsImpl();
         this.fistinEventBus = new DefaultEventBus();
@@ -103,12 +100,6 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.inventoryManager.clean();
 
         this.getLogger().info("Shutdown Fistin Framework, have a nice day!");
-    }
-
-    @Override
-    public @NotNull AddonProcessor addonProcessor()
-    {
-        return this.addonProcessor;
     }
 
     @Override

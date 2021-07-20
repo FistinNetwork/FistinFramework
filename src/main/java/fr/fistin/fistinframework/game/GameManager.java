@@ -14,7 +14,7 @@ public interface GameManager
     @NotNull Game game();
     void setGame(@NotNull Game game);
 
-    GameState registerGameNewState(String name);
+    GameState registerNewGameState(String name);
     GameState getGameState(String name);
     GameState getGameState(int id);
 

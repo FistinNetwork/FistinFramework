@@ -15,10 +15,12 @@ public abstract class FistinCommand implements CommandExecutor
 {
     private final @NotNull FistinCommandInfo fistinCommandInfo;
     protected @Nullable IGamePluginProvider gamePluginProvider;
+    private String currentError;
 
     protected FistinCommand()
     {
         this.fistinCommandInfo = this.getClass().getDeclaredAnnotation(FistinCommandInfo.class);
+        this.defineCurrentError();
         FistinValidate.notNull(this.fistinCommandInfo, "`fistinCommandInfo` cannot be null. (%s)", this.getClass().getName());
     }
 
@@ -35,7 +37,7 @@ public abstract class FistinCommand implements CommandExecutor
         {
             if(!sender.hasPermission(this.fistinCommandInfo.permission()))
             {
-                sender.sendMessage(IFistinFramework.framework().messages().getMissingPermissionMessage(Language.globalLanguage()));
+                sender.sendMessage(IFistinFramework.framework().messages().getCommandMissingPermissionMessage(Language.globalLanguage()));
                 return true;
             }
         }
@@ -44,24 +46,78 @@ public abstract class FistinCommand implements CommandExecutor
         {
             if(!(sender instanceof Player))
             {
-                sender.sendMessage(IFistinFramework.framework().messages().getPlayerRequiredMessage(Language.globalLanguage()));
+                sender.sendMessage(IFistinFramework.framework().messages().getCommandPlayerRequiredMessage(Language.globalLanguage()));
                 return true;
             }
 
-            this.execute((Player)sender, args);
+            this.processResult(sender, this.execute((Player)sender, args));
             return true;
         }
 
-        this.execute(sender, args);
+        this.processResult(sender, this.execute(sender, args));
 
         return true;
     }
 
-    protected void execute(CommandSender sender, String[] args) {}
-    protected void execute(Player sender, String[] args) {}
+    protected void processResult(CommandSender sender, ResultType resultType)
+    {
+        switch (resultType)
+        {
+            case SUCCESS:
+                break;
+            case BAD_USAGE:
+                sender.sendMessage(IFistinFramework.framework().messages().getCommandBadUsage(Language.globalLanguage(), this));
+                break;
+            case ERROR:
+                this.defineCurrentError(resultType.msg);
+                sender.sendMessage(IFistinFramework.framework().messages().getCommandError(Language.globalLanguage(), this));
+                this.defineCurrentError();
+                break;
+        }
+    }
+
+    protected ResultType execute(CommandSender sender, String[] args)
+    {
+        return ResultType.SUCCESS;
+    }
+
+    protected ResultType execute(Player sender, String[] args)
+    {
+        return ResultType.SUCCESS;
+    }
 
     public @NotNull FistinCommandInfo getFistinCommandInfo()
     {
-        return fistinCommandInfo;
+        return this.fistinCommandInfo;
+    }
+
+    public @NotNull String currentError()
+    {
+        return this.currentError;
+    }
+
+    protected void defineCurrentError(String currentError)
+    {
+        this.currentError = currentError;
+    }
+
+    protected void defineCurrentError()
+    {
+        this.currentError = "No information.";
+    }
+
+    public enum ResultType {
+        BAD_USAGE,
+        ERROR,
+        SUCCESS;
+
+        @Nullable
+        private String msg;
+
+        public ResultType apply(String msg)
+        {
+            this.msg = msg;
+            return this;
+        }
     }
 }

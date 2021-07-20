@@ -37,6 +37,7 @@ public abstract class DefaultGameManager implements GameManager
     public void init()
     {
         this.init = true;
+        this.registerNewPlayerState("IN_LOBBY");
         IFistinFramework.framework().fistinEventBus().handleEvent(() -> new GameManagerInitEvent(this));
     }
 
@@ -103,7 +104,7 @@ public abstract class DefaultGameManager implements GameManager
     // Don't need any initialization
 
     @Override
-    public GameState registerGameNewState(String name)
+    public GameState registerNewGameState(String name)
     {
         final GameState state = new GameState(name, this.gameStateIDIncrement++);
         this.gameStatesByID.put(state.getID(), state);

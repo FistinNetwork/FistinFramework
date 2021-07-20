@@ -1,5 +1,7 @@
 package fr.fistin.fistinframework.eventbus;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import fr.fistin.fistinframework.utils.FistinFrameworkException;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +11,7 @@ import java.util.function.Supplier;
 
 public class DefaultEventBus implements FistinEventBus<Supplier<? extends FistinEvent>>
 {
-    private static final Map<DefaultEventBus, EventExecution> EVENT_EXECUTIONS = new HashMap<>();
+    private static final Multimap<DefaultEventBus, EventExecution> EVENT_EXECUTIONS = ArrayListMultimap.create();
 
     private final Set<Class<? extends FistinEvent>> registeredEvents = new HashSet<>();
     private final Set<FistinEventListener> listeners = new HashSet<>();
@@ -70,7 +72,7 @@ public class DefaultEventBus implements FistinEventBus<Supplier<? extends Fistin
     {
         this.registeredEvents.clear();
         this.listeners.clear();
-        EVENT_EXECUTIONS.remove(this);
+        EVENT_EXECUTIONS.removeAll(this);
     }
 
     @Override
@@ -79,9 +81,9 @@ public class DefaultEventBus implements FistinEventBus<Supplier<? extends Fistin
         return "default";
     }
 
-    public static Map<DefaultEventBus, EventExecution> getEventExecutions()
+    public static Map<DefaultEventBus, Collection<EventExecution>> getEventExecutions()
     {
-        return Collections.unmodifiableMap(EVENT_EXECUTIONS);
+        return Collections.unmodifiableMap(EVENT_EXECUTIONS.asMap());
     }
 
     public static class EventExecution

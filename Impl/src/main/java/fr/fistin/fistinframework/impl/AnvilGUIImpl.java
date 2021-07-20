@@ -279,7 +279,7 @@ class AnvilGUIImpl implements AnvilGUI
     /**
      * A builder class for an {@link AnvilGUI} object
      */
-    public static class BuilderImpl implements Builder
+    static class BuilderImpl implements Builder
     {
         /**
          * An {@link Consumer} that is called when the anvil GUI is closed
@@ -449,7 +449,7 @@ class AnvilGUIImpl implements AnvilGUI
     /**
      * Class wrapping the magic constants of slot numbers in an anvil GUI
      */
-    public static class Slot
+    private static class Slot
     {
         private static final int[] VALUES = new int[]{Slot.INPUT_LEFT, Slot.INPUT_RIGHT, Slot.OUTPUT};
 

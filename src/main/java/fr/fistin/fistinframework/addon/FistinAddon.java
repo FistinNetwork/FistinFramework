@@ -1,6 +1,7 @@
 package fr.fistin.fistinframework.addon;
 
 import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class FistinAddon<C>
 {
