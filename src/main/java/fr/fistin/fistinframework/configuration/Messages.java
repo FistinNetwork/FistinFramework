@@ -8,13 +8,15 @@ public interface Messages
 {
     String fixColor(String toFix);
 
-    String getPlayerJoinMessage(Language language, FistinPlayer fistinPlayer, Game game);
-    String getStartingGameMessage(Language language);
-    String getStoppingGameMessage(Language language);
-    String getWinnerMessage(Language language, FistinPlayer fistinPlayer);
+    String getPlayerJoin(Language language, FistinPlayer fistinPlayer, Game game);
+    String getStartingGame(Language language);
+    String getStoppingGame(Language language);
+    String getWinner(Language language, FistinPlayer fistinPlayer);
     String getKickMessageAtEnd(Language language);
-    String getCommandPlayerRequiredMessage(Language language);
-    String getCommandMissingPermissionMessage(Language language);
+    String getPlayerSpecifiedNotFound(Language language);
+    String getInvalidObjectName(Language language);
+    String getCommandPlayerRequired(Language language);
+    String getCommandMissingPermission(Language language);
     String getCommandBadUsage(Language language, FistinCommand command);
     String getCommandError(Language language, FistinCommand command);
 }

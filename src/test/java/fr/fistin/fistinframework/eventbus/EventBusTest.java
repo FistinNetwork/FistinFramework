@@ -5,11 +5,15 @@ import org.junit.Test;
 
 import java.util.function.Supplier;
 
+import static org.junit.Assert.assertEquals;
+
 public class EventBusTest
 {
     @Test
     public void testEventBusAPI()
     {
+        final String[] test = {"", ""};
+
         final FistinEventBus<Supplier<? extends FistinEvent>> bus = new DefaultEventBus();
         bus.registerEvent(TestEvent.class);
         bus.registerEvent(AnotherTestEvent.class);
@@ -17,20 +21,23 @@ public class EventBusTest
             @FistinEventHandler
             public void handleTestEvent(TestEvent event)
             {
-                System.out.println("Handling event " + event.getName() + ", printing: " + event.getToPrint());
+                test[0] = event.getToPrint();
             }
         });
-        bus.handleEvent(() -> new TestEvent("waaaaaw"));
-        bus.handleEvent(() -> new AnotherTestEvent("waaaaaw"));
+        bus.handleEvent(() -> new TestEvent("test1"));
+        bus.handleEvent(() -> new AnotherTestEvent("test2"));
         bus.addListener(new FistinEventListener() {
             @FistinEventHandler
             public void handleTestEvent(AnotherTestEvent event)
             {
-                System.out.println("Handling another event " + event.getName() + ", printing: " + event.getToPrint());
+                test[1] = event.getToPrint();
             }
         });
-        bus.handleEvent(() -> new AnotherTestEvent("waaaaaw"));
+        bus.handleEvent(() -> new AnotherTestEvent("test3"));
         bus.clean();
+
+        assertEquals("test1", test[0]);
+        assertEquals("test3", test[1]);
     }
 
     private static class TestEvent implements FistinEvent

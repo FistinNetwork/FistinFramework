@@ -21,25 +21,25 @@ class MessagesImpl implements Messages
     }
 
     @Override
-    public String getPlayerJoinMessage(Language language, FistinPlayer fistinPlayer, Game game)
+    public String getPlayerJoin(Language language, FistinPlayer fistinPlayer, Game game)
     {
         return this.getMappings().getPlayerMappings().map(this.getMappings().getGameMappings().map(this.fixColor(this.getLanguageManager().translate(language, "player_join")), game), fistinPlayer);
     }
 
     @Override
-    public String getStartingGameMessage(Language language)
+    public String getStartingGame(Language language)
     {
         return this.fixColor(this.getLanguageManager().translate(language, "starting_game"));
     }
 
     @Override
-    public String getStoppingGameMessage(Language language)
+    public String getStoppingGame(Language language)
     {
         return this.fixColor(this.getLanguageManager().translate(language, "stopping_game"));
     }
 
     @Override
-    public String getWinnerMessage(Language language, FistinPlayer fistinPlayer)
+    public String getWinner(Language language, FistinPlayer fistinPlayer)
     {
         return this.getMappings().getPlayerMappings().map(this.fixColor(this.getLanguageManager().translate(language, "winner")), fistinPlayer);
     }
@@ -51,13 +51,25 @@ class MessagesImpl implements Messages
     }
 
     @Override
-    public String getCommandPlayerRequiredMessage(Language language)
+    public String getPlayerSpecifiedNotFound(Language language)
+    {
+        return this.fixColor(this.getLanguageManager().translate(language, "player_specified_not_found"));
+    }
+
+    @Override
+    public String getInvalidObjectName(Language language)
+    {
+        return this.fixColor(this.getLanguageManager().translate(language, "invalid_object_name"));
+    }
+
+    @Override
+    public String getCommandPlayerRequired(Language language)
     {
         return this.fixColor(this.getLanguageManager().translate(language, "command_player_required"));
     }
 
     @Override
-    public String getCommandMissingPermissionMessage(Language language)
+    public String getCommandMissingPermission(Language language)
     {
         return this.fixColor(this.getLanguageManager().translate(language, "command_missing_permission"));
     }

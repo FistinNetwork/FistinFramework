@@ -1,5 +1,5 @@
 name: FistinFramework
-version: 1.1.0
+version: 1.2.0
 main: fr.fistin.fistinframework.impl.FistinFramework
 prefix: FistinFramework
 website: https://fistin.fr
@@ -15,7 +15,7 @@ commands:
   fdebug:
     description: FistinDebug command
     permission: fistin.staff
-    aliases: [fdebug]
+    aliases: [fistindebug]
   fgive:
     description: Give command for Fistin items
     permission: fistin.staff

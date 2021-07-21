@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @ApiStatus.Internal
-@FistinCommandInfo(name = "fdebug", permission = "fistin.staff", usage = "/fdebug events [implBusName]|fireworks|items|providers")
+@FistinCommandInfo(name = "fdebug", permission = "fistin.staff", usage = "/fdebug {events implBusName}|fireworks|items|providers")
 class FDebugCommand extends FistinCommand
 {
     private final IFistinFramework framework = IFistinFramework.framework();
@@ -66,7 +66,9 @@ class FDebugCommand extends FistinCommand
                     if (sender instanceof Player)
                     {
                         final TextComponent clickable = new TextComponent(name);
-                        clickable.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("\u00A7aClick to get this item.\u00A7r")}));
+                        clickable.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{
+                                new TextComponent("\u00A7aClick to get this item.\u00A7r")
+                        }));
                         clickable.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/fgive " + finalPath));
 
                         final TextComponent component = new TextComponent("* ");
@@ -111,6 +113,12 @@ class FDebugCommand extends FistinCommand
         if(!bus.equalsIgnoreCase(this.framework.fistinEventBus().implName())) return;
 
         if(this.framework.fistinEventBus() instanceof DefaultEventBus)
-            DefaultEventBus.getEventExecutions().get((DefaultEventBus)this.framework.fistinEventBus()).forEach((eventExecution) -> sender.sendMessage(String.format("* %s -> %s", eventExecution.getName(), new SimpleDateFormat("hh:mm:ss").format(new Date(eventExecution.getTimestamp())))));
+            DefaultEventBus.getEventExecutions()
+                    .get((DefaultEventBus)this.framework.fistinEventBus())
+                    .forEach((eventExecution) -> sender.sendMessage(String.format(
+                            "* %s -> %s",
+                            eventExecution.getName(),
+                            new SimpleDateFormat("hh:mm:ss").format(new Date(eventExecution.getTimestamp()))
+                    )));
     }
 }

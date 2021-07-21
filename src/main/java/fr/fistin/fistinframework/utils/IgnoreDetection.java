@@ -1,10 +1,11 @@
 package fr.fistin.fistinframework.utils;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
+/**
+ * Indicate to {@link AutomaticRegisterer} that the class MUST NOT be processed and registered.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Documented
 public @interface IgnoreDetection {}

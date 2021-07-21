@@ -2,7 +2,6 @@ package fr.fistin.fistinframework.command;
 
 import fr.fistin.fistinframework.IFistinFramework;
 import fr.fistin.fistinframework.configuration.Language;
-import fr.fistin.fistinframework.game.IGamePluginProvider;
 import fr.fistin.fistinframework.utils.FistinValidate;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 public abstract class FistinCommand implements CommandExecutor
 {
     private final @NotNull FistinCommandInfo fistinCommandInfo;
-    protected @Nullable IGamePluginProvider gamePluginProvider;
     private String currentError;
 
     protected FistinCommand()
@@ -24,12 +22,6 @@ public abstract class FistinCommand implements CommandExecutor
         FistinValidate.notNull(this.fistinCommandInfo, "`fistinCommandInfo` cannot be null. (%s)", this.getClass().getName());
     }
 
-    protected FistinCommand(@NotNull IGamePluginProvider gamePluginProvider)
-    {
-        this();
-        this.gamePluginProvider = gamePluginProvider;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
@@ -37,18 +29,14 @@ public abstract class FistinCommand implements CommandExecutor
         {
             if(!sender.hasPermission(this.fistinCommandInfo.permission()))
             {
-                sender.sendMessage(IFistinFramework.framework().messages().getCommandMissingPermissionMessage(Language.globalLanguage()));
+                sender.sendMessage(IFistinFramework.framework().messages().getCommandMissingPermission(Language.globalLanguage()));
                 return true;
             }
         }
 
         if(this.fistinCommandInfo.requiresPlayer())
         {
-            if(!(sender instanceof Player))
-            {
-                sender.sendMessage(IFistinFramework.framework().messages().getCommandPlayerRequiredMessage(Language.globalLanguage()));
-                return true;
-            }
+            if(this.checkPlayerRequired(sender) != null) return true;
 
             this.processResult(sender, this.execute((Player)sender, args));
             return true;
@@ -96,14 +84,20 @@ public abstract class FistinCommand implements CommandExecutor
         return this.currentError;
     }
 
-    protected void defineCurrentError(String currentError)
+    private void defineCurrentError(String currentError)
     {
         this.currentError = currentError;
     }
 
-    protected void defineCurrentError()
+    private void defineCurrentError()
     {
         this.currentError = "No information.";
+    }
+
+    protected @Nullable ResultType checkPlayerRequired(CommandSender sender)
+    {
+        if(!(sender instanceof Player)) return ResultType.ERROR.apply(IFistinFramework.framework().messages().getCommandPlayerRequired(Language.globalLanguage()));
+        else return null;
     }
 
     public enum ResultType {

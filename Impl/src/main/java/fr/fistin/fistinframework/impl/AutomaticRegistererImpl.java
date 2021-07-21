@@ -6,6 +6,7 @@ import fr.fistin.fistinframework.addon.FistinAddon;
 import fr.fistin.fistinframework.command.FistinCommand;
 import fr.fistin.fistinframework.eventbus.FistinEvent;
 import fr.fistin.fistinframework.eventbus.FistinEventBus;
+import fr.fistin.fistinframework.item.FistinItem;
 import fr.fistin.fistinframework.utils.*;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,6 +18,7 @@ import org.reflections.util.FilterBuilder;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -31,30 +33,26 @@ class AutomaticRegistererImpl implements AutomaticRegisterer
 
         framework.getLogger().info(String.format("Searching for %ss in package '%s' (%s).", type.name().toLowerCase(), packageName, plugin.getClass().getSimpleName()));
 
-        try
-        {
-            final Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(packageName))).setUrls(ClasspathHelper.forPackage(packageName, plugin.getClass().getClassLoader())));
+        final Reflections reflections = new Reflections(new ConfigurationBuilder().filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(packageName))).setUrls(ClasspathHelper.forPackage(packageName, plugin.getClass().getClassLoader())));
 
-            switch (type)
-            {
-                case EVENT:
-                    this.registerEvents(reflections.getSubTypesOf(FistinEvent.class).stream().filter(aClass -> aClass.getDeclaredAnnotation(IgnoreDetection.class) == null).collect(Collectors.toSet()), framework.fistinEventBus(), plugin);
-                    break;
-                case COMMAND:
-                    this.registerCommands(reflections.getSubTypesOf(FistinCommand.class).stream().filter(aClass -> aClass.getDeclaredAnnotation(IgnoreDetection.class) == null).collect(Collectors.toSet()), plugin);
-                    break;
-                case LISTENER:
-                    this.registerListeners(reflections.getSubTypesOf(Listener.class).stream().filter(aClass -> aClass.getDeclaredAnnotation(IgnoreDetection.class) == null).collect(Collectors.toSet()), plugin);
-                    break;
-                case ADDON:
-                    if(plugin instanceof IAddonProvider) this.registerAddons(reflections.getSubTypesOf(FistinAddon.class).stream().filter(aClass -> aClass.getDeclaredAnnotation(IgnoreDetection.class) == null).filter(aClass -> aClass.getDeclaredAnnotation(AddonInfo.class) != null).collect(Collectors.toSet()), (IAddonProvider)plugin);
-                    else framework.getLogger().severe(String.format("Provided `plugin` (%s) isn't an instance of `IAddonProvider`!", plugin.getClass().getSimpleName()));
-                    break;
-            }
-        }
-        catch(Exception e)
+        switch (type)
         {
-            throw new FistinFrameworkException(e);
+            case EVENT:
+                this.registerEvents(reflections.getSubTypesOf(FistinEvent.class).stream().filter(aClass -> aClass.getDeclaredAnnotation(IgnoreDetection.class) == null).collect(Collectors.toSet()), framework.fistinEventBus(), plugin);
+                break;
+            case COMMAND:
+                this.registerCommands(reflections.getSubTypesOf(FistinCommand.class).stream().filter(aClass -> aClass.getDeclaredAnnotation(IgnoreDetection.class) == null).collect(Collectors.toSet()), plugin);
+                break;
+            case LISTENER:
+                this.registerListeners(reflections.getSubTypesOf(Listener.class).stream().filter(aClass -> aClass.getDeclaredAnnotation(IgnoreDetection.class) == null).collect(Collectors.toSet()), plugin);
+                break;
+            case ADDON:
+                if (plugin instanceof IAddonProvider) this.registerAddons(reflections.getSubTypesOf(FistinAddon.class).stream().filter(aClass -> aClass.getDeclaredAnnotation(IgnoreDetection.class) == null).filter(aClass -> aClass.getDeclaredAnnotation(AddonInfo.class) != null).collect(Collectors.toSet()), (IAddonProvider)plugin);
+                else framework.getLogger().severe(String.format("Provided `plugin` (%s) isn't an instance of `IAddonProvider`!", plugin.getClass().getSimpleName()));
+                break;
+            case ITEM:
+                this.registerItems(reflections.getSubTypesOf(FistinItem.class).stream().filter(aClass -> aClass.getDeclaredAnnotation(IgnoreDetection.class) == null).filter(aClass -> !Modifier.isAbstract(aClass.getModifiers())).collect(Collectors.toSet()), plugin);
+                break;
         }
     }
 
@@ -127,6 +125,26 @@ class AutomaticRegistererImpl implements AutomaticRegisterer
             {
                 throw new FistinFrameworkException(e);
             }
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toSet()));
+    }
+
+    private void registerItems(Set<Class<? extends FistinItem>> classes, IBukkitPluginProvider plugin)
+    {
+        for (Class<? extends FistinItem> itemClass : classes)
+        {
+            try
+            {
+                final Constructor<? extends FistinItem> constructor = itemClass.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                final FistinItem item = constructor.newInstance();
+
+                final IFistinFramework framework = IFistinFramework.framework();
+                framework.getLogger().info(String.format("Registering '%s' item (%s).", item.getClass().getName(), plugin.getClass().getSimpleName()));
+                framework.fistinItems().registerItem(() -> item);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
+            {
+                throw new FistinFrameworkException(e);
+            }
+        }
     }
 }

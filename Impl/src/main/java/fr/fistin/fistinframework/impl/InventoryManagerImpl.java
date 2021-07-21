@@ -10,7 +10,6 @@ import fr.fistin.fistinframework.smartinvs.opener.ChestInventoryOpener;
 import fr.fistin.fistinframework.smartinvs.opener.InventoryOpener;
 import fr.fistin.fistinframework.smartinvs.opener.SpecialInventoryOpener;
 import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
-import fr.fistin.fistinframework.utils.IgnoreDetection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +18,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -30,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 class InventoryManagerImpl implements InventoryManager
 {
     private final IBukkitPluginProvider plugin;
-    private final PluginManager pluginManager;
     private final InventoryContentsWrapper contentsWrapper;
     private final Map<UUID, SmartInventory> inventories;
     private final Map<UUID, InventoryContents> contents;
@@ -40,7 +37,6 @@ class InventoryManagerImpl implements InventoryManager
     public InventoryManagerImpl(IBukkitPluginProvider plugin, InventoryContentsWrapper contentsWrapper)
     {
         this.plugin = plugin;
-        this.pluginManager = Bukkit.getPluginManager();
         this.contentsWrapper = contentsWrapper;
 
         this.inventories = new HashMap<>();
@@ -54,7 +50,6 @@ class InventoryManagerImpl implements InventoryManager
     @Override
     public void init()
     {
-        this.pluginManager.registerEvents(new InventoryManagerImpl.InvListener(), this.plugin);
         new BukkitRunnable() {
             @Override
             public void run()
@@ -133,8 +128,7 @@ class InventoryManagerImpl implements InventoryManager
         return new SmartInventoryImpl.Builder().manager(this);
     }
 
-    @SuppressWarnings("unchecked")
-    @IgnoreDetection
+    @SuppressWarnings({"unchecked", "unused"})
     private class InvListener implements Listener
     {
         @EventHandler(priority = EventPriority.LOW)

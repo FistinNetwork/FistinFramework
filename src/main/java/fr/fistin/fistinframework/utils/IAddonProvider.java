@@ -2,10 +2,10 @@ package fr.fistin.fistinframework.utils;
 
 import fr.fistin.fistinframework.addon.FistinAddon;
 
-import java.util.List;
+import java.util.Set;
 
 public interface IAddonProvider extends IBukkitPluginProvider
 {
-    List<FistinAddon<?>> addons();
-    void addons(List<FistinAddon<?>> addons);
+    Set<FistinAddon<?>> addons();
+    void addons(Set<FistinAddon<?>> addons);
 }

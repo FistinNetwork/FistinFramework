@@ -13,15 +13,13 @@ import fr.fistin.fistinframework.grade.LuckPermsToFistin;
 import fr.fistin.fistinframework.hostconfig.HostConfigurationManager;
 import fr.fistin.fistinframework.item.FistinItems;
 import fr.fistin.fistinframework.listener.ListenerManager;
-import fr.fistin.fistinframework.player.FistinPlayer;
-import fr.fistin.fistinframework.scoreboard.IScoreboardSign;
-import fr.fistin.fistinframework.scoreboard.ScoreboardBuilder;
 import fr.fistin.fistinframework.smartinvs.InventoryManager;
-import fr.fistin.fistinframework.team.TeamManager;
 import fr.fistin.fistinframework.utils.AutomaticRegisterer;
 import fr.fistin.fistinframework.utils.FireworkFactory;
-import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
+import fr.fistin.fistinframework.utils.FistinCreator;
 import fr.fistin.fistinframework.utils.PlayerHelper;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +32,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     private AutomaticRegisterer automaticRegisterer;
     private ConfigurationMappings configurationMappings;
     private FireworkFactory fireworkFactory;
+    private FistinCreator fistinCreator;
     private FistinEventBus<Supplier<? extends FistinEvent>> fistinEventBus;
     private FistinItems fistinItems;
     private HostConfigurationManager hostConfigurationManager;
@@ -64,6 +63,7 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
         this.fistinEventBus = new DefaultEventBus();
         this.fireworkFactory = new FireworkFactoryImpl();
         this.hostConfigurationManager = new HostConfigurationManagerImpl();
+        this.fistinCreator = new FistinCreatorImpl();
         this.fistinItems = new FistinItemsImpl();
         this.languageManager = new LanguageManagerImpl();
         this.listenerManager = new ListenerManagerImpl();
@@ -127,15 +127,15 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
-    public @NotNull FistinEventBus<Supplier<? extends FistinEvent>> fistinEventBus()
+    public @NotNull FistinCreator fistinCreator()
     {
-        return this.fistinEventBus;
+        return this.fistinCreator;
     }
 
     @Override
-    public @NotNull FistinEventBus<Supplier<? extends FistinEvent>> newFistinEventBus()
+    public @NotNull FistinEventBus<Supplier<? extends FistinEvent>> fistinEventBus()
     {
-        return new DefaultEventBus();
+        return this.fistinEventBus;
     }
 
     @Override
@@ -187,26 +187,9 @@ public final class FistinFramework extends JavaPlugin implements IFistinFramewor
     }
 
     @Override
-    public @NotNull <P> ScoreboardBuilder<P> scoreboardBuilder()
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        return new ScoreboardBuilderImpl<>();
-    }
 
-    @Override
-    public @NotNull <P> ScoreboardBuilder<P> scoreboardBuilder(Class<P> paramClass)
-    {
-        return new ScoreboardBuilderImpl<>();
-    }
-
-    @Override
-    public @NotNull IScoreboardSign newScoreboardSign(FistinPlayer player, String objectiveName, IBukkitPluginProvider caller)
-    {
-        return new ScoreboardSignImpl(player, objectiveName, caller);
-    }
-
-    @Override
-    public @NotNull TeamManager newTeamManager()
-    {
-        return new TeamManagerImpl();
+        return true;
     }
 }

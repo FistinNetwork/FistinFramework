@@ -1,7 +1,5 @@
 package fr.fistin.fistinframework.utils;
 
-import fr.fistin.api.plugin.providers.IPluginProvider;
-
 public interface AutomaticRegisterer
 {
     void register(IBukkitPluginProvider plugin, String packageName, Type type);
@@ -10,6 +8,7 @@ public interface AutomaticRegisterer
         ADDON,
         COMMAND,
         EVENT,
+        ITEM,
         LISTENER
     }
 }

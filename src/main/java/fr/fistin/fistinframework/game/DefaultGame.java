@@ -110,7 +110,7 @@ public abstract class DefaultGame implements Game
         player.changePlayerState("IN_LOBBY");
         this.inLobbyPlayers.put(player.getPlayer(), player);
         final IFistinFramework framework = IFistinFramework.framework();
-        this.sendToAllPlayers((player1, fistinPlayer) -> player1.sendMessage(framework.messages().getPlayerJoinMessage(fistinPlayer.getSelectedLanguage(), fistinPlayer, this)));
+        this.sendToAllPlayers((player1, fistinPlayer) -> player1.sendMessage(framework.messages().getPlayerJoin(fistinPlayer.getSelectedLanguage(), fistinPlayer, this)));
     }
 
     @Override
@@ -152,7 +152,7 @@ public abstract class DefaultGame implements Game
         if(this.checkPlayersCount())
         {
             this.changeGameState("STARTING");
-            this.sendToAllPlayers((player, fistinPlayer) -> player.sendMessage(IFistinFramework.framework().messages().getStartingGameMessage(fistinPlayer.getSelectedLanguage())));
+            this.sendToAllPlayers((player, fistinPlayer) -> player.sendMessage(IFistinFramework.framework().messages().getStartingGame(fistinPlayer.getSelectedLanguage())));
             this.time();
         }
     }

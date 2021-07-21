@@ -17,7 +17,7 @@ class BuiltScoreboard<P> extends DefaultScoreboard
 
     public BuiltScoreboard(FistinPlayer player, String name, IBukkitPluginProvider caller, P parameter, Map<Integer, Function<P, String>> lines)
     {
-        super(IFistinFramework.framework().newScoreboardSign(player, name, caller));
+        super(IFistinFramework.framework().fistinCreator().newScoreboardSign(player, name, caller));
         this.parameter = parameter;
         this.lines = lines;
     }

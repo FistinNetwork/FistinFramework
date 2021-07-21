@@ -45,26 +45,22 @@ public class DefaultEventBus implements FistinEventBus<Supplier<? extends Fistin
     {
         EVENT_EXECUTIONS.put(this, new EventExecution(eventSup.get().getName(), System.currentTimeMillis()));
         final FistinEvent event = eventSup.get();
-        if(this.registeredEvents.contains(event.getClass()))
-        {
-            this.listeners.forEach(listener -> {
-                final Class<? extends FistinEventListener> clazz = listener.getClass();
-                Arrays.stream(clazz.getDeclaredMethods())
-                        .filter(method -> method.isAnnotationPresent(FistinEventHandler.class))
-                        .filter(method -> method.getParameterCount() == 1)
-                        .filter(method -> method.getParameterTypes()[0] == event.getClass())
-                        .forEach(method -> {
-                            try
-                            {
-                                method.setAccessible(true);
-                                method.invoke(listener, event);
-                            } catch (IllegalAccessException | InvocationTargetException e)
-                            {
-                                throw new FistinFrameworkException(e);
-                            }
-                        });
+
+        if(!this.registeredEvents.contains(event.getClass())) return;
+
+        this.listeners.forEach(listener -> {
+            final Class<? extends FistinEventListener> clazz = listener.getClass();
+            Arrays.stream(clazz.getDeclaredMethods()).filter(method -> method.isAnnotationPresent(FistinEventHandler.class)).filter(method -> method.getParameterCount() == 1).filter(method -> method.getParameterTypes()[0] == event.getClass()).forEach(method -> {
+                try
+                {
+                    method.setAccessible(true);
+                    method.invoke(listener, event);
+                } catch (IllegalAccessException | InvocationTargetException e)
+                {
+                    throw new FistinFrameworkException(e);
+                }
             });
-        }
+        });
     }
 
     @Override
