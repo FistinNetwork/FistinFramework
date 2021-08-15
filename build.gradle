@@ -8,7 +8,7 @@ allprojects {
     apply plugin: 'maven-publish'
 
     group 'fr.fistin'
-    version '1.2.0'
+    version '1.2.1'
 
     java {
         toolchain {
@@ -34,12 +34,10 @@ allprojects {
                 if(System.getenv('USERNAME') != null) {
                     username System.getenv('USERNAME')
                 }
-                else username "${USERNAME}"
 
                 if(System.getenv('TOKEN') != null) {
                     password System.getenv('TOKEN')
                 }
-                else password "${TOKEN}"
             }
             name = "FistinAPI_maven"
             url = "https://maven.pkg.github.com/FistinNetwork/FistinAPI"
@@ -95,6 +93,6 @@ publishing {
 
 dependencies {
     api 'fr.fistin:fistinapi-api:1.6.0'
-    api 'net.luckperms:api:5.2'
+    api 'net.luckperms:api:5.3'
     api 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
 }
