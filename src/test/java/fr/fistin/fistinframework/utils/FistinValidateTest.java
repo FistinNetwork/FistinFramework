@@ -1,13 +1,15 @@
 package fr.fistin.fistinframework.utils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FistinValidateTest
 {
-    @Test(expected = FistinFrameworkException.class)
+    @Test
     public void testNotNullWithNull()
     {
-        FistinValidate.notNull(null, "Null");
+        assertThrows(FistinFrameworkException.class, () -> FistinValidate.notNull(null, "Null"));
     }
 
     @Test
@@ -16,10 +18,10 @@ public class FistinValidateTest
         FistinValidate.notNull("", "Null");
     }
 
-    @Test(expected = FistinFrameworkException.class)
+    @Test
     public void testNotEqualsWithEquals()
     {
-        FistinValidate.notEquals("foo", "foo", "not equals");
+        assertThrows(FistinFrameworkException.class, () -> FistinValidate.notEquals("foo", "foo", "not equals"));
     }
 
     @Test
@@ -28,10 +30,10 @@ public class FistinValidateTest
         FistinValidate.notEquals("foo", "bar", "not equals");
     }
 
-    @Test(expected = FistinFrameworkException.class)
+    @Test
     public void testEqualsWithNotEquals()
     {
-        FistinValidate.equals("foo", "bar", "equals");
+        assertThrows(FistinFrameworkException.class, () -> FistinValidate.equals("foo", "bar", "equals"));
     }
 
     @Test
@@ -40,10 +42,10 @@ public class FistinValidateTest
         FistinValidate.equals("foo", "foo", "equals");
     }
 
-    @Test(expected = FistinFrameworkException.class)
+    @Test
     public void testAssertTrueWithFalse()
     {
-        FistinValidate.assertTrue(false, "assert true");
+        assertThrows(FistinFrameworkException.class, () -> FistinValidate.assertTrue(false, "assert true"));
     }
 
     @Test
@@ -52,10 +54,10 @@ public class FistinValidateTest
         FistinValidate.assertTrue(true, "assert true");
     }
 
-    @Test(expected = FistinFrameworkException.class)
+    @Test
     public void testNumberInferiorWithSuperior()
     {
-        FistinValidate.numberInferior(2, 1, "not inferior");
+        assertThrows(FistinFrameworkException.class, () -> FistinValidate.numberInferior(2, 1, "not inferior"));
     }
 
     @Test
@@ -70,16 +72,16 @@ public class FistinValidateTest
         FistinValidate.numberInferior(0, 1, "var mustn't be inferior");
     }
 
-    @Test(expected = FistinFrameworkException.class)
+    @Test
     public void testNumberSuperiorWithInferior()
     {
-        FistinValidate.numberSuperior(0, 1, "not superior");
+        assertThrows(FistinFrameworkException.class, () -> FistinValidate.numberSuperior(0, 1, "not superior"));
     }
 
-    @Test(expected = FistinFrameworkException.class)
+    @Test
     public void testNumberSuperiorWithEquals()
     {
-        FistinValidate.numberSuperior(1, 1, "not superior");
+        assertThrows(FistinFrameworkException.class, () -> FistinValidate.numberSuperior(1, 1, "not superior"));
     }
 
     @Test
@@ -88,10 +90,10 @@ public class FistinValidateTest
         FistinValidate.numberSuperior(2, 1, "not superior");
     }
 
-    @Test(expected = FistinFrameworkException.class)
+    @Test
     public void testNumberPositiveWithNegative()
     {
-        FistinValidate.numberPositive(-1, "not positive");
+        assertThrows(FistinFrameworkException.class, () -> FistinValidate.numberPositive(-1, "not positive"));
     }
 
     @Test

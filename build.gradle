@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0' apply false
+    id 'com.github.johnrengelman.shadow' version '7.0.0' apply false
 }
 
 allprojects {
@@ -8,7 +8,7 @@ allprojects {
     apply plugin: 'maven-publish'
 
     group 'fr.fistin'
-    version '1.2.1'
+    version '1.2.2'
 
     java {
         toolchain {
@@ -94,5 +94,15 @@ publishing {
 dependencies {
     api 'fr.fistin:fistinapi-api:1.6.0'
     api 'net.luckperms:api:5.3'
-    api 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
+    api('org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT') {
+        exclude module: 'junit'
+    }
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    testImplementation 'org.mockito:mockito-core:3.12.1'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.12.1'
+}
+
+test {
+    useJUnitPlatform()
 }

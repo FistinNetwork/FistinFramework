@@ -1,5 +1,7 @@
 package fr.fistin.fistinframework.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 public class FistinValidate
 {
     public static void notNull(Object object, String message)
@@ -12,25 +14,25 @@ public class FistinValidate
         if (object == null) throw new FistinFrameworkException(message, format);
     }
 
-    public static void notEquals(Object first, Object second, String message)
+    public static void notEquals(@NotNull Object first, Object second, String message)
     {
         if(first.equals(second))
             throw new FistinFrameworkException(message);
     }
 
-    public static void notEquals(Object first, Object second, String message, Object... format)
+    public static void notEquals(@NotNull Object first, Object second, String message, Object... format)
     {
         if(first.equals(second))
             throw new FistinFrameworkException(message, format);
     }
 
-    public static void equals(Object first, Object second, String message)
+    public static void equals(@NotNull Object first, Object second, String message)
     {
         if(!first.equals(second))
             throw new FistinFrameworkException(message);
     }
 
-    public static void equals(Object first, Object second, String message, Object... format)
+    public static void equals(@NotNull Object first, Object second, String message, Object... format)
     {
         if(!first.equals(second))
             throw new FistinFrameworkException(message, format);

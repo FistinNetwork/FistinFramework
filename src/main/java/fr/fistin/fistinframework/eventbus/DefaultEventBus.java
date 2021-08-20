@@ -15,6 +15,17 @@ public class DefaultEventBus implements FistinEventBus<Supplier<? extends Fistin
 
     private final Set<Class<? extends FistinEvent>> registeredEvents = new HashSet<>();
     private final Set<FistinEventListener> listeners = new HashSet<>();
+    private boolean handleParent;
+
+    public DefaultEventBus()
+    {
+
+    }
+
+    public DefaultEventBus(boolean handleParent)
+    {
+        this.handleParent = handleParent;
+    }
 
     @Override
     public @NotNull Set<Class<? extends FistinEvent>> registeredEvents()
@@ -46,11 +57,15 @@ public class DefaultEventBus implements FistinEventBus<Supplier<? extends Fistin
         EVENT_EXECUTIONS.put(this, new EventExecution(eventSup.get().getName(), System.currentTimeMillis()));
         final FistinEvent event = eventSup.get();
 
-        if(!this.registeredEvents.contains(event.getClass())) return;
+        if (!this.registeredEvents.contains(event.getClass()))
+        {
+            if (!this.handleParent) return;
+            else if(this.registeredEvents.stream().noneMatch(aClass -> aClass.isInstance(event))) return;
+        }
 
         this.listeners.forEach(listener -> {
             final Class<? extends FistinEventListener> clazz = listener.getClass();
-            Arrays.stream(clazz.getDeclaredMethods()).filter(method -> method.isAnnotationPresent(FistinEventHandler.class)).filter(method -> method.getParameterCount() == 1).filter(method -> method.getParameterTypes()[0] == event.getClass()).forEach(method -> {
+            Arrays.stream(clazz.getDeclaredMethods()).filter(method -> method.isAnnotationPresent(FistinEventHandler.class)).filter(method -> method.getParameterCount() == 1).filter(method -> method.getParameterTypes()[0] == event.getClass() || method.getParameterTypes()[0].isInstance(event)).forEach(method -> {
                 try
                 {
                     method.setAccessible(true);
@@ -61,6 +76,18 @@ public class DefaultEventBus implements FistinEventBus<Supplier<? extends Fistin
                 }
             });
         });
+    }
+
+    @Override
+    public boolean handleParent()
+    {
+        return this.handleParent;
+    }
+
+    @Override
+    public void handleParent(boolean handleParent)
+    {
+        this.handleParent = handleParent;
     }
 
     @Override

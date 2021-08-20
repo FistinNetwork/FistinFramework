@@ -13,5 +13,7 @@ public interface FistinEventBus<E extends Supplier<? extends FistinEvent>> exten
     void registerEvent(Class<? extends FistinEvent> eventClass);
     void addListener(FistinEventListener listener);
     void handleEvent(E eventSup);
+    boolean handleParent();
+    void handleParent(boolean handleParent);
     String implName();
 }

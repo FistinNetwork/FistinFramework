@@ -1,84 +1,117 @@
 package fr.fistin.fistinframework.eventbus;
 
-import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.function.Supplier;
 
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
-public class EventBusTest
-{
+@ExtendWith(MockitoExtension.class)
+public class EventBusTest {
+    private interface MockedInterface {
+        void bell();
+    }
+
+    private interface MockedFistinEvent extends MockedInterface, FistinEvent {}
+    private interface ExtendedMock extends MockedInterface, FistinEvent {}
+
+    private FistinEventBus<Supplier<? extends FistinEvent>> bus;
+
+    @Mock
+    private MockedFistinEvent event;
+    @Mock
+    private ExtendedMock secondEvent;
+    @Mock
+    private ExtendedMock thirdEvent;
+
+    @BeforeEach
+    public void setup() {
+        this.bus = new DefaultEventBus();
+    }
+
+    @AfterEach
+    public void clean() {
+        this.bus.clean();
+    }
+
     @Test
-    public void testEventBusAPI()
-    {
-        final String[] test = {"", ""};
-
-        final FistinEventBus<Supplier<? extends FistinEvent>> bus = new DefaultEventBus();
-        bus.registerEvent(TestEvent.class);
-        bus.registerEvent(AnotherTestEvent.class);
-        bus.addListener(new FistinEventListener() {
+    public void testHandleOneEvent() {
+        this.bus.handleParent(true);
+        this.bus.registerEvent(MockedFistinEvent.class);
+        this.bus.addListener(new FistinEventListener() {
             @FistinEventHandler
-            public void handleTestEvent(TestEvent event)
+            public void handleTestEvent(MockedFistinEvent event)
             {
-                test[0] = event.getToPrint();
+                event.bell();
             }
         });
-        bus.handleEvent(() -> new TestEvent("test1"));
-        bus.handleEvent(() -> new AnotherTestEvent("test2"));
-        bus.addListener(new FistinEventListener() {
+
+        this.bus.handleEvent(() -> this.event);
+
+        verify(this.event).bell();
+    }
+
+    @Test
+    public void testHandleTwoEvents() {
+        this.bus.handleParent(true);
+        this.bus.registerEvent(MockedFistinEvent.class);
+        this.bus.registerEvent(ExtendedMock.class);
+
+        this.bus.addListener(new FistinEventListener() {
             @FistinEventHandler
-            public void handleTestEvent(AnotherTestEvent event)
+            public void handleTestEvent(MockedFistinEvent event)
             {
-                test[1] = event.getToPrint();
+                event.bell();
             }
         });
-        bus.handleEvent(() -> new AnotherTestEvent("test3"));
-        bus.clean();
 
-        assertEquals("test1", test[0]);
-        assertEquals("test3", test[1]);
+        this.bus.addListener(new FistinEventListener() {
+            @FistinEventHandler
+            public void handleTestEvent(ExtendedMock event)
+            {
+                event.bell();
+            }
+        });
+
+        this.bus.handleEvent(() -> this.secondEvent);
+        this.bus.handleEvent(() -> this.event);
+
+        verify(this.event).bell();
+        verify(this.event).bell();
     }
 
-    private static class TestEvent implements FistinEvent
-    {
-        private final String toPrint;
+    @Test
+    public void shouldHookFirstAndThirdEvent() {
+        this.bus.handleParent(true);
+        this.bus.registerEvent(MockedFistinEvent.class);
+        this.bus.registerEvent(ExtendedMock.class);
 
-        public TestEvent(String toPrint)
-        {
-            this.toPrint = toPrint;
-        }
+        this.bus.addListener(new FistinEventListener() {
+            @FistinEventHandler
+            public void handleTestEvent(MockedFistinEvent event)
+            {
+                event.bell();
+            }
+        });
 
-        public String getToPrint()
-        {
-            return this.toPrint;
-        }
+        this.bus.handleEvent(() -> this.event);
+        this.bus.handleEvent(() -> this.secondEvent);
+        this.bus.addListener(new FistinEventListener() {
+            @FistinEventHandler
+            public void handleTestEvent(ExtendedMock event)
+            {
+                event.bell();
+            }
+        });
+        this.bus.handleEvent(() -> this.thirdEvent);
 
-        @Override
-        public @NotNull String getName()
-        {
-            return "TestEvent";
-        }
-    }
-
-    private static class AnotherTestEvent implements FistinEvent
-    {
-        private final String toPrint;
-
-        public AnotherTestEvent(String toPrint)
-        {
-            this.toPrint = toPrint;
-        }
-
-        public String getToPrint()
-        {
-            return this.toPrint;
-        }
-
-        @Override
-        public @NotNull String getName()
-        {
-            return "AnotherTestEvent";
-        }
+        verify(this.event).bell();
+        verify(this.secondEvent, never()).bell();
+        verify(this.thirdEvent).bell();
     }
 }

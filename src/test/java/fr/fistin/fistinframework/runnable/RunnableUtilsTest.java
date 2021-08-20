@@ -1,11 +1,11 @@
 package fr.fistin.fistinframework.runnable;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
 import static fr.fistin.fistinframework.runnable.RunnableUtils.convertToTick;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RunnableUtilsTest
 {
