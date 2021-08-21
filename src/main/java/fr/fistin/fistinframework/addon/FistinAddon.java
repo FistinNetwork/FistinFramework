@@ -4,7 +4,7 @@ import fr.fistin.fistinframework.utils.IBukkitPluginProvider;
 
 /**
  * This object is the parent class of all addons. All addons should extend this abstract class to be recognized correctly.
- * @param <C> The config object. Check {@link AddonConfig<C>} for more information.
+ * @param <C> The config object. Check {@link AddonConfig} for more information.
  */
 public abstract class FistinAddon<C>
 {
@@ -61,8 +61,8 @@ public abstract class FistinAddon<C>
     }
 
     /**
-     * Define the {@link AddonConfig<C>} object.
-     * @param config the {@link AddonConfig<C>} object.
+     * Define the {@link AddonConfig} object.
+     * @param config the {@link AddonConfig} object.
      */
     public final void config(AddonConfig<C> config)
     {
@@ -106,8 +106,8 @@ public abstract class FistinAddon<C>
     }
 
     /**
-     * The {@link AddonConfig<C>} object.
-     * @return the {@link AddonConfig<C>} object.
+     * The {@link AddonConfig} object.
+     * @return the {@link AddonConfig} object.
      */
     public final AddonConfig<C> config()
     {
