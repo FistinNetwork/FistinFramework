@@ -11,6 +11,10 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.logging.Level;
 
+/**
+ * AddonConfig is the object that represent a config wrapper for a {@link FistinAddon}.
+ * @param <C> Is the object that will be serialized and deserialized.
+ */
 public class AddonConfig<C>
 {
     private final Gson gson;
@@ -20,6 +24,13 @@ public class AddonConfig<C>
     private final IBukkitPluginProvider plugin;
     private C config;
 
+    /**
+     * The main constructor of this object.
+     * @param name The name of the config.
+     * @param type The {@link Class} type of {@link C}.
+     * @param def The default config.
+     * @param plugin The attached plugin.
+     */
     public AddonConfig(String name, Class<C> type, C def, IBukkitPluginProvider plugin)
     {
         this.file = Paths.get(plugin.getDataFolder().getAbsolutePath(), name + ".json");
@@ -33,17 +44,28 @@ public class AddonConfig<C>
         this.plugin = plugin;
     }
 
+    /**
+     * Redefine the config object and save it.
+     * @param config the config to attach.
+     */
     public void setConfig(C config)
     {
         this.config = config;
         this.save();
     }
 
+    /**
+     * Get the current config.
+     * @return the current config.
+     */
     public C getConfig()
     {
         return this.config;
     }
 
+    /**
+     * Load the config (and save default config if necessary).
+     */
     public void load()
     {
         try
@@ -73,6 +95,9 @@ public class AddonConfig<C>
         }
     }
 
+    /**
+     * Flush the config to the output file.
+     */
     public void save()
     {
         try
@@ -89,7 +114,10 @@ public class AddonConfig<C>
             this.plugin.getLogger().log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    
+
+    /**
+     * Reset to default the config.
+     */
     public void reset()
     {
         this.setConfig(this.defaultConfig);
